@@ -1,14 +1,34 @@
+import { FormsModule } from '@angular/forms';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
+import {NguiAutoCompleteModule} from '@ngui/auto-complete'
+
+import { AppRouterModule } from './app.router.module';
 import { AppComponent } from './app.component';
+import { HeaderComponent } from './header/header.component';
+import { HomeComponent } from './home/home.component';
+import { AuthComponent } from './auth/auth.component';
+import { PlaceComponent } from './place/place.component';
+import { AddNewPlaceComponent } from './place/add-new-place/add-new-place.component';
+import { PlaceListComponent } from './place/place-list/place-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent,
+    HomeComponent,
+    AuthComponent,
+    PlaceComponent,
+    AddNewPlaceComponent,
+    PlaceListComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    AppRouterModule,
+    FormsModule,
+    NguiAutoCompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

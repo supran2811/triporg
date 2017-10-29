@@ -1,10 +1,12 @@
-import { FormsModule } from '@angular/forms';
 
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import {StoreModule} from '@ngrx/store';
 
 import {NguiAutoCompleteModule} from '@ngui/auto-complete'
 
+import { globalReducer } from './store/app.reducer';
 import { AppRouterModule } from './app.router.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -28,7 +30,8 @@ import { PlaceListComponent } from './place/place-list/place-list.component';
     BrowserModule,
     AppRouterModule,
     FormsModule,
-    NguiAutoCompleteModule
+    NguiAutoCompleteModule,
+    StoreModule.forRoot(globalReducer),
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,14 +4,17 @@
           <h1>Welcome to trip organizer</h1>
           <br>
           <div class="input-group">
-            <input auto-complete 
+            <input ngui-auto-complete 
                   class = "form-control"
-                  [(ngModel)]="myData" 
-                    [source]="mySources" />
+                  [(ngModel)]="selectedPlace" 
+                  [source]="(citiesData | async).cities"
+                  [list-formatter] = "formatList"
+                  value-property-name="id"
+                  display-property-name="name" />
             <div class="input-group-btn">
-                  <button class="btn btn-primary">Search</button>
-                </div>
+                  <button class="btn btn-primary" (click)="selectPlace()">Search</button>
             </div>
+           </div>
             
       </div>
     </div>

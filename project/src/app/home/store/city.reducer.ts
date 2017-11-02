@@ -6,12 +6,17 @@ export interface State {
 };
 
 const initialState :State = {
-    cities:[
-        new City(1,"Jaipur"),
-        new City(2,"Kanpur"),
-    ]
+    cities:[]
 }
 
 export function citylistReducer (state=initialState , action:CityActions.CityActions){
+    switch(action.type){
+        case CityActions.SET_RESULT : {
+            return {
+                 ...state,
+                 cities:[...action.payload]   
+            }
+        }
+    }
     return state;
 }

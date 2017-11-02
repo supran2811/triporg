@@ -7,10 +7,12 @@
             <input ngui-auto-complete 
                   class = "form-control"
                   [(ngModel)]="selectedPlace" 
-                  [source]="(citiesData | async).cities"
+                  (ngModelChange) = "onChange($event)"
+                  [source]="observableSource.bind(this)"
                   [list-formatter] = "formatList"
                   value-property-name="id"
-                  display-property-name="name" />
+                  display-property-name="name" 
+                  loading-text=""/>
             <div class="input-group-btn">
                   <button class="btn btn-primary" (click)="selectPlace()">Search</button>
             </div>

@@ -22,11 +22,11 @@ export class PlaceComponent implements OnInit {
   ngOnInit() {
     console.log(Observable.range(1,5));
     this.activeRoute.params.subscribe( (params:Params) => {
-          let  id = +params['id'];
+          let  id = params['id'];
           console.log(id);
           this.store.select('cities').take(1).subscribe((data:fromCity.State) => {
             this.place = data.cities.find( (city:City) => {
-                return city.id === id;
+                return city.getId() === id;
             });
           })
     } )

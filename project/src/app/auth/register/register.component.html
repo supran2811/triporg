@@ -1,0 +1,71 @@
+<div class="container">
+<div class="row">
+  <br><br><br>
+  <div class="col-md-offset-1 col-md-4">
+    <p class="error" *ngIf= "(error | async).hasError">
+          {{ (error | async).errorMessage }}
+    </p>
+    <form (ngSubmit) = "register(f)" #f="ngForm">
+      <div id="user-data" ngModelGroup = "userdata">
+
+      <div class="form-group">
+            <label for="fullname">Enter Your Full Name</label>
+            <input 
+                    popover="Enter minimum 3 letters with space"
+                    popoverPlacement="auto right"
+                    [popoverOnHover]="false"
+                    [popoverCloseOnClickOutside]="true"
+                    [popoverCloseOnMouseOutside]="false"
+                    [popoverAnimation]="true"
+                    [popoverDismissTimeout]="5000"
+                    [popoverDisabled]="false"
+                    type="text" 
+                    class="form-control" 
+                    id="fullname" 
+                    placeholder="Your Full Name"
+                    name="fullname"
+                    required
+                    ng-pattern="[a-zA-Z][a-zA-Z ]+[a-zA-Z].{3,}$"
+                    ngModel
+                    #fullname = "ngModel"
+                    >
+      </div>
+      <div class="form-group">
+           <label for="email">Enter email</label>
+           <input type="email" 
+                  class="form-control" 
+                  id="email" 
+                  placeholder="user@example.com"
+                  ngModel
+                  name="email"
+                  required
+                  email
+                  #email = "ngModel">
+      </div>
+    </div>
+      <div class="form-group">
+       <label for="password">Enter password</label>
+       <input type="password" 
+              class="form-control" 
+              id="password"
+              required
+              name="password"
+              ngModel
+              #password = "ngModel"
+              ng-pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+              popover="Enter minimum 6 with atleast 1 number and capital letter"
+              popoverPlacement="auto right"
+              [popoverOnHover]="false"
+              [popoverCloseOnClickOutside]="true"
+              [popoverCloseOnMouseOutside]="false"
+              [popoverAnimation]="true"
+              [popoverDismissTimeout]="5000"
+              [popoverDisabled]="false"
+              >
+     </div>
+     <button class="btn btn-primary" [disabled] = "!f.valid" type="submit">Register</button>
+    </form>
+    
+  </div>
+  </div>
+</div>

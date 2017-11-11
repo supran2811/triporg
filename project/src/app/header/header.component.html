@@ -5,5 +5,21 @@
           Trip Organizer
         </a>
       </div>
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav" *ngIf = "!(authState | async).authorised else loggedInUser">
+            <li routerLinkActive = "active"><a routerLink = "/login">SignIn</a></li>
+            <li routerLinkActive = "active"><a routerLink = "/register">SignUp</a></li>
+          </ul>
+          <ng-template #loggedInUser>
+            <li class = "dropdown">
+                <a  class  = "dropdown-toggle" role="button">{{ (authState | async).user.fullName }} <span class = "caret"></span></a>
+              <ul class = "dropdown-menu">
+                <li><a (click) = "logOut()">Logout</a></li>
+              </ul>
+            </li>
+          </ng-template>
+        </ul>
+      </div>
     </div>
   </nav>

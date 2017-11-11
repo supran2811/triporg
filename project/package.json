@@ -27,6 +27,8 @@
     "@ngui/auto-complete": "^0.16.0",
     "bootstrap": "^3.3.7",
     "core-js": "^2.5.1",
+    "firebase": "^4.6.1",
+    "ngx-popover": "0.0.16",
     "portfinder": "^1.0.13",
     "reflect-metadata": "^0.1.10",
     "rxjs": "^5.4.3",

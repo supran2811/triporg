@@ -13,4 +13,12 @@ export class HttpService{
             return data;
         });
     }
+
+    post<T> (url:string , data:any){
+        return this.http.post(url,data);
+    }
+
+    put (url:string , data:any){
+        return this.http.put(url,data);
+    }
 }

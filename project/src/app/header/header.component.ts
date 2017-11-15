@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../models/user.model';
 import * as fromApp from '../store/app.reducer';
 import * as fromAuth from '../auth/store/auth.reducer';
+import * as AuthActions from '../auth/store/auth.action';
 
 @Component({
   selector: 'app-header',
@@ -21,4 +22,8 @@ export class HeaderComponent implements OnInit {
     this.authState = this.store.select('auth');
   }
 
+  logOut(){
+    console.log("Logging out");
+    this.store.dispatch(new AuthActions.DoLogoutAction());
+  }
 }

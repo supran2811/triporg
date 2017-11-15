@@ -1,4 +1,4 @@
-
+import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { Route, Router } from '@angular/router';
 import * as firebase from 'firebase';
@@ -13,7 +13,9 @@ import { User } from '../../models/user.model';
 
 @Injectable()
 export class AuthEffect {
-    USER_URL = "https://triporg-1508486982436.firebaseio.com/user.json"
+    USER_URL = "https://triporg-1508486982436.firebaseio.com/user";
+  
+
     user:User;
     @Effect() register = this.$actions.ofType(AuthActions.DO_REGISTER)
                                 .map((action:AuthActions.DoRegisterAction) => {
@@ -33,7 +35,7 @@ export class AuthEffect {
                                             return fromPromise(firebase.auth().currentUser.getIdToken())
                                             .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                             .mergeMap((res) =>{
-
+                                                console.log("4");
                                                 if(res && res.type == AuthActions.SHOW_ERROR){
                                                     return [res];
                                                 }
@@ -74,22 +76,66 @@ export class AuthEffect {
                                            return fromPromise(firebase.auth().signInWithEmailAndPassword(email,password))
                                            .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                            .switchMap((error) => {
-                                            
+                                            console.log("1");
+                                            console.log(error);
                                             if(error && error.type == AuthActions.SHOW_ERROR){
+                                                console.log("2");
                                                 return Observable.of(error);
                                             }
 
                                             return fromPromise(firebase.auth().currentUser.getIdToken())
                                             .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                             .switchMap((res) => {
+
+                                                console.log("2");
+                                                console.log(res);
+
                                                 if(res && res.type == AuthActions.SHOW_ERROR){
                                                     return  Observable.of(res);
                                                 }
+                                                const token = res;
+                                                sessionStorage.setItem('token',token);
+                                                return this.http.get<User>(this.USER_URL+"/"+firebase.auth().currentUser.uid+"/",null)
+                                                        .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
+                                                        .mergeMap((res:(User|any)) => {
+                                                            console.log("3");
+                                                            console.log(res);
+                                                            if(res && res.type == AuthActions.SHOW_ERROR){
+                                                                return [res];
+                                                            }
+                                                            console.log("Fetched user info");
+                                                            console.log(res);
+                                                            const user = new User(res.email,res.fullName);
+
+                                                            this.router.navigate(['/']);
+                                                            return [
+                                                                {
+                                                                    type:AuthActions.SET_TOKEN,
+                                                                    payload:token
+                                                                },
+                                                                {
+                                                                    type:AuthActions.SET_USER,
+                                                                    payload:user
+                                                                },
+                                                                {
+                                                                    type:AuthActions.LOGIN
+                                                                }
+                                                            ]
+                                                        });
                                             })
                                         })
-                                    } )
+                                    } );
                                     
-
+    @Effect() logout = this.$actions.ofType(AuthActions.DO_LOGOUT)
+                                        .switchMap(() => firebase.auth().signOut())
+                                        .map(() => {
+                                            console.log("777");
+                                            this.router.navigate(['/']);
+                                            return {
+                                                type : AuthActions.LOGOUT
+                                            }
+                                        });
+                                
     constructor(private $actions:Actions,
                 private router:Router,
                 private http:HttpService){}

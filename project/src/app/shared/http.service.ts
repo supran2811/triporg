@@ -7,6 +7,7 @@ export class HttpService{
     constructor(private http:HttpClient){}
 
     get<T> (url:string,parameters:HttpParams){
+        console.log("Inside sending get request!!!!!");
         return this.http.get<T>(url,{
             params:parameters
         }).map( data => {

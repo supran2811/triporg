@@ -13,7 +13,7 @@ export class HttpAuthInterceptor implements HttpInterceptor{
 
 
     intercept(req:HttpRequest<any> , next:HttpHandler) : Observable<HttpEvent<any>>{
-        return this.store.select('auth').map((state:fromAuth.State) => {
+        return this.store.select('auth').take(1).map((state:fromAuth.State) => {
               console.log(state.token);
               
               return state.token;
@@ -22,7 +22,8 @@ export class HttpAuthInterceptor implements HttpInterceptor{
                   token = sessionStorage.getItem('token');
               }
               console.log("NewToken : "+token);
-              const clonedReq = req.clone({params : req.params.set('auth',token)});
+              const clonedReq = req.clone({url:req.url+".json",params : req.params.set('auth',token)});
+              
               return next.handle(clonedReq);
         })
     }

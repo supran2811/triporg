@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
 import { User } from '../../models/user.model';
@@ -13,7 +13,7 @@ import * as fromAuth from '../store/auth.reducer';
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit  , OnDestroy {
 
   error : Observable<{hasError:boolean , errorMessage:string}>;
 
@@ -23,6 +23,10 @@ export class RegisterComponent implements OnInit {
     this.error = this.store.select('auth').map((state:fromAuth.State) => {
         return {hasError:state.hasError,errorMessage:state.errorMessage}
     })
+  }
+
+  ngOnDestroy(){
+    this.store.dispatch(new AuthActions.ResetErrorMessageAction());
   }
 
   register(form:NgForm){

@@ -19,6 +19,9 @@ export class HomeComponent implements OnInit {
 
   
   observableSource:any;
+  
+  citiesSource : Observable<City[]>;
+  
 
   selectedPlace:City;
 
@@ -27,21 +30,22 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
 
+    this.citiesSource = this.store.select('cities')
+    .map((state:fromCity.State) => state.cities);
+
     this.observableSource = (keyword: any): Observable<any[]> => {
-      if (keyword) {
-        return this.store.select('cities')
-          .map((state:fromCity.State) => {
-            return state.cities;
-          })
-      } else {
-        return Observable.of([]);
+      if (keyword && keyword.length > 2) {
+        
+        this.store.dispatch(new CityActions.SearchCityList(keyword));
+
       }
+
+      return this.citiesSource;
     }
 
   }
 
   selectPlace(){
-    console.log(this.selectedPlace);
     this.router.navigate(['place',this.selectedPlace.getId()]);
   }
 
@@ -49,12 +53,5 @@ export class HomeComponent implements OnInit {
     return city.getName();
   }
 
-  onChange($event){
-      if($event.length > 1){
-        console.log("Request send");
-        this.store.dispatch(new CityActions.SearchCityList($event));
-         
-
-      }
-  }
+ 
 }

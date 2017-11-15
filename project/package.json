@@ -32,6 +32,7 @@
     "portfinder": "^1.0.13",
     "reflect-metadata": "^0.1.10",
     "rxjs": "^5.4.3",
+    "w3-css": "^4.0.4",
     "zone.js": "^0.8.18"
   },
   "devDependencies": {

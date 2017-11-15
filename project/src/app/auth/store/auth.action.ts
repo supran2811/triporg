@@ -4,12 +4,14 @@ import { User } from '../../models/user.model';
 
 export const DO_REGISTER = "DO_REGISTER";
 export const DO_LOGIN    = "DO_LOGIN";
+export const DO_LOGOUT   = "DO_LOGOUT";
 export const SET_TOKEN   = "SET_TOKEN";
 export const SET_USER    = "SET_USER";
 export const REGISTER    = "REGISTER";
 export const LOGIN       = "LOGIN";
 export const LOGOUT      = "LOGOUT";
 export const SHOW_ERROR  = "SHOW_ERROR";
+export const RESET_ERROR = "RESET_ERROR";
 
 export class DoRegisterAction implements Action {
     readonly type = DO_REGISTER;
@@ -27,6 +29,10 @@ export class DoLoginAction implements Action {
 
 export class LoginAction implements Action {
     readonly type = LOGIN;
+}
+
+export class DoLogoutAction implements Action {
+    readonly type = DO_LOGOUT;
 }
 
 export class LogoutAciton implements Action {
@@ -49,6 +55,10 @@ export class ShowErrorMessageAction implements Action {
     constructor(public payload:string){}
 }
 
+export class ResetErrorMessageAction implements Action {
+    readonly type = RESET_ERROR;
+}
+
 export type AuthActions = DoRegisterAction |
                           RegisterAction | 
                           DoLoginAction |
@@ -56,4 +66,5 @@ export type AuthActions = DoRegisterAction |
                           LogoutAciton |
                           SetTokenAction |
                           SetUserAction|
-                          ShowErrorMessageAction;
+                          ShowErrorMessageAction|
+                          ResetErrorMessageAction;

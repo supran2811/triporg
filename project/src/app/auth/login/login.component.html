@@ -2,6 +2,9 @@
 <div class="row">
    <br><br><br>
     <div class="col-md-offset-1 col-md-4">
+        <p class="error" *ngIf= "(error | async).hasError">
+            {{ (error | async).errorMessage }}
+        </p>
         <form (ngSubmit) = "login(f)" #f="ngForm">
           <div class="form-group">
                <label for="email">Enter email</label>

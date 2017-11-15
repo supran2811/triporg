@@ -7,7 +7,6 @@
             <input ngui-auto-complete 
                   class = "form-control"
                   [(ngModel)]="selectedPlace" 
-                  (ngModelChange) = "onChange($event)"
                   [source]="observableSource.bind(this)"
                   [list-formatter] = "formatList"
                   value-property-name="id"

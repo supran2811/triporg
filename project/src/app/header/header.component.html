@@ -12,7 +12,7 @@
             <li routerLinkActive = "active"><a routerLink = "/register">SignUp</a></li>
           </ul>
           <ng-template #loggedInUser>
-            <li class = "dropdown">
+            <li class = "dropdown" appDropDown>
                 <a  class  = "dropdown-toggle" role="button">{{ (authState | async).user.fullName }} <span class = "caret"></span></a>
               <ul class = "dropdown-menu">
                 <li><a (click) = "logOut()">Logout</a></li>

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Component, NgModule, OnInit } from '@angular/core';
 import {Store} from '@ngrx/store';
 
-import { GooglePlacesService } from './../shared/google.places.service';
+
 import * as fromCity from './store/city.reducer';
 import * as CityActions from './store/city.action';
 import * as fromApp from '../store/app.reducer';
@@ -25,8 +25,7 @@ export class HomeComponent implements OnInit {
 
   selectedPlace:City;
 
-  constructor(private store:Store<fromApp.AppState> , private router:Router
-     ,private googlePlace : GooglePlacesService) { }
+  constructor(private store:Store<fromApp.AppState> , private router:Router) { }
 
   ngOnInit() {
 

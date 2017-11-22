@@ -1,18 +1,26 @@
 <div class="container">
   <div class="col-xs-12">
-      <h2>Welcome to {{place.getName()}}</h2>
+      <h2>Welcome to {{(city|async).getName()}}</h2>
   </div>
   
   <div class="col-xs-8">
        <div class="col-xs-2-offset col-xs-4">
-           <button class="w3-button w3-white w3-border w3-border-blue w3-round-large">
+           <button class="w3-button w3-white w3-border w3-border-blue w3-round-large"
+                    type="button" routerLink = "new/iternary">
                     Add Interniry
             </button>
        </div>
        <div class="col-xs-4">
-        <button class="w3-button w3-white w3-border w3-border-blue w3-round-large">
+        <button class="w3-button w3-white w3-border w3-border-blue w3-round-large"
+                type="button" routerLink = "new/place">
               Add Place
         </button>
     </div>
+  </div>
+  <div class="col-xs-8">
+        <app-place-list></app-place-list>
+  </div>
+  <div class="col-xs-4">
+      <router-outlet></router-outlet>
   </div>
 </div>

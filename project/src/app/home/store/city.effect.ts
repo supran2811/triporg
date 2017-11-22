@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Effect,Actions} from '@ngrx/effects';
 
-import { GooglePlacesService } from './../../shared/google.places.service';
+import  {GooglePlacesService}  from './../../shared/google.places.service';
 import { City } from './../../models/city.model';
 import * as CityActions from './city.action';
 

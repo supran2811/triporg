@@ -8,12 +8,16 @@ export interface FeatureState extends fromApp.AppState{
 }
 
 export interface State {
-    id:string
+    id:string,
+    lat:number,
+    lng:number,
     selectedPlace : Place
 }
 
 const initialState:State = {
     id:'',
+    lat:0,
+    lng:0,
     selectedPlace : null
 }
 
@@ -30,6 +34,13 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             return {
                 ...state,
                 id:action.payload
+            }
+        }
+        case PlaceActions.SET_CITY_LOCATION:{
+            return {
+                ...state,
+                lat:action.payload.lat,
+                lng:action.payload.lng
             }
         }
     }

@@ -1,17 +1,18 @@
-<p>
-  
-  
-  
-
+<div>
   <ng-progress [positionUsing]="'marginLeft'" [minimum]="0.15" [maximum]="1"
-  [speed]="200" [showSpinner]="false" [direction]="'rightToLeftIncreased'"
-  [color]="'red'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"
-></ng-progress>
+                [speed]="200" [showSpinner]="false" [direction]="'rightToLeftIncreased'"
+                [color]="'red'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"></ng-progress>
 
 
-<sebm-google-map  *ngIf="loaded" [latitude]="lat" [longitude]="lng" id="map" #map>
-  
-</sebm-google-map >
+  <div class="form-group">
+    <input placeholder="search for location" 
+            autocorrect="off" autocapitalize="off" 
+            spellcheck="off" type="text" class="form-control" 
+            #search >
+  </div>
 
+  <agm-map id = "map" name="map" [latitude]="lat" [longitude]="lng" (boundsChange)="boundsChange($event)" #map>
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+  </agm-map>
+</div>
 
-</p>

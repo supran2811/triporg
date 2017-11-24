@@ -2,7 +2,7 @@ export class Place {
     public constructor(private placeId:string,
                         private lat:string,
                         private lon:string,
-                        public displayName:string,
+                        private displayName:string,
                         private icon:string,
                         private rating:string){}
 

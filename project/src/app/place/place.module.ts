@@ -13,6 +13,7 @@ import { AddNewInterniryComponent } from './add-new-interniry/add-new-interniry.
 import {placeReducer} from './store/place.reducer';
 import { PlacesEffect } from './store/place.effect';
 
+
 @NgModule({
     declarations:[
         PlaceComponent,

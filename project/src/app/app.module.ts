@@ -17,6 +17,7 @@ import { AppRouterModule } from './app.router.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { AgmCoreModule } from '@agm/core/core.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { HomeComponent } from './home/home.component';
     HomeComponent
   ],
   imports: [
-    
+    AgmCoreModule.forRoot({ apiKey: 'AIzaSyBlYYoEJ_1oksaGdQO2KG6FDjt4g9E8l0w', libraries: ['places'] }),
     BrowserModule,
     AppRouterModule,
     HttpClientModule,

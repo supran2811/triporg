@@ -1,7 +1,11 @@
 import { Observable , Observer} from 'rxjs';
 import { Injectable , ElementRef , NgZone} from '@angular/core';
 import {} from 'googlemaps';
-import { MapsAPILoader, LatLngBounds ,LatLngBoundsLiteral} from '@agm/core';
+import { GoogleMapsAPIWrapper, 
+            LatLngBounds, 
+            LatLngBoundsLiteral, 
+            MapsAPILoader ,
+             } from '@agm/core';
 import { Store } from '@ngrx/store';
 
 
@@ -12,12 +16,14 @@ import * as PlaceActions from '../place/store/place.action';
 
 
 
+
 @Injectable()
 export class GooglePlacesService {
 
   constructor(private googleApiLoader : MapsAPILoader,
                 private ngZone:NgZone,
-                private store:Store<fromPlaceReducer.FeatureState>){}  
+                private store:Store<fromPlaceReducer.FeatureState>,
+                 private gMap : GoogleMapsAPIWrapper){}  
 
   searchPlace(text) : Observable<City[]> {
     const observable = Observable.create(
@@ -85,7 +91,13 @@ export class GooglePlacesService {
                             return;
                         }
 
-                        this.store.dispatch(new PlaceActions.SetCityLocation({lat:place.geometry.location.lat() , lng:place.geometry.location.lng() }))
+                       // this.store.dispatch(new PlaceActions.SetCityLocation({lat:place.geometry.location.lat() , lng:place.geometry.location.lng() }))
+
+                       let selectedPlace = new Place(place.place_id,
+                                                            place.geometry.location.lat(),
+                                                        place.geometry.location.lng(),
+                                                         place.name,"","");
+                        this.store.dispatch(new PlaceActions.SetPlaceDetails(selectedPlace));
 
                     }) ;  
 
@@ -115,5 +127,7 @@ export class GooglePlacesService {
 
       return observable;
    }
+
+  
 
 }

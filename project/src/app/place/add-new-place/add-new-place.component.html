@@ -11,8 +11,25 @@
             #search >
   </div>
 
-  <agm-map id = "map" name="map" [latitude]="lat" [longitude]="lng" (boundsChange)="boundsChange($event)" #map>
-    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+  <agm-map id = "map" name="map" 
+            [latitude]="lat" 
+            [longitude]="lng" 
+            (boundsChange)="boundsChange($event)" 
+            [zoom] = "8"
+            [zoomControl]="false"
+            #map>
+
+      <agm-marker *ngIf = "showMarker" [latitude]="lat" [longitude]="lng">
+
+        <agm-snazzy-info-window [latitude]="lat" [longitude]="lng" [isOpen]="showInfoWindow"
+        [closeWhenOthersOpen]="true">
+          <ng-template>{{selectedPlace.getDisplayName()}}</ng-template>
+           
+        </agm-snazzy-info-window>
+
+      </agm-marker>
+  
+    
   </agm-map>
 </div>
 

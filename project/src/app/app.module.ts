@@ -8,6 +8,8 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
 import {NguiAutoCompleteModule} from '@ngui/auto-complete'
+import { AgmCoreModule } from '@agm/core/core.module';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window'
 
 
 import { SharedModule } from './shared/shared.module';
@@ -17,7 +19,6 @@ import { AppRouterModule } from './app.router.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
-import { AgmCoreModule } from '@agm/core/core.module';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AgmCoreModule } from '@agm/core/core.module';
   ],
   imports: [
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyBlYYoEJ_1oksaGdQO2KG6FDjt4g9E8l0w', libraries: ['places'] }),
+    AgmSnazzyInfoWindowModule,
     BrowserModule,
     AppRouterModule,
     HttpClientModule,

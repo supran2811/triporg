@@ -28,8 +28,10 @@ export class AddNewPlaceComponent implements OnInit  {
   
   lat: number;
   lng: number;
-
+  selectedPlace : Place;
   loaded = false;
+  showMarker = false;
+  showInfoWindow = false;
 
   constructor(public ngProgress:NgProgress, 
                 private store:Store<fromPlaceReducer.FeatureState>
@@ -43,15 +45,20 @@ export class AddNewPlaceComponent implements OnInit  {
     
     this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
 
-        console.log(state);
-        if(state.lat != 0){
+        if(state.selectedPlace != null ){
+          this.lat = state.selectedPlace.getLat();
+          this.lng = state.selectedPlace.getLng();;
+          this.selectedPlace = state.selectedPlace;
+          this.showMarker = true;
+          this.showInfoWindow = true;
+        }
+        else if(state.lat != 0){
           this.loaded = true;
           this.lat = state.lat;
           this.lng = state.lng;
           this.ngProgress.done();
         }
         else{
-          console.log("Coming here "+state.id);   
           this.ngProgress.start();   
           this.store.dispatch(new PlaceActions.GetCityLocation(state.id));
           this.loaded = false;
@@ -66,7 +73,7 @@ export class AddNewPlaceComponent implements OnInit  {
 
 
   boundsChange(event){
-    console.log("Bound change");
+    
     console.log(event);
 
     console.log(event.getNorthEast().lat());
@@ -79,4 +86,6 @@ export class AddNewPlaceComponent implements OnInit  {
     this.store.dispatch(new PlaceActions.AddPlaceChangeListener({input:this.searchElementRef,boundary:latLngBounds}));
 
   }
+
+
 }

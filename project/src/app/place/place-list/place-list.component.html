@@ -1,3 +1,6 @@
-<p>
-  place-list works!
-</p>
+<div>
+  <app-place-item *ngFor = "let place of (savedplaces|async); let i = index"
+                    [place] = "place">
+      
+</app-place-item>
+  </div>

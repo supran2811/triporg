@@ -1,16 +1,14 @@
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit ,ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { NgProgress } from 'ngx-progressbar'
-import { ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { Place } from '../../models/place.model';
 import * as PlaceActions from '../store/place.action';
 import * as fromPlaceReducer from '../store/place.reducer';
-import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import { FormControl } from '@angular/forms';
-
+import * as fromAuth from '../../auth/store/auth.reducer';
 
 @Component({
   selector: 'app-add-new-place',
@@ -21,10 +19,11 @@ export class AddNewPlaceComponent implements OnInit  {
 
   searchControl:FormControl;
 
+
   @ViewChild('search')
       searchElementRef:ElementRef;
 
-
+  authorised:boolean;
   
   lat: number;
   lng: number;
@@ -32,6 +31,9 @@ export class AddNewPlaceComponent implements OnInit  {
   loaded = false;
   showMarker = false;
   showInfoWindow = false;
+  zoom:number = 10;
+  isNew:boolean = false;
+  placeName:string = "";
 
   constructor(public ngProgress:NgProgress, 
                 private store:Store<fromPlaceReducer.FeatureState>
@@ -47,27 +49,46 @@ export class AddNewPlaceComponent implements OnInit  {
 
         if(state.selectedPlace != null ){
           this.lat = state.selectedPlace.getLat();
-          this.lng = state.selectedPlace.getLng();;
+          this.lng = state.selectedPlace.getLng();
           this.selectedPlace = state.selectedPlace;
           this.showMarker = true;
           this.showInfoWindow = true;
+          this.placeName  = "";
+          
+          let index = state.savedPlaces.findIndex( (place:Place) => {
+            return place.getPlaceId() == state.selectedPlace.getPlaceId();
+          } );
+
+          this.isNew = index == -1;
+
+          console.log("Selected item index "+ index);
+
         }
-        else if(state.lat != 0){
+        else if(state.city != null && state.city.getLat() != 0){
           this.loaded = true;
-          this.lat = state.lat;
-          this.lng = state.lng;
+          this.lat = state.city.getLat();
+          this.lng = state.city.getLng();
+          this.showMarker = false;
+          this.showInfoWindow = false;
+          this.placeName  = "";
           this.ngProgress.done();
         }
-        else{
+        else if(state.city != null){
           this.ngProgress.start();   
-          this.store.dispatch(new PlaceActions.GetCityLocation(state.id));
+          this.store.dispatch(new PlaceActions.GetCityLocation(state.city.getId()));
           this.loaded = false;
         }
 
         
 
 
-    })
+    });
+
+    this.store.select('auth').map((state:fromAuth.State) =>{
+      return state.authorised;
+    }).subscribe( (authorised:boolean) => {
+      this.authorised = authorised;
+    } );
 
   }
 
@@ -87,5 +108,31 @@ export class AddNewPlaceComponent implements OnInit  {
 
   }
 
+
+  onSave(){
+    console.log("Inside onSave!!!");
+    this.store.dispatch(new PlaceActions.SaveSelectedPlace())
+  }
+
+  onRemove(){
+    console.log("Inside onRemove!!!");
+    this.store.dispatch(new PlaceActions.RemoveSelectedPlace());
+  }
+
+  showErrorDialog(){
+    alert("Please resgister or login!!!");
+  }
+
+  doAction(){
+    if(!this.authorised){
+      this.showErrorDialog();
+    }
+    else if(this.isNew === true){
+      this.onSave();
+    }
+    else{
+      this.onRemove();
+    }
+  }
 
 }

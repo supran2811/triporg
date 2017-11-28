@@ -77,21 +77,17 @@ export class GooglePlacesService {
   addPlaceChangeListener(searchEleRef:ElementRef, boundary:google.maps.LatLngBounds ) {
       this.googleApiLoader.load().then(() => {
                 
-                let autocomplete = new google.maps.places.Autocomplete(searchEleRef.nativeElement,{types:['address'],strictBounds:true,bounds:boundary});
+                let autocomplete = new google.maps.places.Autocomplete(searchEleRef.nativeElement,
+                                            {strictBounds:true,bounds:boundary});
                 
                 autocomplete.addListener('place_changed',() => {
 
                     this.ngZone.run(() => {
                         let place = autocomplete.getPlace();
-                        console.log(place);
-
-
-
+                      
                         if(place.geometry === null || place.geometry == undefined ){
                             return;
                         }
-
-                       // this.store.dispatch(new PlaceActions.SetCityLocation({lat:place.geometry.location.lat() , lng:place.geometry.location.lng() }))
 
                        let selectedPlace = new Place(place.place_id,
                                                             place.geometry.location.lat(),
@@ -107,17 +103,24 @@ export class GooglePlacesService {
       })
   }
 
-  getGeoCode(placeid:string):Observable<{lat:number ,lng:number}>{
-      const  observable = Observable.create((observer:Observer<{lat:number ,lng:number}>) =>{
+  getGeoCode(placeid:string):Observable<City>{
+      const  observable = Observable.create((observer:Observer<City>) =>{
             this.googleApiLoader.load().then(() => {
                     
                 let geoCoder = new google.maps.Geocoder;
+                console.log("Place id === ",placeid);
+
                 geoCoder.geocode({'placeId': placeid} ,(results:google.maps.GeocoderResult[] , status) => {
                             console.log(results,status);
-
-                            console.log(results[0].geometry.location.toJSON());
-                            const location = results[0].geometry.location.toJSON();
-                            observer.next({lat:location.lat , lng:location.lng})
+                            
+                            if(results != null && results[0].geometry != null){
+                                const city = new City(placeid,results[0].address_components[0].short_name , results[0].geometry.location.lat(),
+                                            results[0].geometry.location.lng());
+                                observer.next(city);
+                            }
+                            else{
+                                observer.error(results); 
+                            }
                             
                 });
             }).catch(error => {

@@ -7,7 +7,9 @@
   <div class="form-group">
     <input placeholder="search for location" 
             autocorrect="off" autocapitalize="off" 
-            spellcheck="off" type="text" class="form-control" 
+            spellcheck="off" type="text" 
+            class="form-control"
+            [(ngModel)]="placeName" 
             #search >
   </div>
 
@@ -15,7 +17,7 @@
             [latitude]="lat" 
             [longitude]="lng" 
             (boundsChange)="boundsChange($event)" 
-            [zoom] = "8"
+            [zoom] = "zoom"
             [zoomControl]="false"
             #map>
 
@@ -23,7 +25,14 @@
 
         <agm-snazzy-info-window [latitude]="lat" [longitude]="lng" [isOpen]="showInfoWindow"
         [closeWhenOthersOpen]="true">
-          <ng-template>{{selectedPlace.getDisplayName()}}</ng-template>
+          <ng-template>
+              {{selectedPlace.getDisplayName()}}
+              <div class="infowindow">
+                 <button (click) = "doAction()"> 
+                      {{ isNew == true ?"Save":"Remove" }} 
+                 </button>
+              </div>
+            </ng-template>
            
         </agm-snazzy-info-window>
 

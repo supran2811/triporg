@@ -3,14 +3,19 @@ import { ElementRef } from '@angular/core';
 
 
 import { Place } from '../../models/place.model';
+import { City } from '../../models/city.model';
 
 export const GET_PLACE_DETAILS  = "GET_PLACE_DETAILS";
 export const SET_PLACE_DETAILS  = "SET_PLACE_DETAILS";
-export const SET_PLACE_ID       = "SET_PLACE_ID";
-export const SET_CITY_LOCATION  = "SET_CITY_LOCATION";
+export const SET_CITY           = "SET_CITY";
+export const SET_CITY_LOCATION  = "SET_CITY_LOCATION"
 export const GET_CITY_LOCATION  = "GET_CITY_LOCATION";
+export const SAVE_SELECTED_PLACE = "SAVE_SELECTED_PLACE";
 export const ADD_PLACE_CHANGE_LISTENER  = "ADD_PLACE_CHANGE_LISTENER";
-
+export const RESET_SELECTED_PLACE = "RESET_SELECTED_PLACE";
+export const REMOVE_SELECTED_PLACE = "REMOVE_SELECTED_PLACE";
+export const SAVE_SELECTED_PLACE_TO_SERVER = "SAVE_SELECTED_PLACE_TO_SERVER";
+export const RESET_STATE = "RESET_STATE";
 
 
 
@@ -19,9 +24,9 @@ export class GetPlaceDetails {
     public constructor(public payload:{id:string,map:HTMLDivElement}){}
 }
 
-export class SetPlaceId{
-    readonly type = SET_PLACE_ID;
-    public constructor(public payload:string){}
+export class SetCity{
+    readonly type = SET_CITY;
+    public constructor(public payload:City){}
 }
 
 export class SetPlaceDetails {
@@ -35,7 +40,7 @@ export class GetCityLocation {
 }
 
 export class SetCityLocation {
-    readonly type = SET_CITY_LOCATION;
+    readonly type  = SET_CITY_LOCATION;
     public constructor(public payload:{lat:number,lng:number}){}
 }
 
@@ -44,4 +49,32 @@ export class AddPlaceChangeListener {
     public constructor(public payload:{input:ElementRef,boundary:google.maps.LatLngBounds}){}
 }
 
-export type PlaceActions = GetPlaceDetails|SetPlaceDetails|SetPlaceId|SetCityLocation|AddPlaceChangeListener;
+export class SaveSelectedPlace {
+    readonly type = SAVE_SELECTED_PLACE;
+}
+
+export class RemoveSelectedPlace {
+    readonly type = REMOVE_SELECTED_PLACE;
+}
+export class ResetSelectedPlace {
+    readonly type = RESET_SELECTED_PLACE;
+}
+
+export class ResetState {
+    readonly type = RESET_STATE;
+}
+
+export class SaveSelectedPlaceToServer {
+    readonly type = SAVE_SELECTED_PLACE_TO_SERVER;
+}
+
+export type PlaceActions = GetPlaceDetails|
+                            SetPlaceDetails|
+                            SetCity|
+                            AddPlaceChangeListener|
+                            SaveSelectedPlace|
+                            RemoveSelectedPlace|
+                            ResetSelectedPlace|
+                            SaveSelectedPlaceToServer|
+                            SetCityLocation|
+                            ResetState;

@@ -2,23 +2,22 @@
 import { Place } from '../../models/place.model';
 import * as PlaceActions from './place.action';
 import * as fromApp from '../../store/app.reducer';
+import { City } from '../../models/city.model';
 
 export interface FeatureState extends fromApp.AppState{
     place:State
 }
 
 export interface State {
-    id:string,
-    lat:number,
-    lng:number,
-    selectedPlace : Place
+    city:City,
+    selectedPlace : Place,
+    savedPlaces:Place[]
 }
 
 const initialState:State = {
-    id:'',
-    lat:0,
-    lng:0,
-    selectedPlace : null
+    city:null,
+    selectedPlace : null,
+    savedPlaces:[]
 }
 
 export function placeReducer(state=initialState,action:PlaceActions.PlaceActions){
@@ -30,17 +29,55 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
                 selectedPlace : action.payload
             }
         }
-        case PlaceActions.SET_PLACE_ID:{
+        case PlaceActions.SET_CITY:{
+            console.log("Coming here setting city");
             return {
                 ...state,
-                id:action.payload
+                city:action.payload
             }
         }
         case PlaceActions.SET_CITY_LOCATION:{
+
+            const city = state.city;
+
+            let newCity = new City(city.getId(),city.getName(),action.payload.lat , action.payload.lng);
+
             return {
                 ...state,
-                lat:action.payload.lat,
-                lng:action.payload.lng
+                city:newCity
+            }
+        }
+        case PlaceActions.SAVE_SELECTED_PLACE:{
+            let savedPlaces = [ ...state.savedPlaces];
+            savedPlaces.push(state.selectedPlace);
+            return {
+                ...state,
+                savedPlaces:savedPlaces
+            }
+        }
+        case PlaceActions.REMOVE_SELECTED_PLACE:{
+            let savedPlaces = [ ...state.savedPlaces];
+
+            let index = savedPlaces.findIndex((place) => {
+                return state.selectedPlace.getPlaceId() == place.getPlaceId();
+            } )
+
+            savedPlaces.splice(index,1);
+
+            return {
+                ...state,
+                savedPlaces:savedPlaces
+            }
+        }
+        case PlaceActions.RESET_SELECTED_PLACE:{
+            return {
+                ...state,
+                selectedPlace:null
+            }
+        }
+        case PlaceActions.RESET_STATE:{
+            return {
+                ...this.initialState
             }
         }
     }

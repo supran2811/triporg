@@ -12,6 +12,7 @@ import { NothingSelectedComponent } from './nothing-selected/nothing-selected.co
 import { AddNewInterniryComponent } from './add-new-interniry/add-new-interniry.component';
 import {placeReducer} from './store/place.reducer';
 import { PlacesEffect } from './store/place.effect';
+import { PlaceItemComponent } from './place-list/place-item/place-item.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { PlacesEffect } from './store/place.effect';
         PlaceListComponent,
         PlaceDetailsComponent,
         NothingSelectedComponent,
-        AddNewInterniryComponent
+        AddNewInterniryComponent,
+        PlaceItemComponent
     ],
     imports:[
       SharedModule,

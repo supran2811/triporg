@@ -45,6 +45,7 @@ export class HomeComponent implements OnInit {
   }
 
   selectPlace(){
+    
     this.router.navigate(['place',this.selectedPlace.getId()]);
   }
 

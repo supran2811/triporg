@@ -1,6 +1,12 @@
 <div class="container">
+    <ng-progress [positionUsing]="'marginLeft'" [minimum]="0.15" [maximum]="1"
+    [speed]="200" [showSpinner]="false" [direction]="'rightToLeftIncreased'"
+    [color]="'red'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"></ng-progress>
+
+  <div *ngIf="!isLoading">
+  
   <div class="col-xs-12">
-      <h2>Welcome to {{(city|async).getName()}}</h2>
+      <h2>{{( city | async).getName()}}</h2>
   </div>
   
   <div class="col-xs-8">
@@ -12,7 +18,7 @@
        </div>
        <div class="col-xs-4">
         <button class="w3-button w3-white w3-border w3-border-blue w3-round-large"
-                type="button" routerLink = "new/place">
+                type="button" (click) = "addNewPlace()">
               Add Place
         </button>
     </div>
@@ -23,4 +29,5 @@
   <div class="col-xs-6">
       <router-outlet></router-outlet>
   </div>
+</div>  
 </div>

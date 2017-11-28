@@ -1,39 +1,60 @@
-import { SetPlaceId } from './store/place.action';
+
 import { Observable } from 'rxjs';
 import {Store} from '@ngrx/store';
-import { ActivatedRoute, Params } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router} from '@angular/router';
+import { Component, OnInit ,OnDestroy } from '@angular/core';
+import { NgProgress } from 'ngx-progressbar';
 
 import { City } from '../models/city.model';
-import * as fromApp from '../store/app.reducer';
-import * as fromCity from '../home/store/city.reducer';
+import * as fromPlaceReducer from './store/place.reducer'
 import * as PlaceActions from './store/place.action';
+
 
 @Component({
   selector: 'app-place',
   templateUrl: './place.component.html',
   styleUrls: ['./place.component.css']
 })
-export class PlaceComponent implements OnInit {
+export class PlaceComponent implements OnInit , OnDestroy {
 
   city:Observable<City>;
+  isLoading = false;
 
   constructor(private activeRoute:ActivatedRoute,
-                  private store:Store<fromApp.AppState>) { }
+                  private store:Store<fromPlaceReducer.FeatureState>,
+                private router:Router,
+              private ngProgress:NgProgress) { }
 
   ngOnInit() {
-    
+    this.isLoading = true;
+    this.ngProgress.start();
     this.activeRoute.params.subscribe( (params:Params) => {
-          let  id = params['id'];
-          console.log(id);
-          this.city = this.store.select('cities').map((data:fromCity.State) => {
-             return data.cities.find( (city:City) => {
-                return city.getId() === id;
-            });
-          });
+      let  id = params['id'];
+      console.log(id);
+      this.store.dispatch(new PlaceActions.GetCityLocation(id));
+    } );
 
-          this.store.dispatch(new SetPlaceId(id));
-    } )
+
+
+    this.city = this.store.select('place').map((state:fromPlaceReducer.State) => {
+           return state.city;
+    });
+    this.city.subscribe((city:City) => {
+          console.log("Coming inside city observable",city);
+          if(city != null){
+            this.ngProgress.done();
+            this.isLoading = false;
+          }
+    })
+    
   }
 
+  addNewPlace() {
+    this.store.dispatch(new PlaceActions.ResetSelectedPlace());
+    this.router.navigate(['new','place'],{relativeTo:this.activeRoute});
+  }
+
+  ngOnDestroy(){
+    this.store.dispatch(new PlaceActions.ResetState());
+  }
 }

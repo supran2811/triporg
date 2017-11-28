@@ -42,8 +42,8 @@ export class AuthEffect {
                                                 const token = res;
                                                 sessionStorage.setItem('token',token);
                                                                         
-                                                this.http.put(this.USER_URL, {
-                                                    [firebase.auth().currentUser.uid] : this.user
+                                                this.http.put(this.USER_URL+"/"+firebase.auth().currentUser.uid, {
+                                                    ...this.user
                                                 }).subscribe(
                                                         response => {console.log(response);},
                                                         error => {console.log(error);}

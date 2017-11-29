@@ -35,7 +35,6 @@ export class AuthEffect {
                                             return fromPromise(firebase.auth().currentUser.getIdToken())
                                             .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                             .mergeMap((res) =>{
-                                                console.log("4");
                                                 if(res && res.type == AuthActions.SHOW_ERROR){
                                                     return [res];
                                                 }
@@ -76,19 +75,13 @@ export class AuthEffect {
                                            return fromPromise(firebase.auth().signInWithEmailAndPassword(email,password))
                                            .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                            .switchMap((error) => {
-                                            console.log("1");
-                                            console.log(error);
                                             if(error && error.type == AuthActions.SHOW_ERROR){
-                                                console.log("2");
                                                 return Observable.of(error);
                                             }
 
                                             return fromPromise(firebase.auth().currentUser.getIdToken())
                                             .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                             .switchMap((res) => {
-
-                                                console.log("2");
-                                                console.log(res);
 
                                                 if(res && res.type == AuthActions.SHOW_ERROR){
                                                     return  Observable.of(res);
@@ -98,13 +91,9 @@ export class AuthEffect {
                                                 return this.http.get<User>(this.USER_URL+"/"+firebase.auth().currentUser.uid+"/",null)
                                                         .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                                         .mergeMap((res:(User|any)) => {
-                                                            console.log("3");
-                                                            console.log(res);
                                                             if(res && res.type == AuthActions.SHOW_ERROR){
                                                                 return [res];
                                                             }
-                                                            console.log("Fetched user info");
-                                                            console.log(res);
                                                             const user = new User(res.email,res.fullName);
 
                                                             this.router.navigate(['/']);

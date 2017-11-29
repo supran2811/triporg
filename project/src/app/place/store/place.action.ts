@@ -15,6 +15,9 @@ export const ADD_PLACE_CHANGE_LISTENER  = "ADD_PLACE_CHANGE_LISTENER";
 export const RESET_SELECTED_PLACE = "RESET_SELECTED_PLACE";
 export const REMOVE_SELECTED_PLACE = "REMOVE_SELECTED_PLACE";
 export const SAVE_SELECTED_PLACE_TO_SERVER = "SAVE_SELECTED_PLACE_TO_SERVER";
+export const REMOVE_SELECTED_PLACE_FROM_SERVER = "REMOVE_SELECTED_PLACE_FROM_SERVER";
+export const GET_SAVED_PLACES_FROM_SERVER_BY_CITY = "GET_SAVED_PLACES_FROM_SERVER_BY_CITY";
+export const ADD_SAVED_PLACED_TO_STATE = "ADD_SAVED_PLACED_TO_STATE";
 export const RESET_STATE = "RESET_STATE";
 
 
@@ -68,6 +71,19 @@ export class SaveSelectedPlaceToServer {
     readonly type = SAVE_SELECTED_PLACE_TO_SERVER;
 }
 
+export class RemoveSelectedPlaceFromServer {
+    readonly type = REMOVE_SELECTED_PLACE_FROM_SERVER;
+}
+
+export class GetSavedPlacesFrmServerByCity {
+    readonly type = GET_SAVED_PLACES_FROM_SERVER_BY_CITY;
+}
+
+export class AddSavedPlacedToState{
+    readonly type = ADD_SAVED_PLACED_TO_STATE;
+    public constructor(public payload:Place[]){}
+}
+
 export type PlaceActions = GetPlaceDetails|
                             SetPlaceDetails|
                             SetCity|
@@ -77,4 +93,7 @@ export type PlaceActions = GetPlaceDetails|
                             ResetSelectedPlace|
                             SaveSelectedPlaceToServer|
                             SetCityLocation|
-                            ResetState;
+                            ResetState|
+                            RemoveSelectedPlaceFromServer|
+                            GetSavedPlacesFrmServerByCity|
+                            AddSavedPlacedToState;

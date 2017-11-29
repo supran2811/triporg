@@ -8,7 +8,7 @@ export interface FeatureState extends fromApp.AppState{
     place:State
 }
 
-export interface State {
+export interface State{
     city:City,
     selectedPlace : Place,
     savedPlaces:Place[]
@@ -75,9 +75,17 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
                 selectedPlace:null
             }
         }
+        case PlaceActions.ADD_SAVED_PLACED_TO_STATE:{
+            return {
+                ...state,
+                savedPlaces:action.payload
+            }
+        }
         case PlaceActions.RESET_STATE:{
             return {
-                ...this.initialState
+                city:null,
+                selectedPlace : null,
+                savedPlaces:[]
             }
         }
     }

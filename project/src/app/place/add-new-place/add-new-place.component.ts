@@ -111,12 +111,12 @@ export class AddNewPlaceComponent implements OnInit  {
 
   onSave(){
     console.log("Inside onSave!!!");
-    this.store.dispatch(new PlaceActions.SaveSelectedPlace())
+    this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
   }
 
   onRemove(){
     console.log("Inside onRemove!!!");
-    this.store.dispatch(new PlaceActions.RemoveSelectedPlace());
+    this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());
   }
 
   showErrorDialog(){

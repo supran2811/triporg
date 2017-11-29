@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 
 import { Place } from '../../models/place.model';
+import * as PlaceActions from '../store/place.action';
 import * as fromPlaceReducer from '../store/place.reducer';
 
 @Component({
@@ -17,6 +18,8 @@ export class PlaceListComponent implements OnInit {
   constructor(private store:Store<fromPlaceReducer.FeatureState>) { }
 
   ngOnInit() {
+
+    this.store.dispatch(new PlaceActions.GetSavedPlacesFrmServerByCity());
 
     this.savedplaces = this.store.select('place').map((state:fromPlaceReducer.State) => {
          return state.savedPlaces;

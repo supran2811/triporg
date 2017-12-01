@@ -1,6 +1,6 @@
 import * as AuthActions from './auth.action';
 import { User } from '../../models/user.model';
-
+import * as firebase from 'firebase';
 
 export interface State{
     user:User,
@@ -36,8 +36,8 @@ export function AuthReducer(state=initialState , action:AuthActions.AuthActions)
         case AuthActions.SET_USER :{
             console.log("Inside Set User");
             console.log(action.payload);
-            sessionStorage.setItem('fullname',action.payload.getFullName());
-            sessionStorage.setItem('email',action.payload.getEmail());
+            sessionStorage.setItem('fullname',action.payload.fullName);
+            sessionStorage.setItem('email',action.payload.email);
             console.log(sessionStorage);
             return {
                 ...state,

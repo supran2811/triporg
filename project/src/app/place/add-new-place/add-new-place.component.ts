@@ -48,15 +48,15 @@ export class AddNewPlaceComponent implements OnInit  {
     this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
 
         if(state.selectedPlace != null ){
-          this.lat = state.selectedPlace.getLat();
-          this.lng = state.selectedPlace.getLng();
+          this.lat = state.selectedPlace.lat;
+          this.lng = state.selectedPlace.lng;
           this.selectedPlace = state.selectedPlace;
           this.showMarker = true;
           this.showInfoWindow = true;
           this.placeName  = "";
           
           let index = state.savedPlaces.findIndex( (place:Place) => {
-            return place.getPlaceId() == state.selectedPlace.getPlaceId();
+            return place.placeId == state.selectedPlace.placeId;
           } );
 
           this.isNew = index == -1;
@@ -64,10 +64,10 @@ export class AddNewPlaceComponent implements OnInit  {
           console.log("Selected item index "+ index);
 
         }
-        else if(state.city != null && state.city.getLat() != 0){
+        else if(state.city != null && state.city.lat != 0){
           this.loaded = true;
-          this.lat = state.city.getLat();
-          this.lng = state.city.getLng();
+          this.lat = state.city.lat;
+          this.lng = state.city.lng;
           this.showMarker = false;
           this.showInfoWindow = false;
           this.placeName  = "";
@@ -75,7 +75,7 @@ export class AddNewPlaceComponent implements OnInit  {
         }
         else if(state.city != null){
           this.ngProgress.start();   
-          this.store.dispatch(new PlaceActions.GetCityLocation(state.city.getId()));
+          this.store.dispatch(new PlaceActions.GetCityLocation(state.city.id));
           this.loaded = false;
         }
 

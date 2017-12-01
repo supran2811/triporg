@@ -19,12 +19,16 @@ import { AppRouterModule } from './app.router.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { PinnedViewComponent } from './home/pinned-view/pinned-view.component';
+import { PinnedViewItemComponent } from './home/pinned-view/pinned-view-item/pinned-view-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    HomeComponent
+    HomeComponent,
+    PinnedViewComponent,
+    PinnedViewItemComponent
   ],
   imports: [
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyBlYYoEJ_1oksaGdQO2KG6FDjt4g9E8l0w', libraries: ['places'] }),

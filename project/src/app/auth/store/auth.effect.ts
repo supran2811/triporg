@@ -21,7 +21,7 @@ export class AuthEffect {
                                 .map((action:AuthActions.DoRegisterAction) => {
                                        return action.payload; 
                                 } ).switchMap((payload : {user:User , password:string}) =>{
-                                    let email = payload.user.getEmail();
+                                    let email = payload.user.email;
                                     let password = payload.password;
                                     this.user = payload.user;
                                     return fromPromise(firebase.auth().createUserWithEmailAndPassword(email,password))
@@ -41,9 +41,7 @@ export class AuthEffect {
                                                 const token = res;
                                                 sessionStorage.setItem('token',token);
                                                                         
-                                                this.http.put(this.USER_URL+"/"+firebase.auth().currentUser.uid, {
-                                                    ...this.user
-                                                }).subscribe(
+                                                this.http.put(this.USER_URL+"/"+firebase.auth().currentUser.uid, this.user).subscribe(
                                                         response => {console.log(response);},
                                                         error => {console.log(error);}
                                                 );

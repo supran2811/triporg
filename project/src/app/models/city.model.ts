@@ -1,13 +1,8 @@
 export class City{
-    constructor(private id:string 
-                    ,private name:string,
-                    private lat:number = 0,
-                    private lng:number = 0 ,
+    constructor(public id:string 
+                    ,public name:string,
+                    public lat:number = 0,
+                    public lng:number = 0 ,
                     ){}
-
-    getId = () => this.id;
-    getName = () => this.name;
-    getLat = () => this.lat;
-    getLng = () => this.lng;
 
 }

@@ -46,11 +46,11 @@ export class HomeComponent implements OnInit {
 
   selectPlace(){
     
-    this.router.navigate(['place',this.selectedPlace.getId()]);
+    this.router.navigate(['place',this.selectedPlace.id]);
   }
 
   formatList(city:City) : string {
-    return city.getName();
+    return city.name;
   }
 
  

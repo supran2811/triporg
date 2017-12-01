@@ -1,0 +1,1 @@
+export const GET_PINNED_CITIES = "GET_PINNED_CITIES";

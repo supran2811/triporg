@@ -60,10 +60,27 @@ export class PlacesEffect {
             savePlaceToServer = this.actions$.ofType(PlaceActions.SAVE_SELECTED_PLACE_TO_SERVER)
                                                     .switchMap(() => this.store.select('place').take(1))
                                                         .switchMap((state:fromPlaceReducer.State) =>{
+                                                          
+                                                          const savedPlaces = state.savedPlaces;
                                                           const selectedPlace = state.selectedPlace;
                                                           const city = state.city;
-                                                          const url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.getId()+"/"+selectedPlace.getPlaceId();  
-                                                          return this.http.put(url, selectedPlace);
+                                                          let url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.id;  
+
+                                                          if(savedPlaces.length == 0){
+                                                            return this.http.put(url,city)
+                                                                    .catch((err) => Observable.of({type:"error",message:err}))
+                                                                    .switchMap(() => {
+                                                                        url = url+"/places/"+selectedPlace.placeId;
+                                                                        return this.http.put(url, selectedPlace)
+                                                                                    .catch((err) => Observable.of({type:"error",message:err}));
+                                                                    });
+                                                          }
+                                                          else{
+                                                            url = url+"/places/"+selectedPlace.placeId;
+                                                            return this.http.put(url, selectedPlace)
+                                                                        .catch((err) => Observable.of({type:"error",message:err}));
+                                                          }
+                                                          
                                                     }).map((response) => {
                                                         console.log(response);
 
@@ -77,9 +94,15 @@ export class PlacesEffect {
                                                     .switchMap((state:fromPlaceReducer.State) => {
                                                         const selectedPlace = state.selectedPlace;
                                                         const city = state.city;
-                                                        const url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.getId()+"/"+selectedPlace.getPlaceId();         
-                                                        return this.http.remove(url);
-                                                    }).map(response => {
+                                                        const savedPlaces  = state.savedPlaces;
+                                                        let url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.id;         
+                                                        if(savedPlaces.length > 1){
+                                                            url = url +"/places/"+selectedPlace.placeId;
+                                                        }
+                                                        return this.http.remove(url).catch((err) => Observable.of({type:"error" , message:err }));
+                                                                    
+                                                    }).map(res => {
+                                                        
                                                         return {
                                                             type:PlaceActions.REMOVE_SELECTED_PLACE
                                                         }
@@ -87,13 +110,15 @@ export class PlacesEffect {
 
     @Effect()
         getSavedPlaceFrmServerByCity = this.actions$.ofType(PlaceActions.GET_SAVED_PLACES_FROM_SERVER_BY_CITY)
-                                                    .switchMap(() => this.store.select('auth'))
+                                                    .switchMap(() => this.store.select('auth').take(1))
                                                      .map((state:fromAuthReducer.State) =>{
+                                                        console.log("1111",state);
                                                             return state.authorised;
                                                      })
                                                      .switchMap((authorised:boolean) => {
+                                                         console.log("2222");
                                                          if(authorised){
-                                                             return this.store.select('place');
+                                                             return this.store.select('place').take(1);
                                                          }
                                                          else{
                                                             return Observable.of({type:"error",message:"Not authorised"});
@@ -108,7 +133,7 @@ export class PlacesEffect {
                                                         const state:fromPlaceReducer.State = <fromPlaceReducer.State>res;
                                                         
                                                         const city = state.city;
-                                                        const url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.getId();         
+                                                        const url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.id+"/places/";         
                                                         return this.http.get<any>(url,null)
                                                                     .catch((err) => {
                                                                         return Observable.of({type:"error",message:err});
@@ -117,14 +142,14 @@ export class PlacesEffect {
                                                      })
                                                      .map((res:any) => {
                                                             console.log(res);
-                                                            let savedPlaces = [];
+                                                            let savedPlaces:Place[] = [];
                                                             
                                                             if(res && !res.type){
                                                                  savedPlaces = Object.values(res).map( (place:Place) =>{
                                                                     return place;
                                                                 } )
                                                             }
-                                                            
+                                                            console.log(savedPlaces);
                                                             return {
                                                                 type:PlaceActions.ADD_SAVED_PLACED_TO_STATE,
                                                                 payload:savedPlaces

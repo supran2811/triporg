@@ -18,6 +18,7 @@ const initialState:State = {
     city:null,
     selectedPlace : null,
     savedPlaces:[]
+
 }
 
 export function placeReducer(state=initialState,action:PlaceActions.PlaceActions){
@@ -40,7 +41,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
 
             const city = state.city;
 
-            let newCity = new City(city.getId(),city.getName(),action.payload.lat , action.payload.lng);
+            let newCity = new City(city.id,city.name,action.payload.lat , action.payload.lng);
 
             return {
                 ...state,
@@ -59,7 +60,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             let savedPlaces = [ ...state.savedPlaces];
 
             let index = savedPlaces.findIndex((place) => {
-                return state.selectedPlace.getPlaceId() == place.getPlaceId();
+                return state.selectedPlace.placeId == place.placeId;
             } )
 
             savedPlaces.splice(index,1);
@@ -76,6 +77,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.ADD_SAVED_PLACED_TO_STATE:{
+            console.log("ADD_SAVED_PLACED_TO_STATE" , action.payload);
             return {
                 ...state,
                 savedPlaces:action.payload

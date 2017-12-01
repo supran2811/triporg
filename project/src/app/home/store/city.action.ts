@@ -1,6 +1,6 @@
-import { City } from './../../models/city.model';
-
 import {Action} from '@ngrx/store';
+
+import { City } from './../../models/city.model';
 
 export const SEARCH_CITIES = "SEARCH_CITIES";
 export const SET_RESULT    = "SET_RESULT";

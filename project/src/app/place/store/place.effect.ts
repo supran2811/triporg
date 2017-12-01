@@ -1,3 +1,4 @@
+import { withLatestFrom } from 'rxjs/operator/withLatestFrom';
 
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
@@ -58,8 +59,8 @@ export class PlacesEffect {
                                             
     @Effect()
             savePlaceToServer = this.actions$.ofType(PlaceActions.SAVE_SELECTED_PLACE_TO_SERVER)
-                                                    .switchMap(() => this.store.select('place').take(1))
-                                                        .switchMap((state:fromPlaceReducer.State) =>{
+                                                    .withLatestFrom(this.store.select('place'))
+                                                        .switchMap(([action,state]) =>{
                                                           
                                                           const savedPlaces = state.savedPlaces;
                                                           const selectedPlace = state.selectedPlace;
@@ -90,8 +91,8 @@ export class PlacesEffect {
                                                     }); 
     @Effect()                                                                             
           removePlaceFromServer = this.actions$.ofType(PlaceActions.REMOVE_SELECTED_PLACE_FROM_SERVER)
-                                            .switchMap(() => this.store.select('place').take(1))
-                                                    .switchMap((state:fromPlaceReducer.State) => {
+                                            .withLatestFrom(this.store.select('place'))
+                                                    .switchMap(([action,state]) => {
                                                         const selectedPlace = state.selectedPlace;
                                                         const city = state.city;
                                                         const savedPlaces  = state.savedPlaces;
@@ -110,33 +111,23 @@ export class PlacesEffect {
 
     @Effect()
         getSavedPlaceFrmServerByCity = this.actions$.ofType(PlaceActions.GET_SAVED_PLACES_FROM_SERVER_BY_CITY)
-                                                    .switchMap(() => this.store.select('auth').take(1))
-                                                     .map((state:fromAuthReducer.State) =>{
-                                                        console.log("1111",state);
+                                                    .withLatestFrom(this.store.select('auth'))
+                                                     .map(([action,state]) =>{
+                                                        
+                                                            if(!state.authorised){
+                                                                throw new Error("Not authorised!!");
+                                                            }
+                                                            else
                                                             return state.authorised;
                                                      })
-                                                     .switchMap((authorised:boolean) => {
-                                                         console.log("2222");
-                                                         if(authorised){
-                                                             return this.store.select('place').take(1);
-                                                         }
-                                                         else{
-                                                            return Observable.of({type:"error",message:"Not authorised"});
-                                                         }
-                                                     })
-                                                     .switchMap((res:any) => {
-                                                        
-                                                        if(res && res.type){
-                                                            return Observable.of(res);
-                                                        }
-
-                                                        const state:fromPlaceReducer.State = <fromPlaceReducer.State>res;
+                                                     .withLatestFrom(this.store.select('place'))
+                                                     .switchMap(([action,state]) => {
                                                         
                                                         const city = state.city;
                                                         const url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.id+"/places/";         
                                                         return this.http.get<any>(url,null)
                                                                     .catch((err) => {
-                                                                        return Observable.of({type:"error",message:err});
+                                                                        return Observable.throw({type:"error",message:err});
                                                                     })
                                                                 
                                                      })

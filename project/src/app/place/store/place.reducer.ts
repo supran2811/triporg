@@ -10,14 +10,12 @@ export interface FeatureState extends fromApp.AppState{
 
 export interface State{
     city:City,
-    selectedPlace : Place,
-    savedPlaces:Place[]
+    selectedPlace : Place
 }
 
 const initialState:State = {
     city:null,
-    selectedPlace : null,
-    savedPlaces:[]
+    selectedPlace : null
 
 }
 
@@ -31,7 +29,6 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.SET_CITY:{
-            console.log("Coming here setting city");
             return {
                 ...state,
                 city:action.payload
@@ -49,25 +46,28 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.SAVE_SELECTED_PLACE:{
-            let savedPlaces = [ ...state.savedPlaces];
-            savedPlaces.push(state.selectedPlace);
+            let newSavedPlaces = [ ...state.city.savedPlaces];
+            newSavedPlaces.push({...state.selectedPlace});
+
+            const updatedCity = {...state.city , savedPlaces:newSavedPlaces}    
             return {
                 ...state,
-                savedPlaces:savedPlaces
+                city:updatedCity
             }
         }
         case PlaceActions.REMOVE_SELECTED_PLACE:{
-            let savedPlaces = [ ...state.savedPlaces];
+            let updatedSavedPlaces = [ ...state.city.savedPlaces];
 
-            let index = savedPlaces.findIndex((place) => {
+            let index = updatedSavedPlaces.findIndex((place) => {
                 return state.selectedPlace.placeId == place.placeId;
             } )
 
-            savedPlaces.splice(index,1);
+            updatedSavedPlaces.splice(index,1);
+            const updatedCity = {...state.city , savedPlaces:updatedSavedPlaces}
 
             return {
                 ...state,
-                savedPlaces:savedPlaces
+                city:updatedCity
             }
         }
         case PlaceActions.RESET_SELECTED_PLACE:{
@@ -77,17 +77,19 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.ADD_SAVED_PLACED_TO_STATE:{
-            console.log("ADD_SAVED_PLACED_TO_STATE" , action.payload);
+
+            const updatedCity = {...state.city , savedPlaces:action.payload};
+            
+
             return {
                 ...state,
-                savedPlaces:action.payload
+                city:updatedCity
             }
         }
         case PlaceActions.RESET_STATE:{
             return {
                 city:null,
-                selectedPlace : null,
-                savedPlaces:[]
+                selectedPlace : null
             }
         }
     }

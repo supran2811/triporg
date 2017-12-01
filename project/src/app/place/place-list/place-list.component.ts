@@ -22,7 +22,7 @@ export class PlaceListComponent implements OnInit {
     this.store.dispatch(new PlaceActions.GetSavedPlacesFrmServerByCity());
 
     this.savedplaces = this.store.select('place').map((state:fromPlaceReducer.State) => {
-         return state.savedPlaces;
+         return state.city.savedPlaces;
     })
   }
 

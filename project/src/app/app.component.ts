@@ -27,8 +27,9 @@ export class AppComponent implements OnInit{
           const token = sessionStorage.getItem('token');
           const email = sessionStorage.getItem('email');
           const fullName = sessionStorage.getItem('fullname');
+          const uid = sessionStorage.getItem('uid');
 
-          this.store.dispatch(new AuthActions.SetTokenAction(token));
+          this.store.dispatch(new AuthActions.SetTokenAction({token:token,uid:uid}));
           this.store.dispatch(new AuthActions.SetUserAction(new User(email,fullName)));
           this.store.dispatch(new AuthActions.LoginAction());
     }

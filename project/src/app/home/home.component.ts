@@ -7,6 +7,8 @@ import {Store} from '@ngrx/store';
 import * as fromCity from './store/city.reducer';
 import * as CityActions from './store/city.action';
 import * as fromApp from '../store/app.reducer';
+import * as fromPinned from '../home/pinned-view/store/pinnedview.reducer';
+import * as PlaceActions from '../place/store/place.action';
 import { City } from './../models/city.model';
 
 @Component({
@@ -23,7 +25,9 @@ export class HomeComponent implements OnInit {
   citiesSource : Observable<City[]>;
   
 
-  selectedPlace:City;
+  selectedCity:City;
+
+  pinnedCities : City[];
 
   constructor(private store:Store<fromApp.AppState> , private router:Router) { }
 
@@ -42,11 +46,21 @@ export class HomeComponent implements OnInit {
       return this.citiesSource;
     }
 
+    this.store.select('pinnedcities').subscribe((state:fromPinned.State) =>{
+          this.pinnedCities = state.cities;
+    })
+
   }
 
   selectPlace(){
-    
-    this.router.navigate(['place',this.selectedPlace.id]);
+    if(this.pinnedCities != null){
+      let city = this.pinnedCities.find((city:City) => {
+        return city.id === this.selectedCity.id
+      })
+      console.log("[HomeComponent]","Setting city ");
+      this.store.dispatch(new PlaceActions.SetCity(city));
+    }
+    this.router.navigate(['place',this.selectedCity.id]);
   }
 
   formatList(city:City) : string {

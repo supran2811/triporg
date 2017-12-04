@@ -13,7 +13,6 @@ import { LoginComponent } from './login/login.component';
         LoginComponent
     ],
     imports:[
-        FormsModule,
         PopoverModule,
         SharedModule
     ]

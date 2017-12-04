@@ -29,6 +29,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.SET_CITY:{
+            
             return {
                 ...state,
                 city:action.payload

@@ -5,6 +5,7 @@ import * as firebase from 'firebase';
 export interface State{
     user:User,
     token:string,
+    uid:string,
     authorised:boolean,
     hasError:boolean,
     errorMessage:string
@@ -13,6 +14,7 @@ export interface State{
 const initialState : State = {
     user:null,
     token:"",
+    uid:"",
     authorised:false,
     hasError:false,
     errorMessage:''
@@ -30,7 +32,8 @@ export function AuthReducer(state=initialState , action:AuthActions.AuthActions)
         case AuthActions.SET_TOKEN:{
             return {
                 ...state,
-                token:action.payload
+                token:action.payload.token,
+                uid:action.payload.uid
             }
         }
         case AuthActions.SET_USER :{
@@ -63,6 +66,7 @@ export function AuthReducer(state=initialState , action:AuthActions.AuthActions)
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('fullname');
             sessionStorage.removeItem('email');
+            sessionStorage.removeItem('uid');
             return {
                 ...state,
                 user:null,

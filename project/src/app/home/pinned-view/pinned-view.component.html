@@ -1,3 +1,6 @@
-<p>
-  pinned-view works!
-</p>
+<div *ngIf= "(pinnedCities | async)">
+  <app-pinned-view-item *ngFor = "let city of (pinnedCities | async); let i = index"
+                    [city] = "city"  (selectCity) = "onSelect($event)">
+      
+</app-pinned-view-item>
+  </div>

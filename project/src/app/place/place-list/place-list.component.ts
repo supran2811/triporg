@@ -19,11 +19,18 @@ export class PlaceListComponent implements OnInit {
 
   ngOnInit() {
 
-    this.store.dispatch(new PlaceActions.GetSavedPlacesFrmServerByCity());
+    
 
     this.savedplaces = this.store.select('place').map((state:fromPlaceReducer.State) => {
          return state.city.savedPlaces;
     })
+
+    this.savedplaces.subscribe( (places:Place[]) => {
+      if(places == null){
+        this.store.dispatch(new PlaceActions.GetSavedPlacesFrmServerByCity());
+      }
+    } )
+
   }
 
 }

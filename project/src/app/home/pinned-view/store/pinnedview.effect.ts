@@ -1,3 +1,4 @@
+import { Place } from '../../../models/place.model';
 import { City } from '../../../models/city.model';
 import { Store } from '@ngrx/store';
 import { Actions,Effect } from '@ngrx/effects';
@@ -18,34 +19,46 @@ export class PinnedViewEffects{
         getPinnedCities = this.actions$.ofType(PinnedViewActions.GET_PINNED_CITIES_FROM_SERVER)
                                     .withLatestFrom(this.store.select('auth'))
                                     .map( ([action,state]) =>{
-                                            if( state.authorised){
-                                                throw new Error("Not autorised!!");
-                                            }
-                                            else{
-                                                return true;
-                                            }
+                                            return {auth:state.authorised,uid:state.uid};
                                     } )
-                                    .switchMap(() => {
+                                    .switchMap((res:{auth:boolean,uid:string}) => {
+                                        console.log("[GET_PINNED_CITIES_FROM_SERVER]","Entering http");
 
-                                        const url = this.PINS_URL+"/"+firebase.auth().currentUser.uid;
-
+                                        if(!res.auth){
+                                            console.log("[GET_PINNED_CITIES_FROM_SERVER]","Not authorised to send");
+                                            return Observable.of(new PinnedViewActions.SetPinnedCities([]));
+                                        }
+                                        const url = this.PINS_URL+"/"+res.uid;
+                                        
                                         return this.http.get(url,null)
-                                                    .catch(err => {
-                                                        throw new Error(err);
-                                                    })
+                                                    .catch(err =>{
+                                                            console.log("[GET_PINNED_CITIES_FROM_SERVER]",err);
+                                                            return Observable.of(new PinnedViewActions.SetPinnedCities([]));
+                                                     })
                                                     .map((response) =>{
-                                                         let cities = Object.values(response).map(res =>{
-                                                              return new City(res.id,res.name,res.lat,res.lng);
+
+                                                        console.log("[GET_PINNED_CITIES_FROM_SERVER]",response);
+                                                         
+                                                        let cities = [];   
+                                                        if(response != null){
+                                                         cities = Object.values(response).map(res =>{
+                                                              let savedPlaces = [];
+                                                              if(res.places != null){
+                                                                savedPlaces = Object.values(res.places).map(place =>{
+                                                                    return new Place(place.placeId,place.lat,place.lng,place.displayName);
+                                                                })
+                                                              }
+
+                                                              return new City(res.id,res.name,res.lat,res.lng,savedPlaces);
                                                          });
+                                                        }
 
                                                          return {
                                                              type:PinnedViewActions.SET_PINNED_CITIES,
                                                              payload:cities
                                                          }
                                                     })
-                                    }).catch(err =>{
-                                        return Observable.empty();
-                                  })
+                                    })
                                     
 
 

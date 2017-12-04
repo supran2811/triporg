@@ -26,13 +26,11 @@ export class PlaceComponent implements OnInit , OnDestroy {
               private ngProgress:NgProgress) { }
 
   ngOnInit() {
+
+
     this.isLoading = true;
     this.ngProgress.start();
-    this.activeRoute.params.subscribe( (params:Params) => {
-      let  id = params['id'];
-      console.log(id);
-      this.store.dispatch(new PlaceActions.GetCityLocation(id));
-    } );
+    
 
 
 
@@ -40,10 +38,17 @@ export class PlaceComponent implements OnInit , OnDestroy {
            return state.city;
     });
     this.city.subscribe((city:City) => {
-          console.log("Coming inside city observable",city);
+          console.log("[PlaceComponent]","Coming inside city observable",city);
           if(city != null){
             this.ngProgress.done();
             this.isLoading = false;
+          }
+          else{
+            this.activeRoute.params.subscribe( (params:Params) => {
+              let  id = params['id'];
+              console.log("[PlaceComponent]",id);
+              this.store.dispatch(new PlaceActions.GetCityLocation(id));
+            } );
           }
     })
     

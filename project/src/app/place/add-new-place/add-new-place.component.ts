@@ -55,7 +55,7 @@ export class AddNewPlaceComponent implements OnInit  {
           this.showInfoWindow = true;
           this.placeName  = "";
           
-          let index = state.savedPlaces.findIndex( (place:Place) => {
+          let index = state.city.savedPlaces.findIndex( (place:Place) => {
             return place.placeId == state.selectedPlace.placeId;
           } );
 

@@ -40,7 +40,7 @@ export class AuthEffect {
                                                 }
                                                 const token = res;
                                                 sessionStorage.setItem('token',token);
-                                                                        
+                                                sessionStorage.setItem('uid',firebase.auth().currentUser.uid);                         
                                                 this.http.put(this.USER_URL+"/"+firebase.auth().currentUser.uid, this.user).subscribe(
                                                         response => {console.log(response);},
                                                         error => {console.log(error);}
@@ -49,7 +49,7 @@ export class AuthEffect {
                                                 return [
                                                     {
                                                         type:AuthActions.SET_TOKEN,
-                                                        payload:token
+                                                        payload:{token:token,uid:firebase.auth().currentUser.uid}
                                                     },
                                                     {
                                                         type:AuthActions.SET_USER,
@@ -86,6 +86,7 @@ export class AuthEffect {
                                                 }
                                                 const token = res;
                                                 sessionStorage.setItem('token',token);
+                                                sessionStorage.setItem('uid',firebase.auth().currentUser.uid);    
                                                 return this.http.get<User>(this.USER_URL+"/"+firebase.auth().currentUser.uid+"/",null)
                                                         .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                                         .mergeMap((res:(User|any)) => {
@@ -98,7 +99,7 @@ export class AuthEffect {
                                                             return [
                                                                 {
                                                                     type:AuthActions.SET_TOKEN,
-                                                                    payload:token
+                                                                    payload:{token:token,uid:firebase.auth().currentUser.uid}
                                                                 },
                                                                 {
                                                                     type:AuthActions.SET_USER,

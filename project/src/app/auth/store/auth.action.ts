@@ -41,7 +41,7 @@ export class LogoutAciton implements Action {
 
 export class SetTokenAction implements Action {
     readonly type = SET_TOKEN;
-    constructor(public payload:string){}
+    constructor(public payload:{token:string,uid:string}){}
 }
 
 

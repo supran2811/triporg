@@ -22,6 +22,12 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
                 cities:action.payload
             }
         }
+        case PinnedViewActions.SET_SELECTED_PINNED_CITY:{
+            return {
+                ...state,
+                selectedCity:action.payload
+            }
+        }
         case PinnedViewActions.ADD_SELECTED_PINNED_CITY:{
 
             const index = state.cities.findIndex((city:City) => {
@@ -58,6 +64,26 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
                 return state;
             }
         }
+        case PinnedViewActions.UPDATE_SELECTED_PINNED_CITY:{
+            const index = state.cities.findIndex((city:City) => {
+                return state.selectedCity.id === city.id;
+            })
+
+            let updatedCities = [...state.cities];
+
+            updatedCities[index] = action.payload;
+
+
+            return {
+                ...state,
+                cities:updatedCities,
+                selectedCity:action.payload
+            }
+
+
+
+        }
+        
     }
 
     return state;

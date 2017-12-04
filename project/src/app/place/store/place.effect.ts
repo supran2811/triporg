@@ -62,10 +62,11 @@ export class PlacesEffect {
                                                     .withLatestFrom(this.store.select('place'))
                                                         .switchMap(([action,state]) =>{
                                                           
-                                                          const savedPlaces = state.savedPlaces;
+                                                          const savedPlaces = state.city.savedPlaces;
                                                           const selectedPlace = state.selectedPlace;
                                                           const city = state.city;
-                                                          let url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.id;  
+                                                          const uid = sessionStorage.getItem('uid');
+                                                          let url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id;  
 
                                                           if(savedPlaces.length == 0){
                                                             return this.http.put(url,city)
@@ -95,8 +96,9 @@ export class PlacesEffect {
                                                     .switchMap(([action,state]) => {
                                                         const selectedPlace = state.selectedPlace;
                                                         const city = state.city;
-                                                        const savedPlaces  = state.savedPlaces;
-                                                        let url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.id;         
+                                                        const savedPlaces  = state.city.savedPlaces;
+                                                        const uid = sessionStorage.getItem('uid');
+                                                        let url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id;         
                                                         if(savedPlaces.length > 1){
                                                             url = url +"/places/"+selectedPlace.placeId;
                                                         }
@@ -124,7 +126,8 @@ export class PlacesEffect {
                                                      .switchMap(([action,state]) => {
                                                         
                                                         const city = state.city;
-                                                        const url = this.USER_SAVE_PLACES_URL+"/"+firebase.auth().currentUser.uid+"/"+city.id+"/places/";         
+                                                        const uid = sessionStorage.getItem('uid');
+                                                        const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id+"/places/";         
                                                         return this.http.get<any>(url,null)
                                                                     .catch((err) => {
                                                                         return Observable.throw({type:"error",message:err});
@@ -140,7 +143,7 @@ export class PlacesEffect {
                                                                     return place;
                                                                 } )
                                                             }
-                                                            console.log(savedPlaces);
+                                                            console.log("[PlaceEffects]",savedPlaces);
                                                             return {
                                                                 type:PlaceActions.ADD_SAVED_PLACED_TO_STATE,
                                                                 payload:savedPlaces

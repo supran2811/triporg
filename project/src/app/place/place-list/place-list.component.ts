@@ -22,7 +22,12 @@ export class PlaceListComponent implements OnInit {
     
 
     this.savedplaces = this.store.select('place').map((state:fromPlaceReducer.State) => {
+        if(state.city){
          return state.city.savedPlaces;
+        }
+        else{
+          return null;
+        }
     })
 
     this.savedplaces.subscribe( (places:Place[]) => {

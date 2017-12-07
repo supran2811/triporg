@@ -79,11 +79,13 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
                 cities:updatedCities,
                 selectedCity:action.payload
             }
-
-
-
         }
-        
+        case PinnedViewActions.RESET_PINNED_STATE:{
+            return {
+                cities : [],
+                selectedCity:null
+            }
+        }   
     }
 
     return state;

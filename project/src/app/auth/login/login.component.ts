@@ -1,3 +1,4 @@
+import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { NgForm } from '@angular/forms/src/directives';
@@ -16,12 +17,19 @@ export class LoginComponent implements OnInit , OnDestroy{
 
   error: Observable<{hasError:boolean , errorMessage:string}>;
 
-  constructor(private store:Store<fromApp.AppState>) {}
+  constructor(private store:Store<fromApp.AppState>,
+              private activatedRoute:ActivatedRoute) {}
 
   ngOnInit() {
     this.error = this.store.select('auth').map((state:fromAuth.State) => {
       return {hasError:state.hasError,errorMessage:state.errorMessage}
+    });
+
+    this.activatedRoute.queryParams.subscribe((params:Params) =>{
+       const returnUrl = params['returnUrl'];
+       console.log("Return url",returnUrl);
     })
+    
   }
 
   ngOnDestroy(){

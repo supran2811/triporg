@@ -1,3 +1,4 @@
+import { Store } from '@ngrx/store';
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import { Route, Router } from '@angular/router';
@@ -8,8 +9,13 @@ import { Actions, Effect } from '@ngrx/effects';
 
 import { HttpService } from '../../shared/http.service';
 import * as AuthActions from './auth.action';
+import * as fromPlaceReducer from '../../place/store/place.reducer';
+import * as PlaceActions from '../../place/store/place.action';
+import * as fromPinnedViewReducer from '../../home/pinned-view/store/pinnedview.reducer';
+import * as PinnedViewActions from '../../home/pinned-view/store/pinnedview.action';
 
 import { User } from '../../models/user.model';
+import { Location } from '@angular/common';
 
 @Injectable()
 export class AuthEffect {
@@ -46,6 +52,7 @@ export class AuthEffect {
                                                         error => {console.log(error);}
                                                 );
                                                 this.router.navigate(['/']);
+                                                
                                                 return [
                                                     {
                                                         type:AuthActions.SET_TOKEN,
@@ -116,15 +123,25 @@ export class AuthEffect {
                                     
     @Effect() logout = this.$actions.ofType(AuthActions.DO_LOGOUT)
                                         .switchMap(() => firebase.auth().signOut())
-                                        .map(() => {
+                                        .mergeMap(() => {
                                             console.log("777");
                                             this.router.navigate(['/']);
-                                            return {
-                                                type : AuthActions.LOGOUT
-                                            }
+                                            return [
+                                                {
+                                                    type : AuthActions.LOGOUT
+                                                },
+                                                {
+                                                    type:PlaceActions.RESET_STATE
+                                                },
+                                                {
+                                                    type:PinnedViewActions.RESET_PINNED_STATE
+                                                }
+                                            ]
                                         });
                                 
     constructor(private $actions:Actions,
                 private router:Router,
-                private http:HttpService){}
+                private http:HttpService,
+                private store:Store<fromPlaceReducer.FeatureState>,
+                ){}
 }

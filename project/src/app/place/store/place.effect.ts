@@ -149,6 +149,10 @@ export class PlacesEffect {
                                                                 payload:savedPlaces
                                                             }
 
+                                                     })
+                                                     .catch(errr => {
+                                                         console.log("[PlaceEffects]",errr);
+                                                         return Observable.of(new PlaceActions.AddSavedPlacedToState([]));
                                                      });
                                                     
                                                                                                                     

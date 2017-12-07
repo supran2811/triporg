@@ -13,11 +13,11 @@
                   display-property-name="name" 
                   loading-text=""/>
             <div class="input-group-btn">
-                  <button class="btn btn-primary" (click)="selectPlace()">Search</button>
+                  <button class="btn btn-primary" (click)="exploreSelectedCity()">Search</button>
             </div>
            </div>
            <hr>
-           <app-pinned-view></app-pinned-view>
+           <app-pinned-view (selectPinnedCity) = "selectCity($event)"></app-pinned-view>
             
       </div>
     </div>

@@ -9,6 +9,7 @@ export const REMOVE_SELECTED_PINNED_CITY = "REMOVE_SELECTED_PINNED_CITY";
 export const UPDATE_SELECTED_PINNED_CITY = "UPDATE_SELECTED_PINNED_CITY";
 export const SET_SELECTED_PINNED_CITY = "SET_SELECTED_PINNED_CITY";
 export const REMOVE_PINNED_CITY_FROM_SERVER = "REMOVE_PINNED_CITIES_FROM_SERVER";
+export const RESET_PINNED_STATE = "RESET_PINNED_STATE";
 
 export class GetPinnedCitiesFromServer{
     readonly type = GET_PINNED_CITIES_FROM_SERVER
@@ -41,10 +42,15 @@ export class SetSelectedPinnedCity {
     public constructor(public payload:City){}
 }
 
+export class ResetPinnedState {
+    readonly type = RESET_PINNED_STATE;
+}
+
 export type PinnedViewActions = GetPinnedCitiesFromServer|
                                 RemovePinnedCityFromServer|
                                     SetPinnedCities|
                                     AddSelectedPinnedCity|
                                     RemoveSelectedPinnedCity|
                                     UpdateSelectedPinnedCity|
-                                    SetSelectedPinnedCity;
+                                    SetSelectedPinnedCity|
+                                    ResetPinnedState;

@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import {NguiAutoCompleteModule} from '@ngui/auto-complete'
 
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms';
         ],
         imports:[
             SharedModule,
-            NguiAutoCompleteModule
+            NguiAutoCompleteModule,
+            RouterModule
         ]
     }
 )

@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
 import { PopoverModule } from 'ngx-popover'
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
+import { AuthRouterModule } from './auth.router.module';
 
 @NgModule({
     declarations:[
@@ -14,7 +15,8 @@ import { LoginComponent } from './login/login.component';
     ],
     imports:[
         PopoverModule,
-        SharedModule
+        SharedModule,
+        AuthRouterModule
     ]
 })
 export class AuthModule{

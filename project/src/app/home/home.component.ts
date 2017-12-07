@@ -52,15 +52,21 @@ export class HomeComponent implements OnInit {
 
   }
 
-  selectPlace(){
+  exploreSelectedCity(){
+    this.selectCity(this.selectedCity);
+  }
+
+
+  selectCity(selectedCity:City){
+    console.log("[HomeComponent] Inside selectCity "+selectedCity);
     if(this.pinnedCities != null){
       let city = this.pinnedCities.find((city:City) => {
-        return city.id === this.selectedCity.id
+        return city.id === selectedCity.id
       })
       console.log("[HomeComponent]","Setting city ");
       this.store.dispatch(new PlaceActions.SetCity(city));
     }
-    this.router.navigate(['place',this.selectedCity.id]);
+    this.router.navigate(['place',selectedCity.id]);
   }
 
   formatList(city:City) : string {

@@ -31,7 +31,7 @@ export class GooglePlacesService {
                 this.googleApiLoader.load().then(() =>{
 
                     let autocompleteService = new google.maps.places.AutocompleteService();
-                    autocompleteService.getPlacePredictions({ input: text ,offset:2, types:['(cities)']},
+                    autocompleteService.getPlacePredictions({ input: text,types:['(regions)']},
                                     (predictions:Array<google.maps.places.AutocompletePrediction>,
                                                 status) => {
                           console.log(predictions);                          

@@ -73,5 +73,8 @@ export class HomeComponent implements OnInit {
     return city.name;
   }
 
+  autoCompleteCallback1(data){
+    console.log("Result ",data);
+  }
  
 }

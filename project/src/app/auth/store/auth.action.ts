@@ -24,7 +24,7 @@ export class RegisterAction implements Action{
 
 export class DoLoginAction implements Action {
   readonly type = DO_LOGIN;
-  constructor(public payload:{email:string,password:string}){}
+  constructor(public payload:{email:string,password:string , returnUrl:string}){}
 }
 
 export class LoginAction implements Action {

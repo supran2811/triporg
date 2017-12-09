@@ -9,6 +9,7 @@ import { Place } from '../../models/place.model';
 import * as PlaceActions from '../store/place.action';
 import * as fromPlaceReducer from '../store/place.reducer';
 import * as fromAuth from '../../auth/store/auth.reducer';
+import { WindowRefService } from '../../shared/windowRef.service';
 
 @Component({
   selector: 'app-add-new-place',
@@ -37,7 +38,8 @@ export class AddNewPlaceComponent implements OnInit  {
 
   constructor(public ngProgress:NgProgress, 
                 private store:Store<fromPlaceReducer.FeatureState>
-              , private activeRoute:ActivatedRoute) { }
+              , private activeRoute:ActivatedRoute,
+                private windowRef:WindowRefService) { }
 
   ngOnInit() {
     this.load();
@@ -133,6 +135,13 @@ export class AddNewPlaceComponent implements OnInit  {
     else{
       this.onRemove();
     }
+  }
+
+  openInMap(){
+       
+      const urlToOpen = "https://www.google.com/maps/search/?api=1&query="+this.lat+","+this.lng+"&query_place_id="+this.selectedPlace.placeId;
+      
+      this.windowRef.getNativeWindow().open(urlToOpen);
   }
 
 }

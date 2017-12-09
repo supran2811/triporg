@@ -3,8 +3,13 @@ agm-map  {
     height: 300px;
   }
 
-  .infowindow button{
+ 
+
+  .infowindow{
       display: flex;
       justify-content: space-between;
       align-content: flex-end;
+      
   }
+
+  

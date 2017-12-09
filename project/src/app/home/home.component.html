@@ -4,17 +4,18 @@
           <h1>Welcome to trip organizer</h1>
           <br>
           <div class="input-group">
-            <input ngui-auto-complete 
+            <!-- <input ngui-auto-complete 
                   class = "form-control"
                   [(ngModel)]="selectedCity" 
                   [source]="observableSource.bind(this)"
                   [list-formatter] = "formatList"
                   value-property-name="id"
                   display-property-name="name" 
-                  loading-text=""/>
+                  loading-text=""/> 
             <div class="input-group-btn">
                   <button class="btn btn-primary" (click)="exploreSelectedCity()">Search</button>
-            </div>
+            </div> -->
+                <app-google-autocomplete offset = 2> </app-google-autocomplete>
            </div>
            <hr>
            <app-pinned-view (selectPinnedCity) = "selectCity($event)"></app-pinned-view>

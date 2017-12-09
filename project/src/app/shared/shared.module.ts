@@ -12,6 +12,7 @@ import { GooglePlacesService } from './google.places.service';
 import { HttpService } from './http.service';
 import { HttpAuthInterceptor } from './http.interceptor';
 import { PlaceRouterStrategy } from '../place/place.router.strategy';
+import {WindowRefService} from './windowRef.service';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { PlaceRouterStrategy } from '../place/place.router.strategy';
             multi : true
         },
         GoogleMapsAPIWrapper,
-        GooglePlacesService
+        GooglePlacesService,
+        WindowRefService
        ],
        exports:[
         CommonModule,

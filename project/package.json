@@ -30,6 +30,7 @@
     "bootstrap": "^3.3.7",
     "core-js": "^2.5.1",
     "firebase": "^4.6.1",
+    "ng4-geoautocomplete": "^0.1.0",
     "ngx-popover": "0.0.16",
     "ngx-progressbar": "^2.1.1",
     "portfinder": "^1.0.13",

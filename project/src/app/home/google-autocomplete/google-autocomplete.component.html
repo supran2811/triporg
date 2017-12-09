@@ -1,0 +1,13 @@
+<div>
+    <div class = "autocomplete-input">
+       <input type= "text" class="form-control" [(ngModel)] ="query" (ngModelChange) = "fireSearchQuery($event)">
+       
+    </div>
+    <div class="autocomplete-list">
+       <ul>
+           <li><a href="#"><span class="glyphicon glyphicon-search"></span>Location1</a></li>
+           <li><a href="#">Location2</a></li>
+           <li><a href="#">Location3</a></li>
+       </ul>
+    </div>
+</div>

@@ -26,11 +26,16 @@
         <agm-snazzy-info-window [latitude]="lat" [longitude]="lng" [isOpen]="showInfoWindow"
         [closeWhenOthersOpen]="true">
           <ng-template>
+             <p>
               {{selectedPlace.displayName}}
+             </p>
               <div class="infowindow">
                  <button (click) = "doAction()"> 
                       {{ isNew == true ?"Save":"Remove" }} 
                  </button>
+                 <button (click) = "openInMap()"> 
+                       Direction 
+             </button>
               </div>
             </ng-template>
            

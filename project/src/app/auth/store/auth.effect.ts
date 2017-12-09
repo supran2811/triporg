@@ -74,9 +74,10 @@ export class AuthEffect {
     @Effect() login = this.$actions.ofType(AuthActions.DO_LOGIN)
                                     .map((action:AuthActions.DoLoginAction) => {
                                         return action.payload;
-                                    } ).switchMap( (payload:{email:string,password:string}) =>{
+                                    } ).switchMap( (payload:{email:string,password:string,returnUrl:string}) =>{
                                            const email  = payload.email;
                                            const password = payload.password;
+                                           const returnUrl = payload.returnUrl;
                                            return fromPromise(firebase.auth().signInWithEmailAndPassword(email,password))
                                            .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                            .switchMap((error) => {
@@ -101,8 +102,9 @@ export class AuthEffect {
                                                                 return [res];
                                                             }
                                                             const user = new User(res.email,res.fullName);
-
-                                                            this.router.navigate(['/']);
+                                                            const routeToNavigate = returnUrl === ""?"/":returnUrl;
+                                                            console.log("Navigate to",routeToNavigate);
+                                                            this.router.navigate([routeToNavigate]);
                                                             return [
                                                                 {
                                                                     type:AuthActions.SET_TOKEN,

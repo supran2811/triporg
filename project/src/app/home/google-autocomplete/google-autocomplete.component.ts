@@ -1,5 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input,Output, OnInit,EventEmitter,ChangeDetectorRef } from '@angular/core';
 import { GooglePlacesService } from '../../shared/google.places.service';
+
+import { Observable } from 'rxjs/Observable';
+
 
 @Component({
   selector: 'app-google-autocomplete',
@@ -9,22 +12,33 @@ import { GooglePlacesService } from '../../shared/google.places.service';
 export class GoogleAutocompleteComponent implements OnInit {
 
   @Input() offset:number;
+  @Output() selectPrediction = new EventEmitter<{id:string,name:string}>();
+  
+  predictions:any[] = [];
+  isError = false;
 
   query:string = "";
-  constructor(private googlePlaces:GooglePlacesService) { }
+  constructor(private googlePlaces:GooglePlacesService ,
+                private changeDetectRef:ChangeDetectorRef) { }
 
   ngOnInit() {
   }
 
-  fireSearchQuery(query){
-    console.log("offset",""+this.offset);
-     console.log(query , this.query);
-     if(this.query.length >= this.offset){
-          /// Fire google place search query
-            this.googlePlaces.searchPlace(this.query).subscribe((response) =>{
-              console.log(response);
+  fireSearchQuery(){
+    if(this.query.length >= this.offset)
+     {
+            this.isError = true;
+             this.googlePlaces.searchPlace(this.query).subscribe((res:any[]) =>{
+                this.updateItems(res);
             })
      }
+
+  }
+
+  updateItems(items:any[]){
+    this.predictions = items?items:[];
+    this.isError = false;
+    this.changeDetectRef.detectChanges();
   }
 
 }

@@ -1,13 +1,24 @@
-<div>
+
+    
     <div class = "autocomplete-input">
-       <input type= "text" class="form-control" [(ngModel)] ="query" (ngModelChange) = "fireSearchQuery($event)">
+       <input type= "search" 
+            class="form-control" 
+            [(ngModel)] ="query" 
+            (ngModelChange) = "fireSearchQuery()"
+            autocomplete="off">
        
     </div>
     <div class="autocomplete-list">
-       <ul>
-           <li><a href="#"><span class="glyphicon glyphicon-search"></span>Location1</a></li>
-           <li><a href="#">Location2</a></li>
-           <li><a href="#">Location3</a></li>
+       <ul *ngIf = "predictions.length">
+           
+           <li *ngFor="let item of (predictions)" >
+                <a><span class="pac-icon"></span>
+                    <span class="main-text">{{item.structured_formatting ? item.structured_formatting.main_text : item.description}}</span>
+                    <span class="secondary-text">{{item.structured_formatting ? item.structured_formatting.secondary_text : ""}}</span>
+                </a>
+           </li>
+
        </ul>
     </div>
-</div>
+    
+

@@ -13,6 +13,7 @@
     justify-content: flex-start;
     vertical-align: middle;
     width:100%;
+    cursor: pointer;
 }
 
 .autocomplete-list a > span{
@@ -20,7 +21,27 @@
     padding: 0;
 }
 
+.autocomplete-list a > span.main-text{
+    font-weight: bold;
+}
+
+.autocomplete-list a > span.secondary-text {
+    font-weight: normal;
+}
+
+
 .autocomplete-input input{
-    width:100%;
+    width:600px;
     margin:2px 0 5px 0;
+}
+
+.pac-icon {
+    width: 15px;
+    height: 20px;
+    margin-right: 7px;
+    margin-top: 6px;
+    display: inline-block;
+    vertical-align: top;
+    background-image: url("../../../assets/images/autocomplete-icons.png");
+    background-size: 34px
 }

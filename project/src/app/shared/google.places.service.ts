@@ -25,9 +25,9 @@ export class GooglePlacesService {
                 private store:Store<fromPlaceReducer.FeatureState>,
                  private gMap : GoogleMapsAPIWrapper){}  
 
-  searchPlace(text) : Observable<City[]> {
+  searchPlace(text) : Observable<any[]> {
     const observable = Observable.create(
-            (observer:Observer<City[]>) =>{
+            (observer:Observer<any[]>) =>{
                 this.googleApiLoader.load().then(() =>{
 
                     let autocompleteService = new google.maps.places.AutocompleteService();
@@ -35,12 +35,13 @@ export class GooglePlacesService {
                                     (predictions:Array<google.maps.places.AutocompletePrediction>,
                                                 status) => {
                           console.log(predictions);                          
-                          let cities:City[] = [];                          
-                          for(let prediction of predictions){
-                                cities.push(new City(prediction.place_id,prediction.description));
-                          }
+                        //    let responses:any []  = [];                      
+                        //   for(let prediction of predictions){
+                        //     responses.push({id:prediction.place_id,name:prediction.description});
+                        //   }
                           //console.log(cities);
-                          observer.next(cities);
+                          observer.next(predictions);
+                          
                    });
                 })
                 .catch((error) => {

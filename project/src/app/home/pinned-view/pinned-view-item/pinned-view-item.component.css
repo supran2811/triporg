@@ -4,7 +4,13 @@
     align-items: center;
     margin: 10px 0 10px 0;
     background-color: white;
-    border: 1px 2px solid burlywood;
-    box-shadow: 5px 5px 2px lightgray;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 3px #eee;
     padding : 10px;
+    cursor: pointer
+   }
+
+   .pinned-item{
+       text-decoration: none;
+       cursor: pointer;
    }

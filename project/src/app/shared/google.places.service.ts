@@ -34,12 +34,6 @@ export class GooglePlacesService {
                     autocompleteService.getPlacePredictions({ input: text,types:['(regions)']},
                                     (predictions:Array<google.maps.places.AutocompletePrediction>,
                                                 status) => {
-                          console.log(predictions);                          
-                        //    let responses:any []  = [];                      
-                        //   for(let prediction of predictions){
-                        //     responses.push({id:prediction.place_id,name:prediction.description});
-                        //   }
-                          //console.log(cities);
                           observer.next(predictions);
                           
                    });

@@ -15,7 +15,6 @@ import { AuthEffect } from './auth/store/auth.effect';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { PinnedViewEffects } from './home/pinned-view/store/pinnedview.effect';
-import { CityEffects } from './home/store/city.effect';
 import { globalReducer } from './store/app.reducer';
 import { AppRouterModule } from './app.router.module';
 import { AppComponent } from './app.component';
@@ -38,7 +37,7 @@ import { HeaderComponent } from './header/header.component';
     AuthRouterModule,
     HomeModule,
     StoreModule.forRoot(globalReducer),
-    EffectsModule.forRoot([CityEffects,AuthEffect,PinnedViewEffects])
+    EffectsModule.forRoot([AuthEffect,PinnedViewEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

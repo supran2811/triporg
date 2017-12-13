@@ -1,7 +1,7 @@
 import { Component, Input,Output, OnInit,EventEmitter,ChangeDetectorRef } from '@angular/core';
 import { GooglePlacesService } from '../../shared/google.places.service';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
 
 
 @Component({
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 export class GoogleAutocompleteComponent implements OnInit {
 
   @Input() offset:number;
-  @Output() selectPrediction = new EventEmitter<{id:string,name:string}>();
+  @Output() selectPrediction = new EventEmitter<any>();
   
   predictions:any[] = [];
   isError = false;
@@ -41,4 +41,8 @@ export class GoogleAutocompleteComponent implements OnInit {
     this.changeDetectRef.detectChanges();
   }
 
+  selectItem(item:any){
+     this.selectPrediction.emit(item);
+
+  }
 }

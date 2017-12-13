@@ -1,7 +1,7 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import {NguiAutoCompleteModule} from '@ngui/auto-complete'
-import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
+
 import { FormsModule } from '@angular/forms';
 
 import { SharedModule } from '../shared/shared.module';
@@ -21,8 +21,7 @@ import { GoogleAutocompleteComponent } from './google-autocomplete/google-autoco
         imports:[
             SharedModule,
             NguiAutoCompleteModule,
-            RouterModule,
-            Ng4GeoautocompleteModule.forRoot()
+            RouterModule
         ]
     }
 )

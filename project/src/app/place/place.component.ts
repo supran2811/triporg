@@ -8,6 +8,7 @@ import { NgProgress } from 'ngx-progressbar';
 import { City } from '../models/city.model';
 import * as fromPlaceReducer from './store/place.reducer'
 import * as PlaceActions from './store/place.action';
+import { CacheStateService } from '../shared/cache.state.service';
 
 
 @Component({
@@ -31,8 +32,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
     this.isLoading = true;
     this.ngProgress.start();
     
-
-
+    new CacheStateService(this.store.select('place'),""+Math.random()).saveState();
 
     this.city = this.store.select('place').map((state:fromPlaceReducer.State) => {
            return state.city;
@@ -41,17 +41,24 @@ export class PlaceComponent implements OnInit , OnDestroy {
           console.log("[PlaceComponent]","Coming inside city observable",city);
           if(city != null){
             this.ngProgress.done();
+           
             this.isLoading = false;
           }
           else{
-            this.activeRoute.params.subscribe( (params:Params) => {
-              let  id = params['id'];
-              console.log("[PlaceComponent]",id);
-              this.store.dispatch(new PlaceActions.GetCityLocation(id));
-            } );
+            this.loadCity();
           }
-    })
+    });
     
+  }
+
+  loadCity(){
+    this.activeRoute.params.subscribe( (params:Params) => {
+      let  id = params['id'];
+      console.log("[PlaceComponent]",id);
+
+      
+      this.store.dispatch(new PlaceActions.GetCityLocation(id));
+    } );
   }
 
   addNewPlace() {

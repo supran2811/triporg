@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
 
     
+    
     this.store.select('pinnedcities').subscribe((state:fromPinned.State) =>{
           this.pinnedCities = state.cities;
     })

@@ -13,7 +13,7 @@ import { HttpService } from './http.service';
 import { HttpAuthInterceptor } from './http.interceptor';
 import { PlaceRouterStrategy } from '../place/place.router.strategy';
 import {WindowRefService} from './windowRef.service';
-
+import {CacheStateService} from './cache.state.service';
 
 @NgModule({
     declarations:[
@@ -34,7 +34,8 @@ import {WindowRefService} from './windowRef.service';
         },
         GoogleMapsAPIWrapper,
         GooglePlacesService,
-        WindowRefService
+        WindowRefService,
+        CacheStateService
        ],
        exports:[
         CommonModule,

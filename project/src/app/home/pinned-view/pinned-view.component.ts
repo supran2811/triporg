@@ -30,6 +30,7 @@ export class PinnedViewComponent implements OnInit {
     });
 
 
+    
 
   }
 

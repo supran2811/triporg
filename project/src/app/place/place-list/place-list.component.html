@@ -1,8 +1,14 @@
-<div *ngIf= "(savedplaces | async)">
-  <app-place-item *ngFor = "let place of (savedplaces|async); let i = index"
-                    [place] = "place">
-      
-</app-place-item>
+<div class="place-list">
+  <div *ngIf= "(savedplaces | async).length > 0; else emptysection">
+    <app-place-item *ngFor = "let place of (savedplaces|async); let i = index"
+                      [place] = "place">
+        
+  </app-place-item>
   </div>
+  <ng-template #emptysection>
+     <p>See your pinned places here</p>  
+  </ng-template>  
+</div>
+
 
 

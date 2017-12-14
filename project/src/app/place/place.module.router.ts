@@ -12,7 +12,7 @@ const placeRoutes:Routes = [
         path:'' , component:PlaceComponent , children :[
             {path:'new/place' , component:AddNewPlaceComponent},
             {path:'new/iternary' , component:AddNewInterniryComponent},
-            {path:'' , component:NothingSelectedComponent},
+            {path:'' , redirectTo:'new/place'}
             
         ]
     }

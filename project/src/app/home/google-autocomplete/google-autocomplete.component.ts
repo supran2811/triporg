@@ -32,6 +32,9 @@ export class GoogleAutocompleteComponent implements OnInit {
                 this.updateItems(res);
             })
      }
+     else{
+      this.updateItems([]);
+     }
 
   }
 

@@ -10,6 +10,7 @@ import * as PlaceActions from '../store/place.action';
 import * as fromPlaceReducer from '../store/place.reducer';
 import * as fromAuth from '../../auth/store/auth.reducer';
 import { WindowRefService } from '../../shared/windowRef.service';
+import { GooglePlacesService } from '../../shared/google.places.service';
 
 @Component({
   selector: 'app-add-new-place',
@@ -28,6 +29,7 @@ export class AddNewPlaceComponent implements OnInit  {
   
   lat: number;
   lng: number;
+  cityId:string;
   selectedPlace : Place;
   loaded = false;
   showMarker = false;
@@ -39,7 +41,8 @@ export class AddNewPlaceComponent implements OnInit  {
   constructor(public ngProgress:NgProgress, 
                 private store:Store<fromPlaceReducer.FeatureState>
               , private activeRoute:ActivatedRoute,
-                private windowRef:WindowRefService) { }
+                private windowRef:WindowRefService,
+               private googlePlace:GooglePlacesService) { }
 
   ngOnInit() {
     this.load();
@@ -72,6 +75,7 @@ export class AddNewPlaceComponent implements OnInit  {
           this.lng = state.city.lng;
           this.showMarker = false;
           this.showInfoWindow = false;
+          this.cityId = state.city.id;
           this.placeName  = "";
           this.ngProgress.done();
         }
@@ -97,7 +101,7 @@ export class AddNewPlaceComponent implements OnInit  {
 
   boundsChange(event){
     
-    console.log(event);
+    console.log("[BoundChange]",event);
 
     console.log(event.getNorthEast().lat());
     console.log(event.getNorthEast().lng());
@@ -108,6 +112,8 @@ export class AddNewPlaceComponent implements OnInit  {
                              , new google.maps.LatLng(event.getNorthEast().lat(),event.getNorthEast().lng()));
     this.store.dispatch(new PlaceActions.AddPlaceChangeListener({input:this.searchElementRef,boundary:latLngBounds}));
 
+
+    
   }
 
 

@@ -29,7 +29,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.SET_CITY:{
-            
+            console.log("Setting city state ",action.payload);
             return {
                 ...state,
                 city:action.payload
@@ -88,6 +88,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.RESET_STATE:{
+            console.log("Coming here in reset state...");
             return {
                 city:null,
                 selectedPlace : null

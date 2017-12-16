@@ -5,8 +5,9 @@ import {Store} from '@ngrx/store';
 
 
 import * as fromApp from '../store/app.reducer';
-import * as fromPinned from '../home/pinned-view/store/pinnedview.reducer';
-import * as PlaceActions from '../place/store/place.action';
+import * as fromPinned from './pinned-view/store/pinnedview.reducer';
+import * as PinnedActions from './pinned-view/store/pinnedview.action';
+
 import { City } from './../models/city.model';
 
 @Component({
@@ -39,8 +40,10 @@ export class HomeComponent implements OnInit {
       let city = this.pinnedCities.find((city:City) => {
         return city.id === selectedCity.id
       })
-      console.log("[HomeComponent]","Setting city ");
-      this.store.dispatch(new PlaceActions.SetCity(city));
+      console.log("[HomeComponent]","Setting city "+city);
+     // this.store.dispatch(new PlaceActions.SetCity(city));
+     
+     this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
     }
     this.router.navigate(['place',selectedCity.id]);
   }

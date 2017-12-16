@@ -4,7 +4,7 @@ import {} from 'googlemaps';
 import { GoogleMapsAPIWrapper, 
             LatLngBounds, 
             LatLngBoundsLiteral, 
-            MapsAPILoader ,
+            MapsAPILoader
              } from '@agm/core';
 import { Store } from '@ngrx/store';
 
@@ -13,6 +13,7 @@ import { Place } from '../models/place.model';
 import { City } from './../models/city.model';
 import * as fromPlaceReducer from '../place/store/place.reducer';
 import * as PlaceActions from '../place/store/place.action';
+
 
 
 
@@ -34,6 +35,7 @@ export class GooglePlacesService {
                     autocompleteService.getPlacePredictions({ input: text,types:['(regions)']},
                                     (predictions:Array<google.maps.places.AutocompletePrediction>,
                                                 status) => {
+                          
                           observer.next(predictions);
                           
                    });
@@ -49,24 +51,33 @@ export class GooglePlacesService {
 
   }
 
-  getDetails(placeid:string,map:HTMLDivElement):Observable<Place> {
-       const observable = Observable.create(
-             (observer : Observer<Place>) => {
-                this.googleApiLoader.load().then(() => {
-                    let detailService = new google.maps.places.PlacesService(map);
-                    detailService.getDetails({placeId:placeid},(place:google.maps.places.PlaceResult ,
-                                                    status:google.maps.places.PlacesServiceStatus) =>{
-                                                         console.log(place);
-                                                    } );
-                }).catch(error => {
-                    observer.error(error);
-                })
-             }
-       );
+  getDetails(placeid:string) {
+    //    const observable = Observable.create(
+    //          (observer : Observer<Place>) => {
+    //             this.googleApiLoader.load().then(() => {
+    //                 this.gMap.getNativeMap().then( (map) =>{
+    //                     console.log("Map",map);
+    //                   //  observer.next(new Place("",0,0,""));
+    //                 } )
+    //                 // let detailService = new google.maps.places.PlacesService(map);
+    //                 // detailService.getDetails({placeId:placeid},(place:google.maps.places.PlaceResult ,
+    //                 //                                 status:google.maps.places.PlacesServiceStatus) =>{
+    //                 //                                      console.log(place);
+    //                 //                                 } );
+    //             }).catch(error => {
+    //                 observer.error(error);
+    //             })
+    //          }
+    //    );
 
       
        
-       return observable;
+    //    return observable;
+    // console.log("Loading native map!!!");
+    // this.gMap.getNativeMap().then( (map) =>{
+    //     console.log("Map",map);
+    //   //  observer.next(new Place("",0,0,""));
+    // } )
   }
 
   addPlaceChangeListener(searchEleRef:ElementRef, boundary:google.maps.LatLngBounds ) {
@@ -79,7 +90,7 @@ export class GooglePlacesService {
 
                     this.ngZone.run(() => {
                         let place = autocomplete.getPlace();
-                      
+                        
                         if(place.geometry === null || place.geometry == undefined ){
                             return;
                         }

@@ -8,7 +8,7 @@ const appRouter:Routes = [
         path:'',component:HomeComponent
     },
     {
-        path:'place/:id' , loadChildren:'./place/place.module#PlaceModule'
+        path:'place/:id' , loadChildren:'./place/place.module#PlaceModule',data:{preload:true}
     }
 ];
 

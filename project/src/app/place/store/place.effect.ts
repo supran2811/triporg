@@ -23,18 +23,18 @@ export class PlacesEffect {
     USER_SAVE_PLACES_URL = "https://triporg-1508486982436.firebaseio.com/pins";
     
 
-    @Effect() getPlaceDetails = this.actions$.ofType(PlaceActions.GET_PLACE_DETAILS)
-                                        .map((action:PlaceActions.GetPlaceDetails) =>{
-                                            return action.payload;
-                                        })
-                                        .switchMap((payload:{id:string,map:HTMLDivElement}) => {
-                                              return this.googlePlaces.getDetails(payload.id,payload.map);
-                                        }).map((place:Place) =>{
-                                            return {
-                                                type:PlaceActions.SET_PLACE_DETAILS,
-                                                payload:place
-                                            }
-                                        });
+    // @Effect() getPlaceDetails = this.actions$.ofType(PlaceActions.GET_PLACE_DETAILS)
+    //                                     .map((action:PlaceActions.GetPlaceDetails) =>{
+    //                                         return action.payload;
+    //                                     })
+    //                                     .switchMap((payload:{id:string,map:HTMLDivElement}) => {
+    //                                           return this.googlePlaces.getDetails(payload.id);
+    //                                     }).map((place:Place) =>{
+    //                                         return {
+    //                                             type:PlaceActions.SET_PLACE_DETAILS,
+    //                                             payload:place
+    //                                         }
+    //                                     });
 
     @Effect() getLocation = this.actions$.ofType(PlaceActions.GET_CITY_LOCATION)
                                         .map((action:PlaceActions.GetCityLocation) =>{

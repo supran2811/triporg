@@ -7,8 +7,10 @@ import { NgProgress } from 'ngx-progressbar';
 
 import { City } from '../models/city.model';
 import * as fromPlaceReducer from './store/place.reducer'
+import * as fromPinnedReducer from '../home/pinned-view/store/pinnedview.reducer';
 import * as PlaceActions from './store/place.action';
 import { CacheStateService } from '../shared/cache.state.service';
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -20,6 +22,8 @@ export class PlaceComponent implements OnInit , OnDestroy {
 
   city:Observable<City>;
   isLoading = false;
+  cacheState:CacheStateService;
+  subscription:Subscription;
 
   constructor(private activeRoute:ActivatedRoute,
                   private store:Store<fromPlaceReducer.FeatureState>,
@@ -28,18 +32,29 @@ export class PlaceComponent implements OnInit , OnDestroy {
 
   ngOnInit() {
 
-
+    console.log("[PlaceComponent]","Loading111");
     this.isLoading = true;
     this.ngProgress.start();
-    
-    new CacheStateService(this.store.select('place'),""+Math.random()).saveState();
 
-    this.city = this.store.select('place').map((state:fromPlaceReducer.State) => {
+    const myStore = this.store.select('place');
+
+    this.cacheState = new CacheStateService(myStore,'place');
+    this.cacheState.saveState();
+
+     this.store.select('pinnedcities').take(1).subscribe((state:fromPinnedReducer.State)=>{
+        console.log("[PlaceComponent] selected pinned city",state.selectedCity);
+        if(state.selectedCity != null){
+            this.store.dispatch(new PlaceActions.SetCity(state.selectedCity));
+        }
+     });
+
+    this.city = myStore.map((state:fromPlaceReducer.State) => {
            return state.city;
     });
-    this.city.subscribe((city:City) => {
+    console.log("[PlaceComponent]","adding subscription");
+    (this.subscription = this.city.subscribe((city:City) => {
           console.log("[PlaceComponent]","Coming inside city observable",city);
-          if(city != null){
+          if(city != null && city.lat){
             this.ngProgress.done();
            
             this.isLoading = false;
@@ -47,7 +62,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
           else{
             this.loadCity();
           }
-    });
+    }));
     
   }
 
@@ -67,6 +82,10 @@ export class PlaceComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(){
+    this.subscription.unsubscribe();
+   
     this.store.dispatch(new PlaceActions.ResetState());
+    this.cacheState.stop();
+    
   }
 }

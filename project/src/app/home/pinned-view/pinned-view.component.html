@@ -1,4 +1,4 @@
-<div *ngIf= "(pinnedCities | async)">
+<div class="pinnedcities" *ngIf= "(pinnedCities | async)">
   <app-pinned-view-item *ngFor = "let city of (pinnedCities | async); let i = index"
                     [city] = "city"  (selectCity) = "onSelect($event)">
       

@@ -13,7 +13,7 @@ import { AddNewInterniryComponent } from './add-new-interniry/add-new-interniry.
 import {placeReducer} from './store/place.reducer';
 import { PlacesEffect } from './store/place.effect';
 import { PlaceItemComponent } from './place-list/place-item/place-item.component';
-
+import { getInitialState } from '../shared/cache.state.service';
 
 @NgModule({
     declarations:[
@@ -29,7 +29,8 @@ import { PlaceItemComponent } from './place-list/place-item/place-item.component
       SharedModule,
       PlaceRouterModule,
       EffectsModule.forFeature([PlacesEffect]),
-      StoreModule.forFeature('place',placeReducer)
+      StoreModule.forFeature('place',placeReducer , {initialState:getInitialState('place') || {city:null,
+        selectedPlace : null} })
     ]
 })
 export class PlaceModule{

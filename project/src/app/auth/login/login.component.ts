@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { NgForm } from '@angular/forms/src/directives';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgProgress } from 'ngx-progressbar';
 
 import * as fromApp from '../../store/app.reducer';
 import * as AuthActions from '../store/auth.action';
@@ -17,7 +18,8 @@ export class LoginComponent implements OnInit , OnDestroy{
 
   error: Observable<{hasError:boolean , errorMessage:string}>;
   returnUrl:string;
-  constructor(private store:Store<fromApp.AppState>,
+  constructor(private ngProgress:NgProgress,
+              private store:Store<fromApp.AppState>,
               private activatedRoute:ActivatedRoute) {}
 
   ngOnInit() {
@@ -34,11 +36,15 @@ export class LoginComponent implements OnInit , OnDestroy{
 
   ngOnDestroy(){
     this.store.dispatch(new AuthActions.ResetErrorMessageAction());
+    this.ngProgress.done();
   }
   
   login(form:NgForm){
     const email = form.value.email;
     const password = form.value.password;
+    this.ngProgress.start();
     this.store.dispatch(new AuthActions.DoLoginAction({email:email , password:password , returnUrl:this.returnUrl}));
   }
+
+
 }

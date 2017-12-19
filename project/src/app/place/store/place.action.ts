@@ -5,11 +5,13 @@ import { ElementRef } from '@angular/core';
 import { Place } from '../../models/place.model';
 import { City } from '../../models/city.model';
 
-export const GET_PLACE_DETAILS  = "GET_PLACE_DETAILS";
+// export const GET_PLACE_DETAILS  = "GET_PLACE_DETAILS";
 export const SET_PLACE_DETAILS  = "SET_PLACE_DETAILS";
 export const SET_CITY           = "SET_CITY";
 export const SET_CITY_LOCATION  = "SET_CITY_LOCATION"
 export const GET_CITY_LOCATION  = "GET_CITY_LOCATION";
+export const GET_CITY_DETAILS   = "GET_CITY_DETAILS";
+export const SET_CITY_DETAILS   = "SET_CITY_DETAILS";
 export const SAVE_SELECTED_PLACE = "SAVE_SELECTED_PLACE";
 export const ADD_PLACE_CHANGE_LISTENER  = "ADD_PLACE_CHANGE_LISTENER";
 export const RESET_SELECTED_PLACE = "RESET_SELECTED_PLACE";
@@ -21,12 +23,6 @@ export const ADD_SAVED_PLACED_TO_STATE = "ADD_SAVED_PLACED_TO_STATE";
 export const RESET_STATE = "RESET_STATE";
 
 
-
-export class GetPlaceDetails {
-    readonly type = GET_PLACE_DETAILS;
-    public constructor(public payload:{id:string,map:HTMLDivElement}){}
-}
-
 export class SetCity{
     readonly type = SET_CITY;
     public constructor(public payload:City){}
@@ -36,6 +32,12 @@ export class SetPlaceDetails {
     readonly type = SET_PLACE_DETAILS;
     public constructor(public payload:Place){}
 }
+
+export class GetCityDetails {
+    readonly type = GET_CITY_DETAILS;
+    public constructor(public payload:{id:string,map:any}){}
+}
+
 
 export class GetCityLocation {
     readonly type = GET_CITY_LOCATION;
@@ -84,7 +86,7 @@ export class AddSavedPlacedToState{
     public constructor(public payload:Place[]){}
 }
 
-export type PlaceActions = GetPlaceDetails|
+export type PlaceActions = GetCityDetails|
                             SetPlaceDetails|
                             SetCity|
                             AddPlaceChangeListener|

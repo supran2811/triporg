@@ -3,7 +3,7 @@ import { Place } from '../../models/place.model';
 import * as PlaceActions from './place.action';
 import * as fromApp from '../../store/app.reducer';
 import { City } from '../../models/city.model';
-
+import { getInitialState } from '../../shared/cache.state.service';
 export interface FeatureState extends fromApp.AppState{
     place:State
 }
@@ -13,7 +13,7 @@ export interface State{
     selectedPlace : Place
 }
 
-const initialState:State = {
+const initialState:State = getInitialState('place') || {
     city:null,
     selectedPlace : null
 

@@ -26,12 +26,16 @@ export class CacheStateService {
         localStorage.removeItem(this.key);
     }
 
+    
 }
 
-export const getInitialState = (key:string) :any => {
+
+export function getInitialState (key:string):any {
     console.log(localStorage);
     const state = localStorage.getItem(key);
     console.log("[CacheStateService]",state);
     return state?JSON.parse(state):null ;
 }
+ 
+
 

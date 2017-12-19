@@ -14,6 +14,7 @@ import { HttpAuthInterceptor } from './http.interceptor';
 import { PlaceRouterStrategy } from '../place/place.router.strategy';
 import {WindowRefService} from './windowRef.service';
 import {CacheStateService} from './cache.state.service';
+import { SwiperModule } from 'angular2-useful-swiper';
 
 @NgModule({
     declarations:[
@@ -23,7 +24,8 @@ import {CacheStateService} from './cache.state.service';
         NgProgressModule,
         AgmCoreModule,
         AgmSnazzyInfoWindowModule,
-        FormsModule
+        FormsModule,
+        SwiperModule
     ],
     providers:[
         HttpService,
@@ -43,7 +45,8 @@ import {CacheStateService} from './cache.state.service';
         NgProgressModule,
         AgmCoreModule,
         AgmSnazzyInfoWindowModule,
-        FormsModule
+        FormsModule,
+        SwiperModule
        ]
 })
 export class SharedModule{

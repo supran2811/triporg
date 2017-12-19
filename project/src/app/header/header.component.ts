@@ -42,5 +42,10 @@ export class HeaderComponent implements OnInit {
   }
   
 
+ register(){
+    const returnUrl = this.location.path();
+    this.router.navigate(["/register"],{queryParams:{returnUrl:returnUrl}});
+  }
+
   
 }

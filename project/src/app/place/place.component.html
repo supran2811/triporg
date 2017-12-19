@@ -6,11 +6,12 @@
   <div *ngIf="!isLoading">
   
   <div class="col-xs-12">
-      <h2>{{( city | async).name}}</h2>
+     
   </div>
   
   
   <div class="col-xs-6">
+        <h2>{{( city | async).name}}</h2>
         <app-place-list></app-place-list>
   </div>
   <div class="col-xs-6">

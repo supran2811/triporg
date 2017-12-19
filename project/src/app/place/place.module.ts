@@ -29,8 +29,7 @@ import { getInitialState } from '../shared/cache.state.service';
       SharedModule,
       PlaceRouterModule,
       EffectsModule.forFeature([PlacesEffect]),
-      StoreModule.forFeature('place',placeReducer , {initialState:getInitialState('place') || {city:null,
-        selectedPlace : null} })
+      StoreModule.forFeature('place',placeReducer)
     ]
 })
 export class PlaceModule{

@@ -51,33 +51,29 @@ export class GooglePlacesService {
 
   }
 
-  getDetails(placeid:string) {
-    //    const observable = Observable.create(
-    //          (observer : Observer<Place>) => {
-    //             this.googleApiLoader.load().then(() => {
-    //                 this.gMap.getNativeMap().then( (map) =>{
-    //                     console.log("Map",map);
-    //                   //  observer.next(new Place("",0,0,""));
-    //                 } )
-    //                 // let detailService = new google.maps.places.PlacesService(map);
-    //                 // detailService.getDetails({placeId:placeid},(place:google.maps.places.PlaceResult ,
-    //                 //                                 status:google.maps.places.PlacesServiceStatus) =>{
-    //                 //                                      console.log(place);
-    //                 //                                 } );
-    //             }).catch(error => {
-    //                 observer.error(error);
-    //             })
-    //          }
-    //    );
+  getDetails(placeid:string , map):Observable<any> {
+       const observable = Observable.create(
+             (observer : Observer<any>) => {
+                this.googleApiLoader.load().then(() => {
+                    let detailService = new google.maps.places.PlacesService(map);
+                    detailService.getDetails({placeId:placeid},(place:google.maps.places.PlaceResult ,
+                                                    status:google.maps.places.PlacesServiceStatus) =>{
+                                                          
 
-      
-       
-    //    return observable;
-    // console.log("Loading native map!!!");
-    // this.gMap.getNativeMap().then( (map) =>{
-    //     console.log("Map",map);
-    //   //  observer.next(new Place("",0,0,""));
-    // } )
+                                                          if(status == google.maps.places.PlacesServiceStatus.OK){
+                                                              observer.next(place);
+                                                          }
+                                                          else{
+                                                            observer.error(status);
+                                                          }
+                                                    } );
+                }).catch(error => {
+                    observer.error(error);
+                })
+             }
+       );
+       return observable;
+
   }
 
   addPlaceChangeListener(searchEleRef:ElementRef, boundary:google.maps.LatLngBounds ) {

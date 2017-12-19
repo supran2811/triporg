@@ -5,7 +5,8 @@ export class City{
                     ,public name:string,
                     public lat:number = 0,
                     public lng:number = 0 ,
-                    public savedPlaces:Place[] = []
+                    public savedPlaces:Place[] = [],
+                    public photos:{small:string,large:string}[] = null
                     ){}
 
 }

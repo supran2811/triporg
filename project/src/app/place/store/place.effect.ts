@@ -23,18 +23,7 @@ export class PlacesEffect {
     USER_SAVE_PLACES_URL = "https://triporg-1508486982436.firebaseio.com/pins";
     
 
-    // @Effect() getPlaceDetails = this.actions$.ofType(PlaceActions.GET_PLACE_DETAILS)
-    //                                     .map((action:PlaceActions.GetPlaceDetails) =>{
-    //                                         return action.payload;
-    //                                     })
-    //                                     .switchMap((payload:{id:string,map:HTMLDivElement}) => {
-    //                                           return this.googlePlaces.getDetails(payload.id);
-    //                                     }).map((place:Place) =>{
-    //                                         return {
-    //                                             type:PlaceActions.SET_PLACE_DETAILS,
-    //                                             payload:place
-    //                                         }
-    //                                     });
+    
 
     @Effect() getLocation = this.actions$.ofType(PlaceActions.GET_CITY_LOCATION)
                                         .map((action:PlaceActions.GetCityLocation) =>{
@@ -155,7 +144,36 @@ export class PlacesEffect {
                                                          return Observable.of(new PlaceActions.AddSavedPlacedToState([]));
                                                      });
                                                     
-                                                                                                                    
+    @Effect()
+            getCityDetails = this.actions$.ofType(PlaceActions.GET_CITY_DETAILS)
+                                                            .map((action:PlaceActions.GetCityDetails) => {
+                                                                return action.payload
+                                                            })
+                                                            .switchMap((payload:{id:string,map:any}) => {
+                                                                return this.googlePlaces.getDetails(payload.id,payload.map);
+                                                            } )
+                                                            .withLatestFrom(this.store.select('place'))
+                                                            .map( ([res,state]) => {
+                                                                console.log(res,state);
+                                                                
+                                                                state.city.photos = res.photos.map(photo => {
+
+                                                                    return {small:photo.getUrl({'maxWidth': 200}) , 
+                                                                            large:photo.getUrl({'maxWidth': 800 })};
+                                                                })
+                                                                console.log(state.city.photos);
+                                                                
+                                                                return {
+                                                                    type:PlaceActions.SET_CITY,
+                                                                    payload:state.city
+                                                                }
+                                                            } )
+                                                            .catch( errr => {
+                                                                console.log(errr);
+                                                                return Observable.of([]);
+                                                            })
+                                                            
+
     constructor(private actions$:Actions , 
                     private googlePlaces:GooglePlacesService,
                     private store:Store<fromPlaceReducer.FeatureState>,

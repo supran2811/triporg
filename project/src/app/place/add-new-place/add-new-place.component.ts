@@ -1,9 +1,11 @@
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Component, ElementRef, OnInit ,ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit ,ViewChild,AfterViewInit} from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { NgProgress } from 'ngx-progressbar'
 import { FormControl } from '@angular/forms';
+
+import { GoogleMapsAPIWrapper } from '@agm/core';
 
 import { Place } from '../../models/place.model';
 import * as PlaceActions from '../store/place.action';
@@ -17,7 +19,7 @@ import { GooglePlacesService } from '../../shared/google.places.service';
   templateUrl: './add-new-place.component.html',
   styleUrls: ['./add-new-place.component.css']
 })
-export class AddNewPlaceComponent implements OnInit  {
+export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
 
   searchControl:FormControl;
 
@@ -42,10 +44,19 @@ export class AddNewPlaceComponent implements OnInit  {
                 private store:Store<fromPlaceReducer.FeatureState>
               , private activeRoute:ActivatedRoute,
                 private windowRef:WindowRefService,
-               private googlePlace:GooglePlacesService) { }
+               private googlePlace : GooglePlacesService) { }
 
   ngOnInit() {
     this.load();
+  }
+
+  ngAfterViewInit(){
+   
+  }
+
+  onMapReady(event){
+    console.log("[onMapReady]",event);
+    this.store.dispatch(new PlaceActions.GetCityDetails({id:this.cityId,map:event}));
   }
 
   load(){
@@ -107,7 +118,7 @@ export class AddNewPlaceComponent implements OnInit  {
     console.log(event.getNorthEast().lng());
     console.log(event.getSouthWest().lat());
     console.log(event.getSouthWest().lng());
-  
+    
     const latLngBounds = new google.maps.LatLngBounds(new google.maps.LatLng(event.getSouthWest().lat(), event.getSouthWest().lng())
                              , new google.maps.LatLng(event.getNorthEast().lat(),event.getNorthEast().lng()));
     this.store.dispatch(new PlaceActions.AddPlaceChangeListener({input:this.searchElementRef,boundary:latLngBounds}));

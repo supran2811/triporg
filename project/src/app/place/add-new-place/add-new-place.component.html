@@ -19,6 +19,7 @@
             (boundsChange)="boundsChange($event)" 
             [zoom] = "zoom"
             [zoomControl]="false"
+            (mapReady) = "onMapReady($event)"
             #map>
 
       <agm-marker *ngIf = "showMarker" [latitude]="lat" [longitude]="lng">

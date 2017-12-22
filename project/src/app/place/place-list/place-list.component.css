@@ -1,12 +1,9 @@
 .place-list{
     text-align: center;
     padding: 10px;
-    border: 0.5px solid #eee;
-    box-sizing: border-box;
-    box-shadow: 0 1px 3px #ccc;
-    height: 100%;
-    min-height: 350px;
+   box-sizing: border-box;
     width: 100%;
+    margin-bottom: 10px;
 
 }
 

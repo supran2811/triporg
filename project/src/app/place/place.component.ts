@@ -25,6 +25,15 @@ export class PlaceComponent implements OnInit , OnDestroy {
   cacheState:CacheStateService;
   subscription:Subscription;
 
+  config: SwiperOptions = {
+    pagination: '.swiper-pagination',
+    paginationClickable: true,
+    nextButton: '.swiper-button-next',
+    prevButton: '.swiper-button-prev',
+    spaceBetween: 0
+  };
+
+
   constructor(private activeRoute:ActivatedRoute,
                   private store:Store<fromPlaceReducer.FeatureState>,
                 private router:Router,

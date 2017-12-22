@@ -15,10 +15,12 @@ import { PlaceRouterStrategy } from '../place/place.router.strategy';
 import {WindowRefService} from './windowRef.service';
 import {CacheStateService} from './cache.state.service';
 import { SwiperModule } from 'angular2-useful-swiper';
+import { ThumbnailViewComponent } from './thumbnail-view/thumbnail-view.component';
 
 @NgModule({
     declarations:[
-        DropDownDirective
+        DropDownDirective,
+        ThumbnailViewComponent
     ],
     imports:[
         NgProgressModule,

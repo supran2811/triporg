@@ -3,6 +3,6 @@ export class Place {
         public lat:number,
         public lng:number,
         public displayName:string,
-        public icon:string = "",
-        public rating:string = ""){}          
+        public address:string = "",
+        public photos:{small:string,large:string}[] = null){}          
 }

@@ -90,11 +90,11 @@ export class GooglePlacesService {
                         if(place.geometry === null || place.geometry == undefined ){
                             return;
                         }
-
+                        console.log("[GooglePlace]",place);
                        let selectedPlace = new Place(place.place_id,
                                                             place.geometry.location.lat(),
                                                         place.geometry.location.lng(),
-                                                         place.name,"","");
+                                                         place.name);
                         this.store.dispatch(new PlaceActions.SetPlaceDetails(selectedPlace));
 
                     }) ;  

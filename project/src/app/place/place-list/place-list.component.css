@@ -1,13 +1,14 @@
 .place-list{
-    text-align: center;
+    
     padding: 10px;
-   box-sizing: border-box;
+    box-sizing: border-box;
     width: 100%;
     margin-bottom: 10px;
-
 }
 
-.place-list p{
+
+
+.place-list > p{
     height: 350px;
     display: flex;
     align-items: center;

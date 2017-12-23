@@ -1,3 +1,5 @@
-<a (click) ="onSelected()" class="place-item">
-  {{place.displayName}}  
-</a>
+<div class="place-item">
+    <app-thumbnail-view [photos]="place.photos"
+            [title] = "place.displayName"
+            (onHover) = "onHover()"></app-thumbnail-view>
+</div>

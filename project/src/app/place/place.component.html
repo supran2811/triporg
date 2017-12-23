@@ -6,21 +6,21 @@
   <div *ngIf="!isLoading">
   
 
-    <swiper [config]="config">
+    <!-- <swiper [config]="config">
         <div class="swiper-wrapper">
             <img class="swiper-slide" *ngFor="let photo of (city|async).photos" [src]="photo.large">
         </div>
         <div class="swiper-pagination"></div>
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
-    </swiper>
+    </swiper> -->
   
   
   
   <div class="col-xs-6">
         <app-place-list></app-place-list>
   </div>
-  <div class="col-xs-6">
+  <div class="col-xs-6 affix">
       <router-outlet></router-outlet>
   </div>
 </div>  

@@ -21,7 +21,7 @@ export class PlaceItemComponent implements OnInit {
               private router:Router) { }
 
   ngOnInit() {
-
+    console.log("[PlaceItemComponent]",this.place.photos);
   }
 
   onSelected(){
@@ -29,4 +29,7 @@ export class PlaceItemComponent implements OnInit {
     this.router.navigate(['new','place'],{relativeTo:this.activatedRoute});
   }
 
+  onHover(){
+    console.log("Inside onHover of "+this.place.displayName);
+  }
 }

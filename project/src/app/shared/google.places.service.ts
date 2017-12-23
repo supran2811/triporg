@@ -76,33 +76,30 @@ export class GooglePlacesService {
 
   }
 
-  addPlaceChangeListener(searchEleRef:ElementRef, boundary:google.maps.LatLngBounds ) {
-      this.googleApiLoader.load().then(() => {
+  addPlaceChangeListener(searchEleRef:ElementRef, boundary:google.maps.LatLngBounds ):Observable<any> {
+    const observable = Observable.create((observer:any) => {
+        this.googleApiLoader.load().then(() => {
                 
-                let autocomplete = new google.maps.places.Autocomplete(searchEleRef.nativeElement,
-                                            {strictBounds:true,bounds:boundary});
-                
+            let autocomplete = new google.maps.places.Autocomplete(searchEleRef.nativeElement,
+                                        {strictBounds:true,bounds:boundary});
+            
                 autocomplete.addListener('place_changed',() => {
 
                     this.ngZone.run(() => {
                         let place = autocomplete.getPlace();
-                        
-                        if(place.geometry === null || place.geometry == undefined ){
-                            return;
+                        if(place == null || place == undefined){
+                            observer.error("Empty Place");
                         }
-                        console.log("[GooglePlace]",place);
-                       let selectedPlace = new Place(place.place_id,
-                                                            place.geometry.location.lat(),
-                                                        place.geometry.location.lng(),
-                                                         place.name);
-                        this.store.dispatch(new PlaceActions.SetPlaceDetails(selectedPlace));
+                         observer.next(place);
 
                     }) ;  
 
                 })
-      }).catch((error)=>{
-           
-      })
+            }).catch((error)=>{
+                observer.error(error);
+            })
+    })      
+    return observable;
   }
 
   getGeoCode(placeid:string):Observable<City>{

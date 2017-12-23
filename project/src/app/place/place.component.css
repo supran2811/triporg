@@ -19,6 +19,11 @@ swiper{
     width: 100% !important;
 }
 
+.affix {
+    margin:10px;
+    left : 50%;
+}
+
 
 .container {
     width: 100%;

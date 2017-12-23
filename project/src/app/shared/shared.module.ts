@@ -27,7 +27,8 @@ import { ThumbnailViewComponent } from './thumbnail-view/thumbnail-view.componen
         AgmCoreModule,
         AgmSnazzyInfoWindowModule,
         FormsModule,
-        SwiperModule
+        SwiperModule,
+        CommonModule
     ],
     providers:[
         HttpService,
@@ -48,7 +49,8 @@ import { ThumbnailViewComponent } from './thumbnail-view/thumbnail-view.componen
         AgmCoreModule,
         AgmSnazzyInfoWindowModule,
         FormsModule,
-        SwiperModule
+        SwiperModule,
+        ThumbnailViewComponent
        ]
 })
 export class SharedModule{

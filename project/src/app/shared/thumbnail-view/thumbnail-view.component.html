@@ -1,3 +1,17 @@
-<p>
-  thumbnail-view works!
-</p>
+<div class = "thumbnail" (mouseenter) = "hovered()" (mouseleave) = "onMouseLeave()">
+    <swiper *ngIf="hover" [config]="config" #usefulSwiper>
+        <div class="swiper-wrapper">
+            <img class="swiper-slide" *ngFor="let photo of photos" [src]="photo.small"> 
+        </div>
+        <div  class="swiper-pagination"></div>
+        <div  class="swiper-button-next"></div>
+        <div  class="swiper-button-prev"></div>
+      </swiper>
+    <swiper *ngIf = "!hover" [config]="config" #usefulSwiper>
+      <div class="swiper-wrapper">
+          <img class="swiper-slide" *ngFor="let photo of photos" [src]="photo.small"> 
+      </div>
+      
+    </swiper>
+  <p><strong>{{title}}</strong></p>
+</div>

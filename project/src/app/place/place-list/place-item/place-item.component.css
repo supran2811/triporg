@@ -1,12 +1,5 @@
 .place-item {
- display: flex;
- justify-content: space-around;
- align-items: center;
- margin: 10px 0 10px 0;
- background-color: white;
- border: 1px solid #ccc;
- box-shadow: 0 2px 3px #eeeeee;
- padding : 10px;
- text-decoration: none;
- cursor: pointer;
+   margin: 10px;
+   width: 300px;
+   height: auto;
 }

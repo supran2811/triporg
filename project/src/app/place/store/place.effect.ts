@@ -37,12 +37,38 @@ export class PlacesEffect {
                                                 payload:city
                                             }
                                         });                                   
-    @Effect({dispatch:false})
+    @Effect()
             addPlaceChange = this.actions$.ofType(PlaceActions.ADD_PLACE_CHANGE_LISTENER)
                                             .map((action:PlaceActions.AddPlaceChangeListener) =>{
                                                 return action.payload;
-                                            } ).do((payload:{input:ElementRef,boundary:google.maps.LatLngBounds}) =>{
-                                                this.googlePlaces.addPlaceChangeListener(payload.input,payload.boundary);
+                                            } ).switchMap((payload:{input:ElementRef,boundary:google.maps.LatLngBounds}) =>{
+                                                return this.googlePlaces.addPlaceChangeListener(payload.input,payload.boundary);
+                                            }).map( (res:any) => {
+                                                    console.log(res);
+                                                     
+                                                     
+
+                                                     const place  = new Place (res.place_id , 
+                                                                                res.geometry.location.lat() , 
+                                                                                res.geometry.location.lng() , 
+                                                                                res.name ,
+                                                                              res.address_components   );
+                                                      if(res.photos){
+                                                            place.photos = res.photos.map(photo => (
+                                                                 {small:photo.getUrl({'maxWidth': 200}) , 
+                                                                  large:photo.getUrl({'maxWidth': 800 })}
+                                                            ));
+                                                      }  
+
+                                                      console.log("After getting place",place);
+                                                     return {
+                                                         type:PlaceActions.SET_PLACE_DETAILS,
+                                                         payload:place
+                                                     }                           
+
+                                            } ).catch(errr => {
+                                                console.log(errr);
+                                                return Observable.of([]); /// TODO Need to handle error cases
                                             });
     
                                             

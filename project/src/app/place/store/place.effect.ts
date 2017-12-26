@@ -79,6 +79,7 @@ export class PlacesEffect {
                                                           
                                                           const savedPlaces = state.city.savedPlaces;
                                                           const selectedPlace = state.selectedPlace;
+                                                          console.log("[PlaceEffects]",selectedPlace);
                                                           const city = state.city;
                                                           const uid = sessionStorage.getItem('uid');
                                                           let url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id;  

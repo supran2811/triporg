@@ -45,7 +45,8 @@ export class PinnedViewEffects{
                                                               let savedPlaces = [];
                                                               if(res.places != null){
                                                                 savedPlaces = Object.values(res.places).map(place =>{
-                                                                    return new Place(place.placeId,place.lat,place.lng,place.displayName);
+                                                                    return new Place(place.placeId,place.lat,place.lng,place.displayName,
+                                                                                place.address,place.photos);
                                                                 })
                                                               }
 

@@ -111,20 +111,10 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
 
 
   boundsChange(event){
-    
-    console.log("[BoundChange]",event);
-
-    console.log(event.getNorthEast().lat());
-    console.log(event.getNorthEast().lng());
-    console.log(event.getSouthWest().lat());
-    console.log(event.getSouthWest().lng());
-    
     const latLngBounds = new google.maps.LatLngBounds(new google.maps.LatLng(event.getSouthWest().lat(), event.getSouthWest().lng())
                              , new google.maps.LatLng(event.getNorthEast().lat(),event.getNorthEast().lng()));
     this.store.dispatch(new PlaceActions.AddPlaceChangeListener({input:this.searchElementRef,boundary:latLngBounds}));
 
-
-    
   }
 
 

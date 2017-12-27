@@ -22,22 +22,26 @@
             (mapReady) = "onMapReady($event)"
             #map>
 
-      <agm-marker *ngIf = "showMarker" [latitude]="lat" [longitude]="lng">
+      <agm-marker *ngFor="let marker of markers" 
+                      [latitude]="marker.place.lat" 
+                      [longitude]="marker.place.lng" 
+                      (markerClick) = "placeSelected(marker)">
 
-        <agm-snazzy-info-window [latitude]="lat" [longitude]="lng" [isOpen]="showInfoWindow"
-        [closeWhenOthersOpen]="true">
+        <agm-snazzy-info-window 
+                                    class="marker-info-window"
+                                    [latitude]="marker.place.lat" 
+                                    [longitude]="marker.place.lng" 
+                                    [isOpen]="marker.showInfoWindow"
+                                    [closeWhenOthersOpen]="true"
+                                    padding = "0"
+                                    maxHeight="50px"
+                                    >
+
           <ng-template>
-             <p>
-              {{selectedPlace.displayName}}
-             </p>
-              <div class="infowindow">
-                 <button (click) = "doAction()"> 
-                      {{ isNew == true ?"Save":"Remove" }} 
-                 </button>
-                 <button (click) = "openInMap()"> 
-                       Direction 
-             </button>
-              </div>
+            <app-thumbnail-view [photos]="marker.place.photos"
+            [title] = "marker.place.displayName"
+            ></app-thumbnail-view>
+              
             </ng-template>
            
         </agm-snazzy-info-window>

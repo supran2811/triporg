@@ -12,5 +12,6 @@ agm-map  {
       align-content: flex-end;
       
   }
-
-  
+  .si-content-wrapper {
+    padding: 0 !important;
+    background-color: #eee; }

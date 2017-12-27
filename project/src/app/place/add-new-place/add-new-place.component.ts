@@ -13,6 +13,7 @@ import * as fromPlaceReducer from '../store/place.reducer';
 import * as fromAuth from '../../auth/store/auth.reducer';
 import { WindowRefService } from '../../shared/windowRef.service';
 import { GooglePlacesService } from '../../shared/google.places.service';
+import {Marker} from '../../models/marker.model';
 
 @Component({
   selector: 'app-add-new-place',
@@ -40,6 +41,9 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
   isNew:boolean = false;
   placeName:string = "";
 
+  markers:Marker[] = [];
+
+
   constructor(public ngProgress:NgProgress, 
                 private store:Store<fromPlaceReducer.FeatureState>
               , private activeRoute:ActivatedRoute,
@@ -64,18 +68,38 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
     this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
 
         if(state.selectedPlace != null ){
-          this.lat = state.selectedPlace.lat;
-          this.lng = state.selectedPlace.lng;
-          this.selectedPlace = state.selectedPlace;
-          this.showMarker = true;
-          this.showInfoWindow = true;
-          this.placeName  = "";
-          
-          let index = state.city.savedPlaces.findIndex( (place:Place) => {
-            return place.placeId == state.selectedPlace.placeId;
+          let index = -1;
+          this.markers = this.markers.map( (marker:Marker,idX) =>{
+                 marker.showInfoWindow = false;
+                 if(marker.place.placeId === state.selectedPlace.placeId){
+                    index = idX;
+                 }
+                 return marker;
           } );
 
-          this.isNew = index == -1;
+          
+          if(index === -1){
+            this.markers.push(new Marker(state.selectedPlace,
+                                      true,true));
+          }
+
+          else{
+              this.markers[index].showInfoWindow = true;
+              if(state.city.savedPlaces){
+                  let idX = state.city.savedPlaces.findIndex((place:Place)=>{
+                       return this.markers[index].place.placeId === place.placeId
+                  });
+                  if(idX >= 0){
+                    this.markers[index].isNew = false;
+                  }
+                  else{
+                    this.markers[index].isNew = true;
+                  }
+              }
+              else{
+                this.markers[index].isNew = true;
+              }
+          }
 
           console.log("Selected item index "+ index);
 
@@ -84,10 +108,15 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
           this.loaded = true;
           this.lat = state.city.lat;
           this.lng = state.city.lng;
-          this.showMarker = false;
-          this.showInfoWindow = false;
           this.cityId = state.city.id;
           this.placeName  = "";
+          
+          if(state.city.savedPlaces){
+            this.markers = state.city.savedPlaces.map( (place:Place) => {
+              return new Marker(place,false,false);
+            } );
+          }
+          
           this.ngProgress.done();
         }
         else if(state.city != null){
@@ -120,6 +149,7 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
 
   onSave(){
     console.log("Inside onSave!!!");
+
     this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
   }
 
@@ -132,16 +162,22 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
     alert("Please resgister or login!!!");
   }
 
-  doAction(){
+  doAction(marker:Marker){
     if(!this.authorised){
       this.showErrorDialog();
     }
-    else if(this.isNew === true){
+    else if(marker.isNew === true){
       this.onSave();
     }
     else{
       this.onRemove();
     }
+  }
+
+  placeSelected(marker:Marker){
+    console.log("Selected",marker);
+    
+    this.store.dispatch(new PlaceActions.SetPlaceDetails(marker.place));
   }
 
   openInMap(){

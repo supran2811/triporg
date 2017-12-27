@@ -1,10 +1,12 @@
-import { Component, OnInit , Input} from '@angular/core';
+import { Component, OnInit , Input , Output , EventEmitter} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute,Router } from '@angular/router';
 
 import { Place } from '../../../models/place.model';
 import * as fromPlaceReduce from '../../store/place.reducer';
 import * as PlaceActions from '../../store/place.action';
+
+
 
 
 @Component({
@@ -15,6 +17,7 @@ import * as PlaceActions from '../../store/place.action';
 export class PlaceItemComponent implements OnInit {
 
   @Input() place:Place;
+  //@Output() hovered = new EventEmitter();
 
   constructor(private store:Store<fromPlaceReduce.FeatureState>,
               private activatedRoute:ActivatedRoute,
@@ -31,5 +34,6 @@ export class PlaceItemComponent implements OnInit {
 
   onHover(){
     console.log("Inside onHover of "+this.place.displayName);
+    this.store.dispatch(new PlaceActions.SetPlaceDetails(this.place));
   }
 }

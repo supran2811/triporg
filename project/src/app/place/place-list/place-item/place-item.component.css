@@ -1,5 +1,15 @@
-.place-item {
+.place-item-shadow {
    margin: 10px;
    width: 300px;
    height: auto;
+   border: 1px solid #eee;
+   box-shadow: 1px 3px 1px #cccccc;
 }
+
+.place-item {
+    margin: 10px;
+    width: 300px;
+    height: auto;
+    border: none;
+    box-shadow: none;
+ }

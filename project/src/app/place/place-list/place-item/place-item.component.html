@@ -1,4 +1,4 @@
-<div class="place-item">
+<div [ngClass]= "place-item-shadow">
     <app-thumbnail-view [photos]="place.photos"
             [title] = "place.displayName"
             (onHover) = "onHover()"></app-thumbnail-view>

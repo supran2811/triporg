@@ -11,7 +11,6 @@ import { DropDownDirective } from '../header/dropdown.directive';
 import { GooglePlacesService } from './google.places.service';
 import { HttpService } from './http.service';
 import { HttpAuthInterceptor } from './http.interceptor';
-import { PlaceRouterStrategy } from '../place/place.router.strategy';
 import {WindowRefService} from './windowRef.service';
 import {CacheStateService} from './cache.state.service';
 import { SwiperModule } from 'angular2-useful-swiper';

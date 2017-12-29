@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-3 col-sm-6 col-12" *ngFor = "let place of (savedplaces|async); let i = index">
-                <app-place-item [place] = "place">      </app-place-item>
+                <app-place-item [place] = "place" [shadow] = true>      </app-place-item>
             </div>  
           </div>
     </div>

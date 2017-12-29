@@ -42,7 +42,7 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
   placeName:string = "";
 
   markers:Marker[] = [];
-
+  showDetailWindow = false;
 
   constructor(public ngProgress:NgProgress, 
                 private store:Store<fromPlaceReducer.FeatureState>
@@ -81,6 +81,7 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
           if(index === -1){
             this.markers.push(new Marker(state.selectedPlace,
                                       true,true));
+             
           }
 
           else{
@@ -124,10 +125,6 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
           this.store.dispatch(new PlaceActions.GetCityLocation(state.city.id));
           this.loaded = false;
         }
-
-        
-
-
     });
 
     this.store.select('auth').map((state:fromAuth.State) =>{
@@ -174,9 +171,14 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
     }
   }
 
+  infoWindowClosed(){
+    console.log("[AddNewPlace]","info window closed!!");
+    this.showDetailWindow = false;
+  }
+
   placeSelected(marker:Marker){
     console.log("Selected",marker);
-    
+    this.showDetailWindow = true;
     this.store.dispatch(new PlaceActions.SetPlaceDetails(marker.place));
   }
 

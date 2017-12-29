@@ -7,10 +7,11 @@ agm-map  {
  
 
   .infowindow{
-      display: flex;
-      justify-content: space-between;
-      align-content: flex-end;
-      
+      background-color: white;
+      padding: 5px;
+      text-align: center;
+      font-size: inherit;
+      font-weight: bold;  
   }
   .si-content-wrapper {
     padding: 0 !important;

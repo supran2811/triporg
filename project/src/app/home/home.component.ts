@@ -40,10 +40,12 @@ export class HomeComponent implements OnInit {
       let city = this.pinnedCities.find((city:City) => {
         return city.id === selectedCity.id
       })
-      console.log("[HomeComponent]","Setting city "+city);
+      
      // this.store.dispatch(new PlaceActions.SetCity(city));
-     
-     this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
+     if(city != null && city != undefined){
+      console.log("[HomeComponent]","Setting pinned city "+city);
+      this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
+     }
     }
     this.router.navigate(['place',selectedCity.id]);
   }

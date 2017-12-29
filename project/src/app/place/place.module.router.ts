@@ -1,17 +1,17 @@
-import { AddNewInterniryComponent } from './add-new-interniry/add-new-interniry.component';
-import { NothingSelectedComponent } from './nothing-selected/nothing-selected.component';
+
 import { RouterModule, Routes , RouteReuseStrategy } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { AddNewPlaceComponent } from './add-new-place/add-new-place.component';
 import { PlaceComponent } from './place.component';
-import { PlaceRouterStrategy } from './place.router.strategy';
+
+import { PlaceDetailsComponent } from './place-details/place-details.component';
 
 const placeRoutes:Routes = [
     {
         path:'' , component:PlaceComponent , children :[
             {path:'new/place' , component:AddNewPlaceComponent},
-            {path:'new/iternary' , component:AddNewInterniryComponent},
+            {path:'new/place/:id',component:PlaceDetailsComponent},
             {path:'' , redirectTo:'new/place'}
             
         ]
@@ -21,9 +21,6 @@ const placeRoutes:Routes = [
 @NgModule({
     imports:[
         RouterModule.forChild(placeRoutes)
-    ],
-    providers:[
-        {provide:RouteReuseStrategy , useClass:PlaceRouterStrategy}
     ],
     exports:[
         RouterModule

@@ -27,3 +27,11 @@ swiper{
 .swiper-slide{
     width: 100% !important;
 }
+
+.icons {
+    position: absolute;
+    top:10px;
+    left:50px;
+    z-index: 2;
+    color:salmon;
+}

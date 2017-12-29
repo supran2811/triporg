@@ -17,6 +17,7 @@ import * as PlaceActions from '../../store/place.action';
 export class PlaceItemComponent implements OnInit {
 
   @Input() place:Place;
+  @Input() shadow = false;;
   //@Output() hovered = new EventEmitter();
 
   constructor(private store:Store<fromPlaceReduce.FeatureState>,
@@ -24,7 +25,7 @@ export class PlaceItemComponent implements OnInit {
               private router:Router) { }
 
   ngOnInit() {
-    console.log("[PlaceItemComponent]",this.place.photos);
+    console.log("[PlaceItemComponent]",this.place.photos , this.shadow);
   }
 
   onSelected(){

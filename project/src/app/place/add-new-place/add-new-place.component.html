@@ -27,23 +27,26 @@
                       [longitude]="marker.place.lng" 
                       (markerClick) = "placeSelected(marker)">
 
-        <agm-snazzy-info-window 
-                                    class="marker-info-window"
-                                    [latitude]="marker.place.lat" 
+        <agm-snazzy-info-window [latitude]="marker.place.lat" 
                                     [longitude]="marker.place.lng" 
                                     [isOpen]="marker.showInfoWindow"
                                     [closeWhenOthersOpen]="true"
                                     padding = "0"
                                     maxHeight="50px"
+                                    (afterClose) = "infoWindowClosed()"
                                     >
 
           <ng-template>
-            <app-thumbnail-view [photos]="marker.place.photos"
-            [title] = "marker.place.displayName"
-            ></app-thumbnail-view>
-              
-            </ng-template>
-           
+      
+              <app-place-item *ngIf = "showDetailWindow || marker.isNew"  
+                              [place] = "marker.place" 
+                              [shadow] = false>     
+              </app-place-item>
+
+              <div *ngIf = "!showDetailWindow" class="infowindow">
+                 {{ marker.place.displayName }}
+              </div>
+           </ng-template>
         </agm-snazzy-info-window>
 
       </agm-marker>

@@ -63,7 +63,8 @@ export class PlacesEffect {
                                                       console.log("After getting place",place);
                                                      return {
                                                          type:PlaceActions.SET_PLACE_DETAILS,
-                                                         payload:place
+                                                         payload:{place:place,isHover:false}
+
                                                      }                           
 
                                             } ).catch(errr => {

@@ -30,7 +30,7 @@ export class SetCity{
 
 export class SetPlaceDetails {
     readonly type = SET_PLACE_DETAILS;
-    public constructor(public payload:Place){}
+    public constructor(public payload:{place:Place , isHover:boolean}){}
 }
 
 export class GetCityDetails {

@@ -10,12 +10,14 @@ export interface FeatureState extends fromApp.AppState{
 
 export interface State{
     city:City,
-    selectedPlace : Place
+    selectedPlace : Place,
+    isHover:boolean
 }
 
 const initialState:State = getInitialState('place') || {
     city:null,
-    selectedPlace : null
+    selectedPlace : null,
+    isHover:false
 
 }
 
@@ -25,7 +27,8 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
         case PlaceActions.SET_PLACE_DETAILS:{
             return {
                 ...state,
-                selectedPlace : action.payload
+                selectedPlace : action.payload.place,
+                isHover:action.payload.isHover
             }
         }
         case PlaceActions.SET_CITY:{

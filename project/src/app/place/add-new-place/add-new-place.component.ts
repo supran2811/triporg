@@ -36,13 +36,20 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
   selectedPlace : Place;
   loaded = false;
   showMarker = false;
-  showInfoWindow = false;
+  
   zoom:number = 10;
   isNew:boolean = false;
   placeName:string = "";
 
   markers:Marker[] = [];
   showDetailWindow = false;
+
+  iconAdd = {id:"1",iconClass : ['fa','fa-plus-circle','fa-lg'].join(' ')};
+  iconRemove = {id:"2",iconClass : ['fa','fa-minus-circle','fa-lg'].join(' ')};
+  iconMap = {id:"3",iconClass : ['fa','fa-location-arrow','fa-lg'].join(' ')};
+  iconProgress = {id:"4",iconClass : ['fa','fa-spinner','fa-pulse','fa-lg'].join(' ')};
+   
+  thumbnailActionConfig:{id:string,iconClass:string}[] = [];
 
   constructor(public ngProgress:NgProgress, 
                 private store:Store<fromPlaceReducer.FeatureState>
@@ -68,41 +75,33 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
     this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
 
         if(state.selectedPlace != null ){
-          let index = -1;
-          this.markers = this.markers.map( (marker:Marker,idX) =>{
-                 marker.showInfoWindow = false;
-                 if(marker.place.placeId === state.selectedPlace.placeId){
-                    index = idX;
-                 }
-                 return marker;
+          let selectedPlaceIndex = -1;
+          this.markers = this.markers.filter((marker:Marker , idX:number) =>{
+                marker.showInfoWindow = false;
+
+                if(!marker.isNew && marker.place.placeId === state.selectedPlace.placeId){
+                  selectedPlaceIndex = idX;
+                }
+
+                return marker.isNew === false;
           } );
-
           
-          if(index === -1){
-            this.markers.push(new Marker(state.selectedPlace,
-                                      true,true));
+          if(selectedPlaceIndex >= 0){
              
-          }
-
-          else{
-              this.markers[index].showInfoWindow = true;
-              if(state.city.savedPlaces){
-                  let idX = state.city.savedPlaces.findIndex((place:Place)=>{
-                       return this.markers[index].place.placeId === place.placeId
-                  });
-                  if(idX >= 0){
-                    this.markers[index].isNew = false;
-                  }
-                  else{
-                    this.markers[index].isNew = true;
-                  }
+              if(!state.isHover){
+                 this.showDetailInfoWindow(this.markers[selectedPlaceIndex]);
               }
               else{
-                this.markers[index].isNew = true;
+                this.hideDetailInfoWindow(this.markers[selectedPlaceIndex]);
+                this.markers[selectedPlaceIndex].showInfoWindow = true;
               }
+              
           }
-
-          console.log("Selected item index "+ index);
+          else{
+            const newMarker = new Marker(state.selectedPlace,true,true);
+            this.markers.push(newMarker);
+            this.showDetailInfoWindow(newMarker);
+          }
 
         }
         else if(state.city != null && state.city.lat != 0){
@@ -171,22 +170,48 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
     }
   }
 
-  infoWindowClosed(){
+  infoWindowClosed(marker:Marker){
     console.log("[AddNewPlace]","info window closed!!");
-    this.showDetailWindow = false;
+    this.hideDetailInfoWindow(marker);
   }
 
   placeSelected(marker:Marker){
     console.log("Selected",marker);
-    this.showDetailWindow = true;
-    this.store.dispatch(new PlaceActions.SetPlaceDetails(marker.place));
+    this.showDetailInfoWindow(marker);
+    this.store.dispatch(new PlaceActions.SetPlaceDetails({place:marker.place,isHover:false}));
   }
 
-  openInMap(){
+  showDetailInfoWindow(marker:Marker){
+    this.showDetailWindow = true;
+      this.thumbnailActionConfig =  [ marker.isNew?this.iconAdd:this.iconRemove,this.iconMap];
+      marker.showInfoWindow = true;
+  }
+
+  hideDetailInfoWindow(marker:Marker){
+    this.showDetailWindow = false;
+    marker.showInfoWindow = false;
+  }
+
+  openInMap(marker:Marker){
        
-      const urlToOpen = "https://www.google.com/maps/search/?api=1&query="+this.lat+","+this.lng+"&query_place_id="+this.selectedPlace.placeId;
+      const urlToOpen = "https://www.google.com/maps/search/?api=1&query="+marker.place.lat+","+marker.place.lng+"&query_place_id="+marker.place.placeId;
       
       this.windowRef.getNativeWindow().open(urlToOpen);
+  }
+
+  onIconClicked($event , marker:Marker){
+    console.log("[AddNewPlace]","Clicked on "+$event);
+    if($event === this.iconAdd.id){
+        console.log("[AddNewPlace]","Handle onAdd clicked!!!");
+    }
+    else if($event === this.iconRemove.id){
+        console.log("[AddNewPlace]","Handle onRemove clicked!!!");
+    }
+    else if($event === this.iconMap.id){
+        console.log("[AddNewPlace]","Handle map clicked!!!");
+        this.openInMap(marker)
+    }
+
   }
 
 }

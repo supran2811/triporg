@@ -29,12 +29,12 @@ export class PlaceItemComponent implements OnInit {
   }
 
   onSelected(){
-    this.store.dispatch(new PlaceActions.SetPlaceDetails(this.place));
-    this.router.navigate(['new','place'],{relativeTo:this.activatedRoute});
+    // this.store.dispatch(new PlaceActions.SetPlaceDetails(this.place));
+    // this.router.navigate(['new','place'],{relativeTo:this.activatedRoute});
   }
 
   onHover(){
     console.log("Inside onHover of "+this.place.displayName);
-    this.store.dispatch(new PlaceActions.SetPlaceDetails(this.place));
+    this.store.dispatch(new PlaceActions.SetPlaceDetails({place:this.place,isHover:true}));
   }
 }

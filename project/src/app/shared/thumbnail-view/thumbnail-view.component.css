@@ -28,10 +28,10 @@ swiper{
     width: 100% !important;
 }
 
-.icons {
+.actions {
     position: absolute;
     top:10px;
-    left:50px;
+    right:10px;
     z-index: 2;
     color:salmon;
 }

@@ -15,11 +15,13 @@ import {WindowRefService} from './windowRef.service';
 import {CacheStateService} from './cache.state.service';
 import { SwiperModule } from 'angular2-useful-swiper';
 import { ThumbnailViewComponent } from './thumbnail-view/thumbnail-view.component';
+import { ThumbnailActionsComponent } from './thumbnail-actions/thumbnail-actions.component';
 
 @NgModule({
     declarations:[
         DropDownDirective,
-        ThumbnailViewComponent
+        ThumbnailViewComponent,
+        ThumbnailActionsComponent
     ],
     imports:[
         NgProgressModule,
@@ -49,7 +51,8 @@ import { ThumbnailViewComponent } from './thumbnail-view/thumbnail-view.componen
         AgmSnazzyInfoWindowModule,
         FormsModule,
         SwiperModule,
-        ThumbnailViewComponent
+        ThumbnailViewComponent,
+        ThumbnailActionsComponent
        ]
 })
 export class SharedModule{

@@ -1,5 +1,8 @@
-<div [ngClass]= "place-item-shadow">
+<div class= "place-item">
     <app-thumbnail-view [photos]="place.photos"
             [title] = "place.displayName"
-            (onHover) = "onHover()"></app-thumbnail-view>
+            (onHover) = "onHover()">
+        
+        <app-thumbnail-actions></app-thumbnail-actions>
+    </app-thumbnail-view>
 </div>

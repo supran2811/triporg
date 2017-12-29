@@ -1,0 +1,4 @@
+
+<span *ngFor = "let icon of config">
+        <i [ngClass] = "icon.iconClass" aria-hidden="true" (click) = "onIconClicked(icon.id)"></i>
+</span>

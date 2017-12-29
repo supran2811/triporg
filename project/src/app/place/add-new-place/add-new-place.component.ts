@@ -75,27 +75,47 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
     this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
 
         if(state.selectedPlace != null ){
-          let selectedPlaceIndex = -1;
+          this.placeName = "";
+          
+          let selectedPlaceIndexInPin = state.city.savedPlaces.findIndex( (place:Place) => {
+            return place.placeId === state.selectedPlace.placeId
+          }  );
+          
+          
+          let selectedPlaceIndexInMarker = -1;
           this.markers = this.markers.filter((marker:Marker , idX:number) =>{
                 marker.showInfoWindow = false;
-
+                
                 if(!marker.isNew && marker.place.placeId === state.selectedPlace.placeId){
-                  selectedPlaceIndex = idX;
+                  selectedPlaceIndexInMarker = idX;
                 }
 
                 return marker.isNew === false;
           } );
           
-          if(selectedPlaceIndex >= 0){
+          
+          
+
+          if(selectedPlaceIndexInMarker >= 0 && selectedPlaceIndexInPin >= 0){
              
               if(!state.isHover){
-                 this.showDetailInfoWindow(this.markers[selectedPlaceIndex]);
+                 this.showDetailInfoWindow(this.markers[selectedPlaceIndexInMarker]);
               }
               else{
-                this.hideDetailInfoWindow(this.markers[selectedPlaceIndex]);
-                this.markers[selectedPlaceIndex].showInfoWindow = true;
+                this.hideDetailInfoWindow(this.markers[selectedPlaceIndexInMarker]);
+                this.markers[selectedPlaceIndexInMarker].showInfoWindow = true;
               }
               
+          }
+          else if(selectedPlaceIndexInPin >= 0){
+
+            const newMarker = new Marker(state.selectedPlace,false,true);
+            this.markers.push(newMarker);
+            this.showDetailInfoWindow(newMarker);
+          }
+          else if(selectedPlaceIndexInMarker >= 0) {
+              this.markers[selectedPlaceIndexInMarker].isNew = true;
+              this.showDetailInfoWindow(this.markers[selectedPlaceIndexInMarker]);
           }
           else{
             const newMarker = new Marker(state.selectedPlace,true,true);
@@ -172,7 +192,8 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
 
   infoWindowClosed(marker:Marker){
     console.log("[AddNewPlace]","info window closed!!");
-    this.hideDetailInfoWindow(marker);
+    //this.hideDetailInfoWindow(marker);
+    marker.showInfoWindow = false;
   }
 
   placeSelected(marker:Marker){
@@ -185,6 +206,7 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
     this.showDetailWindow = true;
       this.thumbnailActionConfig =  [ marker.isNew?this.iconAdd:this.iconRemove,this.iconMap];
       marker.showInfoWindow = true;
+      console.log("[AddNewPlace]","Show detail window "+this.showDetailWindow);
   }
 
   hideDetailInfoWindow(marker:Marker){
@@ -203,9 +225,13 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
     console.log("[AddNewPlace]","Clicked on "+$event);
     if($event === this.iconAdd.id){
         console.log("[AddNewPlace]","Handle onAdd clicked!!!");
+        this.thumbnailActionConfig = [this.iconProgress,this.iconMap];
+        this.onSave();
     }
     else if($event === this.iconRemove.id){
         console.log("[AddNewPlace]","Handle onRemove clicked!!!");
+        this.thumbnailActionConfig = [this.iconProgress,this.iconMap];
+        this.onRemove();
     }
     else if($event === this.iconMap.id){
         console.log("[AddNewPlace]","Handle map clicked!!!");

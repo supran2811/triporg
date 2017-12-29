@@ -3,6 +3,8 @@
             [title] = "place.displayName"
             (onHover) = "onHover()">
         
-        <app-thumbnail-actions></app-thumbnail-actions>
+            <app-thumbnail-actions [config] = "thumbnailActionConfig"  
+                                    (iconClicked) ="onIconClicked($event)" >
+            </app-thumbnail-actions>
     </app-thumbnail-view>
 </div>

@@ -54,6 +54,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             newSavedPlaces.push({...state.selectedPlace});
 
             const updatedCity = {...state.city , savedPlaces:newSavedPlaces}    
+            console.log("[PlaceReducer]","Added new place ",updatedCity);
             return {
                 ...state,
                 city:updatedCity

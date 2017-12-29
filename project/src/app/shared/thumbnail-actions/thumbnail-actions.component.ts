@@ -10,7 +10,7 @@ export class ThumbnailActionsComponent implements OnInit {
 
   @Input() config: {id:string,iconClass:string}[] = [] ;
   @Output() iconClicked = new EventEmitter<string>();
-
+  
 
   constructor() { }
 

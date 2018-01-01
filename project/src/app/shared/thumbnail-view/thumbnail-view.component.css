@@ -12,6 +12,9 @@
    margin-top: 5px;
 }
 
+.thumbnail > p > a {
+    text-decoration: none;
+}
 
 swiper{
     height: 200px;

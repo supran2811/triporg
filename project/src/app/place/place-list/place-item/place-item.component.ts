@@ -43,6 +43,11 @@ export class PlaceItemComponent implements OnInit {
     this.store.dispatch(new PlaceActions.SetPlaceDetails({place:this.place,isHover:true}));
   }
 
+  onClicked(){
+    console.log("Inside onClicked");
+    this.router.navigate(["place",this.place.placeId],{relativeTo:this.activatedRoute});
+  }
+
   onRemove(){
     console.log("Inside onRemove!!!");
     this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());

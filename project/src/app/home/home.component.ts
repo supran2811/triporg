@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
       this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
      }
     }
-    this.router.navigate(['place',selectedCity.id]);
+    this.router.navigate(['city',selectedCity.id]);
   }
 
   selectCity(selectedItem:any){

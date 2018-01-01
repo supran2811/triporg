@@ -1,7 +1,8 @@
 <div class= "place-item">
     <app-thumbnail-view [photos]="place.photos"
             [title] = "place.displayName"
-            (onHover) = "onHover()">
+            (onHover) = "onHover()"
+            (onClick) = "onClicked()">
         
             <app-thumbnail-actions [config] = "thumbnailActionConfig"  
                                     (iconClicked) ="onIconClicked($event)" >

@@ -19,8 +19,6 @@ export class PlaceListComponent implements OnInit {
 
   ngOnInit() {
 
-    
-
     this.savedplaces = this.store.select('place').map((state:fromPlaceReducer.State) => {
         if(state.city){
          return state.city.savedPlaces;

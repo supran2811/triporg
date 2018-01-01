@@ -14,7 +14,9 @@ export class ThumbnailViewComponent implements OnInit {
   @Input() photos:{small:string,large:string}[] = [];
   @Input() title:string = "";
   @Input() isPinned:boolean = false;
-  @Output() onHover = new EventEmitter<any>()
+  @Output() onHover = new EventEmitter<any>();
+  @Output() onClick = new EventEmitter<any>();
+
   hover : boolean = false;
   config: SwiperOptions = {
     pagination: '.swiper-pagination',
@@ -39,8 +41,10 @@ export class ThumbnailViewComponent implements OnInit {
   }
  
   onMouseLeave(){
-
-    
     this.hover = false;
+  }
+
+  onMouseClicked(){
+    this.onClick.emit();
   }
 }

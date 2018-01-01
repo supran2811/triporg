@@ -10,12 +10,12 @@ import { PlaceDetailsComponent } from './place-details/place-details.component';
 const placeRoutes:Routes = [
     {
         path:'' , component:PlaceComponent , children :[
-            {path:'new/place' , component:AddNewPlaceComponent},
-            {path:'new/place/:id',component:PlaceDetailsComponent},
-            {path:'' , redirectTo:'new/place'}
-            
+            {path:'' , component:AddNewPlaceComponent},
         ]
-    }
+    },
+    {
+        path:'place/:id',component:PlaceDetailsComponent
+    },
 ]
 
 @NgModule({

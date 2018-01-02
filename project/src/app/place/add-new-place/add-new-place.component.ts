@@ -1,18 +1,18 @@
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Component, ElementRef, OnInit ,ViewChild,AfterViewInit} from '@angular/core';
+import { Component, 
+          ElementRef, 
+          OnInit ,
+          ViewChild} from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { NgProgress } from 'ngx-progressbar'
 import { FormControl } from '@angular/forms';
-
-import { GoogleMapsAPIWrapper } from '@agm/core';
 
 import { Place } from '../../models/place.model';
 import * as PlaceActions from '../store/place.action';
 import * as fromPlaceReducer from '../store/place.reducer';
 import * as fromAuth from '../../auth/store/auth.reducer';
 import { WindowRefService } from '../../shared/windowRef.service';
-import { GooglePlacesService } from '../../shared/google.places.service';
 import {Marker} from '../../models/marker.model';
 
 @Component({
@@ -20,7 +20,7 @@ import {Marker} from '../../models/marker.model';
   templateUrl: './add-new-place.component.html',
   styleUrls: ['./add-new-place.component.css']
 })
-export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
+export class AddNewPlaceComponent implements OnInit  {
 
   searchControl:FormControl;
 
@@ -54,15 +54,10 @@ export class AddNewPlaceComponent implements OnInit , AfterViewInit  {
   constructor(public ngProgress:NgProgress, 
                 private store:Store<fromPlaceReducer.FeatureState>
               , private activeRoute:ActivatedRoute,
-                private windowRef:WindowRefService,
-               private googlePlace : GooglePlacesService) { }
+                private windowRef:WindowRefService) { }
 
   ngOnInit() {
     this.load();
-  }
-
-  ngAfterViewInit(){
-   
   }
 
   onMapReady(event){

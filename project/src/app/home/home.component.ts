@@ -7,6 +7,8 @@ import {Store} from '@ngrx/store';
 import * as fromApp from '../store/app.reducer';
 import * as fromPinned from './pinned-view/store/pinnedview.reducer';
 import * as PinnedActions from './pinned-view/store/pinnedview.action';
+import * as fromPlaceReducer from '../place/store/place.reducer';
+import * as PlaceActions from '../place/store/place.action';
 
 import { City } from './../models/city.model';
 
@@ -22,11 +24,11 @@ export class HomeComponent implements OnInit {
   
   pinnedCities : City[];
 
-  constructor(private store:Store<fromApp.AppState> , private router:Router) { }
+  constructor(private store:Store<fromPlaceReducer.FeatureState> , private router:Router) { }
 
   ngOnInit() {
-
-    
+    console.log("Reset state...");
+    this.store.dispatch(new PlaceActions.ResetState());
     
     this.store.select('pinnedcities').subscribe((state:fromPinned.State) =>{
           this.pinnedCities = state.cities;

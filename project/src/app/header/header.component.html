@@ -1,12 +1,19 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
+         
+          <a    *ngIf="currentUrl !== HOME_URL"
+                class="nav navbar-nav navbar-left backbutton" style="cursor:pointer;"
+                (click)="goBack()"
+                  ><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i></a>
+          <a class="navbar-brand" routerLink="/">
+            Trip Organizer
+          </a>
         
-        <a class="navbar-brand" routerLink="/">
-          Trip Organizer
-        </a>
+        
       </div>
       <div class="collapse navbar-collapse">
+        
         <ul class="nav navbar-nav navbar-right">
           <ul class="nav navbar-nav" *ngIf = "!(authState | async).authorised else loggedInUser">
             <li routerLinkActive = "active">

@@ -22,7 +22,6 @@ export class PlaceComponent implements OnInit , OnDestroy {
 
   city:Observable<City>;
   isLoading = false;
-  cacheState:CacheStateService;
   subscription:Subscription;
 
   config: SwiperOptions = {
@@ -47,8 +46,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
 
     const myStore = this.store.select('place');
 
-    this.cacheState = new CacheStateService(myStore,'place');
-    this.cacheState.saveState();
+
 
      this.store.select('pinnedcities').take(1).subscribe((state:fromPinnedReducer.State)=>{
         console.log("[PlaceComponent] selected pinned city",state.selectedCity);
@@ -91,10 +89,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(){
+   // this.store.dispatch(new PlaceActions.ResetState());
     this.subscription.unsubscribe();
-   
-    this.store.dispatch(new PlaceActions.ResetState());
-    this.cacheState.stop();
-    
   }
 }

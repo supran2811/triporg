@@ -1,3 +1,37 @@
-<p>
-  place-details works!
-</p>
+<div>
+    <div class="row">
+        <swiper *ngIf="place" [config]="config">
+            <div  class="swiper-wrapper">
+                <img class="swiper-slide" *ngFor="let photo of photos" [src]="photo"> 
+                <img *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">
+            </div>
+            <div  class="swiper-pagination"></div>
+            <div  class="swiper-button-next"></div>
+            <div  class="swiper-button-prev"></div>
+        </swiper>
+        
+    </div>
+    <div class="row">
+       <div class="col-xs-6">
+            <h2>{{place.displayName}}</h2>
+       </div>
+       <div  class="col-xs-6 affix">
+          
+          <agm-map id = "map" name="map" 
+            [latitude]="place.lat" 
+            [longitude]="place.lng" 
+            [zoom] = "zoom"
+            [zoomControl]="false"
+            #map>
+
+            <agm-marker   [latitude]="place.lat" 
+                          [longitude]="place.lng">
+            </agm-marker>
+          </agm-map>
+
+       </div>
+
+    </div>
+
+
+</div>

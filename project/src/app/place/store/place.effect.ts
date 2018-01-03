@@ -52,7 +52,7 @@ export class PlacesEffect {
                                                                                 res.geometry.location.lat() , 
                                                                                 res.geometry.location.lng() , 
                                                                                 res.name ,
-                                                                              res.address_components   );
+                                                                              res.formatted_address   );
                                                       if(res.photos){
                                                             place.photos = res.photos.map(photo => (
                                                                  {small:photo.getUrl({'maxWidth': 200}) , 
@@ -182,7 +182,7 @@ export class PlacesEffect {
                                                             } )
                                                             .withLatestFrom(this.store.select('place'))
                                                             .map( ([res,state]) => {
-                                                                console.log(res,state);
+                                                                console.log("[PlaceEffetcs]",res,state);
                                                                 
                                                                 state.city.photos = res.photos.map(photo => {
 
@@ -200,6 +200,36 @@ export class PlacesEffect {
                                                                 console.log(errr);
                                                                 return Observable.of([]);
                                                             })
+
+                @Effect()
+                getPlaceDetails = this.actions$.ofType(PlaceActions.GET_PLACE_DETAILS)
+                                                                .map((action:PlaceActions.GetPlaceDetails) => {
+                                                                    return action.payload
+                                                                })
+                                                                .switchMap((payload:{id:string,map:any}) => {
+                                                                    return this.googlePlaces.getDetails(payload.id,payload.map);
+                                                                } )
+                                                                .withLatestFrom(this.store.select('place'))
+                                                                .map( ([res,state]) => {
+                                                                    console.log("[PlaceEffetcs]","GET_PLACE_DETAILS",res,state);
+                                                                    
+                                                                    state.detailsPlace.address =  res.formatted_address;
+                                                                    state.detailsPlace.opening_text = (res.opening_hours && res.opening_hours.weekday_text) || null;
+                                                                    state.detailsPlace.phoneNumber = res.formatted_phone_number;      
+                                                                    state.detailsPlace.reviews = (res.reviews && res.reviews.map(review => (
+                                                                            {text:review.text , author_name:review.author_name , profile_photo_url:review.profile_photo_url }
+                                                                    )));
+                                                                    state.detailsPlace.website = res.website;
+                                                                    return {
+                                                                        type:PlaceActions.SET_PLACE_TO_NAVIGATE,
+                                                                        payload:state.detailsPlace
+                                                                    }
+                                                                } )
+                                                                .catch( errr => {
+                                                                    console.log(errr);
+                                                                    return Observable.of([]);
+                                                                })
+                                                            
                                                             
 
     constructor(private actions$:Actions , 

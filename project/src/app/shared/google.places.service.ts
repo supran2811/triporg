@@ -90,6 +90,7 @@ export class GooglePlacesService {
                         if(place == null || place == undefined){
                             observer.error("Empty Place");
                         }
+                        
                          observer.next(place);
 
                     }) ;  

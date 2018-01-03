@@ -61,7 +61,8 @@ export class AddNewPlaceComponent implements OnInit  {
   }
 
   onMapReady(event){
-    console.log("[onMapReady]",event);
+    console.log("[onMapReady]",event,this.cityId);
+    
     this.store.dispatch(new PlaceActions.GetCityDetails({id:this.cityId,map:event}));
   }
 
@@ -69,13 +70,12 @@ export class AddNewPlaceComponent implements OnInit  {
     
     this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
 
-        if(state.selectedPlace != null ){
+        if(state.selectedPlace != null && this.lat ){
           this.placeName = "";
           
           let selectedPlaceIndexInPin = state.city.savedPlaces.findIndex( (place:Place) => {
             return place.placeId === state.selectedPlace.placeId
           }  );
-          
           
           let selectedPlaceIndexInMarker = -1;
           this.markers = this.markers.filter((marker:Marker , idX:number) =>{
@@ -87,10 +87,7 @@ export class AddNewPlaceComponent implements OnInit  {
 
                 return marker.isNew === false;
           } );
-          
-          
-          
-
+        
           if(selectedPlaceIndexInMarker >= 0 && selectedPlaceIndexInPin >= 0){
              
               if(!state.isHover){
@@ -100,7 +97,6 @@ export class AddNewPlaceComponent implements OnInit  {
                 this.hideDetailInfoWindow(this.markers[selectedPlaceIndexInMarker]);
                 this.markers[selectedPlaceIndexInMarker].showInfoWindow = true;
               }
-              
           }
           else if(selectedPlaceIndexInPin >= 0){
 
@@ -117,9 +113,8 @@ export class AddNewPlaceComponent implements OnInit  {
             this.markers.push(newMarker);
             this.showDetailInfoWindow(newMarker);
           }
-
-        }
-        else if(state.city != null && state.city.lat != 0){
+         }
+         else if(state.city != null && state.city.lat != 0 ){
           this.loaded = true;
           this.lat = state.city.lat;
           this.lng = state.city.lng;

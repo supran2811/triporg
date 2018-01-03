@@ -12,6 +12,10 @@
    margin-top: 5px;
 }
 
+img{
+    object-fit: cover;
+}    
+
 .thumbnail > p > a {
     text-decoration: none;
 }

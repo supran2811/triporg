@@ -11,13 +11,15 @@ export interface FeatureState extends fromApp.AppState{
 export interface State{
     city:City,
     selectedPlace : Place,
-    isHover:boolean
+    isHover:boolean,
+    detailsPlace:Place
 }
 
 const initialState:State = getInitialState('place') || {
     city:null,
     selectedPlace : null,
-    isHover:false
+    isHover:false,
+    detailsPlace:null
 
 }
 
@@ -91,10 +93,24 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
                 city:updatedCity
             }
         }
+        case PlaceActions.SET_PLACE_TO_NAVIGATE:{
+            return {
+                ...state,
+                detailsPlace:action.payload
+            }
+        }
+        case PlaceActions.RESET_PLACE_TO_NAVIGATE:{
+            return {
+                ...state,
+                detailsPlace:null
+            }
+        }
         case PlaceActions.RESET_STATE:{
             console.log("Coming here in reset state...");
             return {
+                ...state,
                 city:null,
+                isHover:false,
                 selectedPlace : null
             }
         }

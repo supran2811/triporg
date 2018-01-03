@@ -37,7 +37,7 @@ export class AuthEffect {
                                             if(error && error.type == AuthActions.SHOW_ERROR){
                                                 return Observable.of(error);
                                             }
-
+                                            
                                             return fromPromise(firebase.auth().currentUser.getIdToken())
                                             .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
                                             .mergeMap((res) =>{

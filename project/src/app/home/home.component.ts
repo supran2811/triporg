@@ -27,8 +27,6 @@ export class HomeComponent implements OnInit {
   constructor(private store:Store<fromPlaceReducer.FeatureState> , private router:Router) { }
 
   ngOnInit() {
-    console.log("Reset state...");
-    this.store.dispatch(new PlaceActions.ResetState());
     
     this.store.select('pinnedcities').subscribe((state:fromPinned.State) =>{
           this.pinnedCities = state.cities;

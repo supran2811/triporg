@@ -1,8 +1,8 @@
-<div>
+<div class="container">
     <div class="row">
         <swiper *ngIf="place" [config]="config">
             <div  class="swiper-wrapper">
-                <img class="swiper-slide" *ngFor="let photo of photos" [src]="photo"> 
+                <img class="swiper-slide" *ngFor="let photo of photos" [src]="photo" > 
                 <img *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">
             </div>
             <div  class="swiper-pagination"></div>
@@ -13,21 +13,110 @@
     </div>
     <div class="row">
        <div class="col-xs-6">
-            <h2>{{place.displayName}}</h2>
-       </div>
-       <div  class="col-xs-6 affix">
-          
-          <agm-map id = "map" name="map" 
-            [latitude]="place.lat" 
-            [longitude]="place.lng" 
-            [zoom] = "zoom"
-            [zoomControl]="false"
-            #map>
+           <div class = "place-details">
+                <h2>{{place.displayName}}</h2>
+               
+                <div *ngIf = "place.address">
+                        <div class="col-xs-12">
+                                <hr>
+                        </div>
+                        <div class="col-xs-1">
+                                <i class="fa fa-address-card-o" aria-hidden="true"></i>
+                        </div>
+                       <div class="col-xs-11">
+                            {{place.address}}
+                       </div>
+                      
+                </div>
+           
+                
+                <div *ngIf = "place.phoneNumber">
+                        <div class="col-xs-12">
+                                <hr>
+                        </div>
+                        <div class="col-xs-1">
+                                <i class="fa fa-phone" aria-hidden="true"></i>
+                        </div>
+                       <div class="col-xs-11">
+                            {{place.phoneNumber}}
+                       </div>
+                       
+                </div>
+            
+                
+                <div *ngIf = "place.website">
+                        <div class="col-xs-12">
+                                <hr>
+                        </div>
+                        <div class="col-xs-1">
+                                <i class="fa fa-globe" aria-hidden="true"></i>
+                        </div>
+                       <div class="col-xs-11">
+                            {{place.website}}
+                       </div>
+                      
+                </div>
 
-            <agm-marker   [latitude]="place.lat" 
-                          [longitude]="place.lng">
-            </agm-marker>
-          </agm-map>
+         
+                
+
+                <div *ngIf = "place.opening_text" class = "col-xs-12">
+                        <div class="col-xs-12">
+                                <hr>
+                        </div>
+                            <div *ngFor="let text of place.opening_text">
+                                    {{text}}
+                            </div>
+                       
+                        
+                </div>
+           
+                <div *ngIf = "place.reviews" class = "col-xs-12">
+                        <div class="col-xs-12">
+                                <hr>
+                        </div>
+                    
+                        <div *ngFor = "let review of place.reviews">
+                                <div class = "col-xs-4">
+                                        <div>
+                                            <img [src]="review.profile_photo_url" alt="Profile Photo">   
+                                        </div>
+                                        <div>
+                                            {{review.author_name}}
+                                        </div>
+                                </div>
+                                <div class="col-xs-8">
+                                       {{review.text}}
+                                </div>
+                                <div class="col-xs-12">
+                                        <hr>
+                                </div>
+
+                        </div>
+                  
+
+                </div>
+
+               
+           </div>
+            
+       </div>
+       <div  class="col-xs-6">
+  
+                <agm-map id = "map" name="map" 
+                [latitude]="place.lat" 
+                [longitude]="place.lng" 
+                [zoom] = "zoom"
+                (mapReady) = "onMapReady($event)"
+                [zoomControl]="false"
+                #map>
+    
+                <agm-marker   [latitude]="place.lat" 
+                              [longitude]="place.lng">
+                </agm-marker>
+              </agm-map>
+  
+          
 
        </div>
 

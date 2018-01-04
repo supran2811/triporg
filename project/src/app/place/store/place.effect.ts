@@ -9,6 +9,7 @@ import * as firebase from 'firebase';
 import { HttpService } from '../../shared/http.service';
 import { GooglePlacesService } from '../../shared/google.places.service';
 import * as PlaceActions from './place.action';
+import * as PinnedViewAction from '../../home/pinned-view/store/pinnedview.action';
 import * as fromPlaceReducer from './place.reducer';
 import * as fromAuthReducer from '../../auth/store/auth.reducer';
 import { Place } from '../../models/place.model';
@@ -44,7 +45,7 @@ export class PlacesEffect {
                                             } ).switchMap((payload:{input:ElementRef,boundary:google.maps.LatLngBounds}) =>{
                                                 return this.googlePlaces.addPlaceChangeListener(payload.input,payload.boundary);
                                             }).map( (res:any) => {
-                                                    console.log(res);
+                                                    console.log("[PlaceEffects]",res);
                                                      
                                                      
 
@@ -100,12 +101,12 @@ export class PlacesEffect {
                                                                         .catch((err) => Observable.of({type:"error",message:err}));
                                                           }
                                                           
-                                                    }).map((response) => {
+                                                    }).mergeMap((response) => {
                                                         console.log(response);
 
-                                                        return {
+                                                        return [{
                                                            type:PlaceActions.SAVE_SELECTED_PLACE
-                                                         }
+                                                         }];
                                                     }); 
     @Effect()                                                                             
           removePlaceFromServer = this.actions$.ofType(PlaceActions.REMOVE_SELECTED_PLACE_FROM_SERVER)

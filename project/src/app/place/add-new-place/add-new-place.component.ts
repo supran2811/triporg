@@ -212,8 +212,15 @@ export class AddNewPlaceComponent implements OnInit  {
   }
 
   onIconClicked($event , marker:Marker){
+
+    if(!this.authorised){
+      this.showErrorDialog();
+      return;
+    }
+
     console.log("[AddNewPlace]","Clicked on "+$event);
     if($event === this.iconAdd.id){
+    
         console.log("[AddNewPlace]","Handle onAdd clicked!!!");
         this.thumbnailActionConfig = [this.iconProgress,this.iconMap];
         this.onSave();

@@ -3,19 +3,22 @@
     <swiper *ngIf="hover" [config]="config" #usefulSwiper>
         <div  class="swiper-wrapper">
             <img (click) = "onMouseClicked()" class="swiper-slide" *ngFor="let photo of photos" [src]="photo.small"> 
-            <img *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">
+            <img (click) = "onMouseClicked()" *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">
             <div class = "actions">
                 <ng-content></ng-content>
              </div>
         </div>
-        <div  class="swiper-pagination"></div>
-        <div  class="swiper-button-next"></div>
-        <div  class="swiper-button-prev"></div>
+        <div *ngIf="photos !== null && photos.length > 0">
+            <div  class="swiper-pagination"></div>
+            <div  class="swiper-button-next"></div>
+            <div  class="swiper-button-prev"></div>
+        </div>
+        
     </swiper>
     <swiper *ngIf = "!hover" [config]="config" #usefulSwiper>
       <div  class="swiper-wrapper">
           <img (click) = "onMouseClicked()" class="swiper-slide" *ngFor="let photo of photos" [src]="photo.small"> 
-          <img *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">   
+          <img (click) = "onMouseClicked()" *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">   
       </div>
     </swiper>
   <p><a (click) = "onMouseClicked()" ><strong>{{title}}</strong></a></p>

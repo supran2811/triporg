@@ -1,5 +1,5 @@
 <div class= "place-item">
-    <app-thumbnail-view [photos]="place.photos"
+    <app-thumbnail-view [photos]="place.photos || []"
             [title] = "place.displayName"
             (onHover) = "onHover()"
             (onClick) = "onClicked()">

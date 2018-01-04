@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import * as fromPlaceReducer from '../store/place.reducer';
 import * as PlaceActions from '../store/place.action';
 import { Place } from '../../models/place.model';
+import { WindowRefService } from '../../shared/windowRef.service';
 
 @Component({
   selector: 'app-place-details',
@@ -16,7 +17,8 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   isPinned:boolean;
   zoom:number = 15;
   photos:string[] = [];
-
+  mapPositonInInteger = 400;
+  mapPostionInPixel = "400px";
 
   config: SwiperOptions = {
     pagination: '.swiper-pagination',
@@ -26,7 +28,8 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
     spaceBetween: 0
   };
 
-  constructor(private store:Store<fromPlaceReducer.FeatureState>) { }
+  constructor(private store:Store<fromPlaceReducer.FeatureState>,
+            private window:WindowRefService) { }
   
   ngOnInit() {
     this.load();
@@ -48,7 +51,7 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
               this.isPinned = selectedPlaceIndexInPin >= 0;
 
               this.place = state.detailsPlace;
-              this.photos = this.place.photos.map(photo => photo.large );
+              this.photos = (this.place.photos && this.place.photos.map(photo => photo.large )) || [];
               
               console.log("[PlaceDetails]",this.place);
            }
@@ -60,4 +63,27 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
     
     this.store.dispatch(new PlaceActions.GetPlaceDetails({id:this.place.placeId,map:$event}));
   }
+
+  onScroll(event){
+
+    
+    let position = this.mapPositonInInteger - this.window.getNativeWindow().pageYOffset;
+
+    if(position < 100){
+      position = 100;
+    }
+
+    this.mapPostionInPixel = position+"px";
+
+   
+  }
+
+
+  
+  openInMap(){
+       
+    const urlToOpen = "https://www.google.com/maps/search/?api=1&query="+this.place.lat+","+this.place.lng+"&query_place_id="+this.place.placeId;
+    
+    this.window.getNativeWindow().open(urlToOpen);
+}
 }

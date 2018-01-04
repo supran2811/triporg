@@ -1,19 +1,25 @@
-<div class="container">
-    <div class="row">
+<div (window:scroll) = "onScroll($event)">
+    <div class="cover">
         <swiper *ngIf="place" [config]="config">
             <div  class="swiper-wrapper">
                 <img class="swiper-slide" *ngFor="let photo of photos" [src]="photo" > 
                 <img *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">
             </div>
-            <div  class="swiper-pagination"></div>
-            <div  class="swiper-button-next"></div>
-            <div  class="swiper-button-prev"></div>
+            <div *ngIf="photos !== null && photos.length > 0" >
+                <div  class="swiper-pagination"></div>
+                <div  class="swiper-button-next"></div>
+                <div  class="swiper-button-prev"></div>
+            </div>
+            
         </swiper>
         
     </div>
-    <div class="row">
-       <div class="col-xs-6">
-           <div class = "place-details">
+    <div class="place-container">
+
+    
+    <div class="container">
+    
+          
                 <h2>{{place.displayName}}</h2>
                
                 <div *ngIf = "place.address">
@@ -98,29 +104,31 @@
                 </div>
 
                
-           </div>
+        </div>  
             
-       </div>
-       <div  class="col-xs-6">
-  
+   
+       <div   class="map-container" [style.top] = "mapPostionInPixel">
+                
+        
                 <agm-map id = "map" name="map" 
-                [latitude]="place.lat" 
-                [longitude]="place.lng" 
-                [zoom] = "zoom"
-                (mapReady) = "onMapReady($event)"
-                [zoomControl]="false"
-                #map>
-    
-                <agm-marker   [latitude]="place.lat" 
-                              [longitude]="place.lng">
-                </agm-marker>
-              </agm-map>
-  
+                        [latitude]="place.lat" 
+                        [longitude]="place.lng" 
+                        [zoom] = "zoom"
+                        (mapReady) = "onMapReady($event)"
+                        [zoomControl]="false"
+                        #map>
+                
+                        <agm-marker   [latitude]="place.lat" 
+                                [longitude]="place.lng">
+                        </agm-marker>
+               </agm-map>
+               <button type="button" (click) = "openInMap()">Open in Google Maps</button>
+               
           
 
        </div>
 
-    </div>
-
+</div>
+    
 
 </div>

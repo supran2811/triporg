@@ -1,12 +1,15 @@
 import { Action } from '@ngrx/store';
 
 import { City } from '../../../models/city.model';
+import { Place } from '../../../models/place.model';
 
 export const GET_PINNED_CITIES_FROM_SERVER = "GET_PINNED_CITIES_FROM_SERVER";
 export const SET_PINNED_CITIES = "SET_PINNED_CITIES";
 export const ADD_SELECTED_PINNED_CITY = "ADD_SELECTED_PINNED_CITY";
 export const REMOVE_SELECTED_PINNED_CITY = "REMOVE_SELECTED_PINNED_CITY";
 export const UPDATE_SELECTED_PINNED_CITY = "UPDATE_SELECTED_PINNED_CITY";
+export const ADD_PLACE_TO_SELECTED_PINNED_CITY = "ADD_PLACE_TO_SELECTED_PINNED_CITY";
+export const REMOVE_PLACE_FROM_SELECTED_PINNED_CITY = "REMOVE_PLACE_FROM_SELECTED_PINNED_CITY";
 export const SET_SELECTED_PINNED_CITY = "SET_SELECTED_PINNED_CITY";
 export const REMOVE_PINNED_CITY_FROM_SERVER = "REMOVE_PINNED_CITIES_FROM_SERVER";
 export const RESET_PINNED_STATE = "RESET_PINNED_STATE";
@@ -46,6 +49,17 @@ export class ResetPinnedState {
     readonly type = RESET_PINNED_STATE;
 }
 
+export class AddPlaceToSelectedPinnedCity {
+    readonly type = ADD_PLACE_TO_SELECTED_PINNED_CITY;
+    public constructor(public payload:Place){}
+}
+
+export class RemovePlaceFromSelectedPinnedCity {
+    readonly type = REMOVE_PLACE_FROM_SELECTED_PINNED_CITY;
+    public constructor(public payload:Place){}
+}
+
+
 export type PinnedViewActions = GetPinnedCitiesFromServer|
                                 RemovePinnedCityFromServer|
                                     SetPinnedCities|
@@ -53,4 +67,6 @@ export type PinnedViewActions = GetPinnedCitiesFromServer|
                                     RemoveSelectedPinnedCity|
                                     UpdateSelectedPinnedCity|
                                     SetSelectedPinnedCity|
-                                    ResetPinnedState;
+                                    ResetPinnedState|
+                                    AddPlaceToSelectedPinnedCity|
+                                    RemovePlaceFromSelectedPinnedCity;

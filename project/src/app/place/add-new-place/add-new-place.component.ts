@@ -73,9 +73,11 @@ export class AddNewPlaceComponent implements OnInit  {
         if(state.selectedPlace != null && this.lat ){
           this.placeName = "";
           
-          let selectedPlaceIndexInPin = state.city.savedPlaces.findIndex( (place:Place) => {
+          console.log("[PlaceEffects]",state.city.savedPlaces);
+
+          let selectedPlaceIndexInPin = state.city.savedPlaces?(state.city.savedPlaces.findIndex( (place:Place) => {
             return place.placeId === state.selectedPlace.placeId
-          }  );
+          }  )) : -1;
           
           let selectedPlaceIndexInMarker = -1;
           this.markers = this.markers.filter((marker:Marker , idX:number) =>{
@@ -88,6 +90,8 @@ export class AddNewPlaceComponent implements OnInit  {
                 return marker.isNew === false;
           } );
         
+          console.log("[PlaceEffects]",selectedPlaceIndexInPin,selectedPlaceIndexInMarker);
+
           if(selectedPlaceIndexInMarker >= 0 && selectedPlaceIndexInPin >= 0){
              
               if(!state.isHover){

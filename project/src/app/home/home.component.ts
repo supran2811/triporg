@@ -20,8 +20,6 @@ import { City } from './../models/city.model';
 
 export class HomeComponent implements OnInit {
 
-  
-  
   pinnedCities : City[];
 
   constructor(private store:Store<fromPlaceReducer.FeatureState> , private router:Router) { }
@@ -36,17 +34,19 @@ export class HomeComponent implements OnInit {
 
 
   selectPinnedCity(selectedCity:City){
-    if(this.pinnedCities != null){
-      let city = this.pinnedCities.find((city:City) => {
-        return city.id === selectedCity.id
-      })
+    // if(this.pinnedCities != null){
+    //   let city = this.pinnedCities.find((city:City) => {
+    //     return city.id === selectedCity.id
+    //   })
       
-     // this.store.dispatch(new PlaceActions.SetCity(city));
-     if(city != null && city != undefined){
-      console.log("[HomeComponent]","Setting pinned city "+city);
-      this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
-     }
-    }
+    //  // this.store.dispatch(new PlaceActions.SetCity(city));
+    //  if(city != null && city != undefined)
+    //  {
+    //   console.log("[HomeComponent]","Setting pinned city "+city);
+    //   this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
+    //  }
+    // }
+    this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(selectedCity));
     this.router.navigate(['city',selectedCity.id]);
   }
 

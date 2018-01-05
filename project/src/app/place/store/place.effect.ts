@@ -3,7 +3,7 @@ import { withLatestFrom } from 'rxjs/operator/withLatestFrom';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-import { ElementRef, Injectable } from '@angular/core';
+import { ElementRef, Injectable, state } from '@angular/core';
 import * as firebase from 'firebase';
 
 import { HttpService } from '../../shared/http.service';
@@ -79,10 +79,11 @@ export class PlacesEffect {
                                                     .withLatestFrom(this.store.select('place'))
                                                         .switchMap(([action,state]) =>{
                                                           
-                                                          const savedPlaces = state.city.savedPlaces;
+                                                          const savedPlaces = state.city.savedPlaces || [];
                                                           const selectedPlace = state.selectedPlace;
                                                           console.log("[PlaceEffects]",selectedPlace);
                                                           const city = state.city;
+                                                          
                                                           const uid = sessionStorage.getItem('uid');
                                                           let url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id;  
 
@@ -101,12 +102,17 @@ export class PlacesEffect {
                                                                         .catch((err) => Observable.of({type:"error",message:err}));
                                                           }
                                                           
-                                                    }).mergeMap((response) => {
+                                                    }) .withLatestFrom(this.store.select('place'))
+                                                    .mergeMap( ([response,state]) => {
                                                         console.log(response);
 
                                                         return [{
                                                            type:PlaceActions.SAVE_SELECTED_PLACE
-                                                         }];
+                                                         },
+                                                        {
+                                                            type:PinnedViewAction.ADD_PLACE_TO_SELECTED_PINNED_CITY,
+                                                            payload:state.selectedPlace
+                                                        }];
                                                     }); 
     @Effect()                                                                             
           removePlaceFromServer = this.actions$.ofType(PlaceActions.REMOVE_SELECTED_PLACE_FROM_SERVER)
@@ -114,7 +120,7 @@ export class PlacesEffect {
                                                     .switchMap(([action,state]) => {
                                                         const selectedPlace = state.selectedPlace;
                                                         const city = state.city;
-                                                        const savedPlaces  = state.city.savedPlaces;
+                                                        const savedPlaces  = state.city.savedPlaces || [];
                                                         const uid = sessionStorage.getItem('uid');
                                                         let url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id;         
                                                         if(savedPlaces.length > 1){
@@ -122,11 +128,16 @@ export class PlacesEffect {
                                                         }
                                                         return this.http.remove(url).catch((err) => Observable.of({type:"error" , message:err }));
                                                                     
-                                                    }).map(res => {
+                                                    }).withLatestFrom(this.store.select('place'))
+                                                    .mergeMap(([res,state]) => {
                                                         
-                                                        return {
+                                                        return [{
                                                             type:PlaceActions.REMOVE_SELECTED_PLACE
-                                                        }
+                                                        },
+                                                        {
+                                                            type:PinnedViewAction.REMOVE_PLACE_FROM_SELECTED_PINNED_CITY,
+                                                            payload:state.selectedPlace    
+                                                        }];
                                                     });
 
     @Effect()

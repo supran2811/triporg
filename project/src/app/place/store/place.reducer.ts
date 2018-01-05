@@ -52,7 +52,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.SAVE_SELECTED_PLACE:{
-            let newSavedPlaces = [ ...state.city.savedPlaces];
+            let newSavedPlaces =state.city.savedPlaces ? [ ...state.city.savedPlaces]:[];
             newSavedPlaces.push({...state.selectedPlace});
 
             const updatedCity = {...state.city , savedPlaces:newSavedPlaces}    

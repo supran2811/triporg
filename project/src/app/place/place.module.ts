@@ -3,6 +3,7 @@ import { PlaceRouterModule } from './place.module.router';
 import { SharedModule } from '../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
+import { RouterModule, Routes , RouteReuseStrategy } from '@angular/router';
 
 import { PlaceListComponent } from './place-list/place-list.component';
 import { AddNewPlaceComponent } from './add-new-place/add-new-place.component';
@@ -14,6 +15,8 @@ import {placeReducer} from './store/place.reducer';
 import { PlacesEffect } from './store/place.effect';
 import { PlaceItemComponent } from './place-list/place-item/place-item.component';
 import { getInitialState } from '../shared/cache.state.service';
+
+
 
 @NgModule({
     declarations:[

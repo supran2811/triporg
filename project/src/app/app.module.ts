@@ -7,6 +7,7 @@ import {StoreModule} from '@ngrx/store';
 
 import { AgmCoreModule } from '@agm/core/core.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window'
+import { RouteReuseStrategy } from '@angular/router';
 
 
 import { AuthModule } from './auth/auth.module';
@@ -19,6 +20,8 @@ import { globalReducer } from './store/app.reducer';
 import { AppRouterModule } from './app.router.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
+import { CustomRouterReuseStrategy } from './custom.route-reuse';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +42,12 @@ import { HeaderComponent } from './header/header.component';
     StoreModule.forRoot(globalReducer),
     EffectsModule.forRoot([AuthEffect,PinnedViewEffects])
   ],
-  providers: [],
+  providers: [
+    {
+      provide:RouteReuseStrategy,
+      useClass:CustomRouterReuseStrategy
+  }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

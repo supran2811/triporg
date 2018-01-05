@@ -39,7 +39,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
               private ngProgress:NgProgress) { }
 
   ngOnInit() {
-    this.store.dispatch(new PlaceActions.ResetState());
+   
     console.log("[PlaceComponent]","Loading111");
     this.isLoading = true;
     this.ngProgress.start();
@@ -87,7 +87,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(){
-    
+    this.store.dispatch(new PlaceActions.ResetState());
     this.subscription.unsubscribe();
   }
 }

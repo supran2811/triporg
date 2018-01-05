@@ -38,8 +38,9 @@
 
           <ng-template>
       
-                <app-thumbnail-view *ngIf = "showDetailWindow" [photos]="marker.place.photos"
-                        [title] = "marker.place.displayName">
+                <app-thumbnail-view *ngIf = "showDetailWindow" [photos]="marker.place.photos || []"
+                        [title] = "marker.place.displayName"
+                        (onClick) = "onClicked(marker.place)">
                         <app-thumbnail-actions [config] = "thumbnailActionConfig"  (iconClicked) ="onIconClicked($event,marker)" ></app-thumbnail-actions>
                       </app-thumbnail-view>
 

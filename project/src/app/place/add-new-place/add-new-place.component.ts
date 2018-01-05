@@ -1,4 +1,4 @@
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params,Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Component, 
           ElementRef, 
@@ -14,6 +14,7 @@ import * as fromPlaceReducer from '../store/place.reducer';
 import * as fromAuth from '../../auth/store/auth.reducer';
 import { WindowRefService } from '../../shared/windowRef.service';
 import {Marker} from '../../models/marker.model';
+
 
 @Component({
   selector: 'app-add-new-place',
@@ -54,6 +55,7 @@ export class AddNewPlaceComponent implements OnInit  {
   constructor(public ngProgress:NgProgress, 
                 private store:Store<fromPlaceReducer.FeatureState>
               , private activeRoute:ActivatedRoute,
+                private router:Router,
                 private windowRef:WindowRefService) { }
 
   ngOnInit() {
@@ -239,6 +241,12 @@ export class AddNewPlaceComponent implements OnInit  {
         this.openInMap(marker)
     }
 
+  }
+
+  onClicked(place:Place){
+    console.log("Inside onClicked");
+    this.store.dispatch(new PlaceActions.SetPlaceToNavigate(place));
+    this.router.navigate(["place",place.placeId],{relativeTo:this.activeRoute});
   }
 
 }

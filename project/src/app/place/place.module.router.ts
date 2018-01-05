@@ -7,6 +7,7 @@ import { PlaceComponent } from './place.component';
 
 import { PlaceDetailsComponent } from './place-details/place-details.component';
 
+
 const placeRoutes:Routes = [
     {
         path:'' , component:PlaceComponent , children :[
@@ -25,5 +26,6 @@ const placeRoutes:Routes = [
     exports:[
         RouterModule
     ]
+    
 })
 export class PlaceRouterModule{}

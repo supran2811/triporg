@@ -1,16 +1,9 @@
 .pinned-item {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 10px 0 10px 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 3px #eee;
-    padding : 10px;
-    cursor: pointer
-   }
-
-   .pinned-item{
-       text-decoration: none;
-       cursor: pointer;
-   }
+   
+    width: 300px;
+    height: auto;
+    border: 1px solid #eee;
+    box-shadow: 1px 3px 1px #cccccc;
+    box-sizing: border-box;
+ }
+ 

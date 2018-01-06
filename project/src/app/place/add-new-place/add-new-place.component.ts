@@ -207,7 +207,8 @@ export class AddNewPlaceComponent implements OnInit  {
 
   hideDetailInfoWindow(marker:Marker){
     this.showDetailWindow = false;
-    marker.showInfoWindow = false;
+
+    if(marker) marker.showInfoWindow = false;
   }
 
   openInMap(marker:Marker){

@@ -1,6 +1,7 @@
-<div class="pinnedcities" *ngIf= "(pinnedCities | async)">
-  <app-pinned-view-item *ngFor = "let city of (pinnedCities | async); let i = index"
-                    [city] = "city"  (selectCity) = "onSelect($event)">
-      
-</app-pinned-view-item>
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-xl-3 col-sm-4 col-12" style= "margin-top:20px;" *ngFor = "let city of (pinnedCities | async); let i = index">
+              <app-pinned-view-item  [city] = "city"  (selectCity) = "onSelect($event)"> </app-pinned-view-item>
+          </div>  
+        </div>
   </div>

@@ -87,6 +87,9 @@ export class GooglePlacesService {
 
                     this.ngZone.run(() => {
                         let place = autocomplete.getPlace();
+
+                        console.log("[GooglePlacesService]",place);
+
                         if(place == null || place == undefined){
                             observer.error("Empty Place");
                         }

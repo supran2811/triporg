@@ -17,6 +17,7 @@ export class PinnedViewItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log("[PinnedViewItem]",this.city);
   }
 
   onSelect(){

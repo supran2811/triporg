@@ -1,10 +1,21 @@
-.searchinput {
-    width: 50%;
+.searchhome{
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content:center;
 }
-.pinnedview {
-    width:100%;
-    position: absolute;
-    top:150px;
-    left: 0;
-    z-index: -1;
+
+.introtext{
+    font-size: 2em;
+    color:salmon;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.pinnedview{
+    margin-left: 10%;
+    margin-right: 10%;
 }

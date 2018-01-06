@@ -1,3 +1,4 @@
-<a (click) ="onSelect()" class="pinned-item">
-  {{city.name}}  
-</a>
+<app-thumbnail-view [photos]="city.photos || []"
+            [title] = "city.name"
+            (onClick) = "onSelect()">
+    </app-thumbnail-view>

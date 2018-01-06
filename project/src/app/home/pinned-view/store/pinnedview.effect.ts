@@ -50,7 +50,7 @@ export class PinnedViewEffects{
                                                                 })
                                                               }
 
-                                                              return new City(res.id,res.name,res.lat,res.lng,savedPlaces);
+                                                              return new City(res.id,res.name,res.lat,res.lng,savedPlaces , res.photos);
                                                          });
                                                         }
 

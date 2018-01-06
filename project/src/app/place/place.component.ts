@@ -43,6 +43,8 @@ export class PlaceComponent implements OnInit , OnDestroy {
     console.log("[PlaceComponent]","Loading111");
     this.isLoading = true;
     this.ngProgress.start();
+    
+    // this.store.dispatch(new PlaceActions.ResetState());
 
     const myStore = this.store.select('place');
 
@@ -87,6 +89,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(){
+    console.log("[PlaceComponent]" , "Iam getting destroyed please help me!!!");
     this.store.dispatch(new PlaceActions.ResetState());
     this.subscription.unsubscribe();
   }

@@ -20,14 +20,6 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   mapPositonInInteger = 400;
   mapPostionInPixel = "400px";
 
-  config: SwiperOptions = {
-    pagination: '.swiper-pagination',
-    paginationClickable: true,
-    nextButton: '.swiper-button-next',
-    prevButton: '.swiper-button-prev',
-    spaceBetween: 0
-  };
-
   constructor(private store:Store<fromPlaceReducer.FeatureState>,
             private window:WindowRefService) { }
   

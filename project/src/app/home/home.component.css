@@ -7,15 +7,17 @@
     justify-content:center;
 }
 
+
+.pinnedview{
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+
 .introtext{
     font-size: 2em;
     color:salmon;
     font-weight: bold;
     margin-top: 10px;
     margin-bottom: 10px;
-}
-
-.pinnedview{
-    margin-left: 10%;
-    margin-right: 10%;
 }

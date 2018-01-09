@@ -1,7 +1,7 @@
 .place-item {
    
    width: 300px;
-   height: auto;
+   height: 250px;
    border: 1px solid #eee;
    box-shadow: 1px 3px 1px #cccccc;
    box-sizing: border-box;

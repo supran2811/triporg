@@ -1,8 +1,10 @@
 <div (window:scroll) = "onScroll($event)">
     <div class="cover">
-        <swiper *ngIf="place" [config]="config">
+        <!-- <swiper *ngIf="place" [config]="config">
             <div  class="swiper-wrapper">
-                <img class="swiper-slide" *ngFor="let photo of photos" [src]="photo" > 
+                <image-view class="swiper-slide" 
+                                *ngFor="let photo of photos" 
+                                [image]="photo" ></image-view> 
                 <img *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">
             </div>
             <div *ngIf="photos !== null && photos.length > 0" >
@@ -11,7 +13,7 @@
                 <div  class="swiper-button-prev"></div>
             </div>
             
-        </swiper>
+        </swiper> -->
         
     </div>
     <div class="place-container">

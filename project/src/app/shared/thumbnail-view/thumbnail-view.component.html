@@ -1,25 +1,25 @@
 <div class = "thumbnail" (mouseenter) = "hovered()" (mouseleave) = "onMouseLeave()">
-    
-    <swiper *ngIf="hover" [config]="config" #usefulSwiper>
-        <div  class="swiper-wrapper">
-            <img (click) = "onMouseClicked()" class="swiper-slide" *ngFor="let photo of photos" [src]="photo.small"> 
-            <img (click) = "onMouseClicked()" *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">
-            <div class = "actions">
-                <ng-content></ng-content>
-             </div>
-        </div>
-        <div *ngIf="photos !== null && photos.length > 0">
-            <div  class="swiper-pagination"></div>
-            <div  class="swiper-button-next"></div>
-            <div  class="swiper-button-prev"></div>
-        </div>
+    <div class="content-container">
+            <swiper [config]="config" (indexChange) = "swiperIndexChange($event)">
+       
+                    <image-view (click) = "onMouseClicked()" 
+                            class="swiper-slide" 
+                            *ngFor="let photo of photos" 
+                            [image]="photo.small"
+                            [scrollObservable] = "scrollOrChangeImage$"
+                            > </image-view>
         
-    </swiper>
-    <swiper *ngIf = "!hover" [config]="config" #usefulSwiper>
-      <div  class="swiper-wrapper">
-          <img (click) = "onMouseClicked()" class="swiper-slide" *ngFor="let photo of photos" [src]="photo.small"> 
-          <img (click) = "onMouseClicked()" *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">   
-      </div>
-    </swiper>
+                    <img (click) = "onMouseClicked()" 
+                            *ngIf="photos === null || photos.length == 0" 
+                            class="swiper-slide"  
+                            src="../../../assets/images/download.jpg">
+                
+            </swiper>
+
+            <div *ngIf="hover" class = "actions">
+                    <ng-content></ng-content>
+            </div>
+    </div>
+    
   <p><a (click) = "onMouseClicked()" ><strong>{{title}}</strong></a></p>
 </div>

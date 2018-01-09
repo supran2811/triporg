@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { AgmCoreModule , GoogleMapsAPIWrapper} from '@agm/core'
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window'
 import { RouteReuseStrategy } from '@angular/router';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import {SwiperModule,SWIPER_CONFIG,SwiperConfigInterface  } from 'ngx-swiper-wrapper';
 
 import { DropDownDirective } from '../header/dropdown.directive';
 import { GooglePlacesService } from './google.places.service';
@@ -13,23 +15,31 @@ import { HttpService } from './http.service';
 import { HttpAuthInterceptor } from './http.interceptor';
 import {WindowRefService} from './windowRef.service';
 import {CacheStateService} from './cache.state.service';
-import { SwiperModule } from 'angular2-useful-swiper';
 import { ThumbnailViewComponent } from './thumbnail-view/thumbnail-view.component';
 import { ThumbnailActionsComponent } from './thumbnail-actions/thumbnail-actions.component';
+import { ImageViewComponent } from './image-view/image-view.component';
+
+const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
+    direction: 'horizontal',
+    slidesPerView: 'auto',
+    keyboardControl:false
+  };
 
 @NgModule({
     declarations:[
         DropDownDirective,
         ThumbnailViewComponent,
-        ThumbnailActionsComponent
+        ThumbnailActionsComponent,
+        ImageViewComponent
     ],
     imports:[
+        LazyLoadImageModule,
         NgProgressModule,
         AgmCoreModule,
         AgmSnazzyInfoWindowModule,
         FormsModule,
-        SwiperModule,
-        CommonModule
+        CommonModule,
+        SwiperModule.forChild()
     ],
     providers:[
         HttpService,
@@ -51,8 +61,10 @@ import { ThumbnailActionsComponent } from './thumbnail-actions/thumbnail-actions
         AgmSnazzyInfoWindowModule,
         FormsModule,
         SwiperModule,
+        LazyLoadImageModule,
         ThumbnailViewComponent,
-        ThumbnailActionsComponent
+        ThumbnailActionsComponent,
+        ImageViewComponent
        ]
 })
 export class SharedModule{

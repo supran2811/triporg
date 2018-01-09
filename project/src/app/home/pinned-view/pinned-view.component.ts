@@ -16,6 +16,7 @@ import * as PinnedViewActions from './store/pinnedview.action';
 export class PinnedViewComponent implements OnInit {
 
   pinnedCities: Observable<City[]>
+  numOfCities : number  = 0;
 
   @Output() selectPinnedCity = new EventEmitter<City>();
 
@@ -26,6 +27,7 @@ export class PinnedViewComponent implements OnInit {
     this.store.dispatch(new PinnedViewActions.GetPinnedCitiesFromServer());
 
     this.pinnedCities = this.store.select('pinnedcities').map((state:fromPinnedView.State) => {
+      this.numOfCities = state.cities.length;
       return state.cities;
     });
 

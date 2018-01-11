@@ -8,7 +8,7 @@
 
 
 
-.place-list > p{
+.place-list >div > p{
     height: 350px;
     display: flex;
     align-items: center;

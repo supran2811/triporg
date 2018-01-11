@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 
@@ -14,22 +14,24 @@ import * as fromPlaceReducer from '../store/place.reducer';
 export class PlaceListComponent implements OnInit {
 
   savedplaces : Observable<Place[]>
-
-  constructor(private store:Store<fromPlaceReducer.FeatureState>) { }
+  showEmptySection:boolean = true;
+  constructor(private store:Store<fromPlaceReducer.FeatureState>,
+                  private changeDetectRef:ChangeDetectorRef) { }
 
   ngOnInit() {
 
     this.savedplaces = this.store.select('place').map((state:fromPlaceReducer.State) => {
         console.log("[PlaceList]","Check for saved places in city ",state.city);
-        if(state.city){
-         return state.city.savedPlaces;
+        if( !state.city || !state.city.savedPlaces  || state.city.savedPlaces.length == 0){
+          this.showEmptySection = true;
         }
         else{
-          return null;
+          this.showEmptySection = false;
         }
+        return (state.city && state.city.savedPlaces) || null;
     });
 
-    this.savedplaces.subscribe( (places:Place[]) => {
+    this.savedplaces.take(1).subscribe( (places:Place[]) => {
       console.log("[PlaceList]","Retunring placess as ",places);
       if(places == null){
         console.log("[PlaceList]","Sending request to server to get place list");

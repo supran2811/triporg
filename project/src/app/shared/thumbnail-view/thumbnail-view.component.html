@@ -2,17 +2,21 @@
     <div class="content-container">
             <swiper [config]="config" (indexChange) = "swiperIndexChange($event)">
        
-                    <image-view (click) = "onMouseClicked()" 
+                <img (click) = "onMouseClicked()" 
+                *ngIf="(!photos || photos === null || photos.length == 0) ; else withPhotos" 
+                class="swiper-slide"  
+                src="../../../assets/images/download.jpg">    
+                <ng-template #withPhotos> 
+                        <image-view (click) = "onMouseClicked()" 
                             class="swiper-slide" 
                             *ngFor="let photo of photos" 
                             [image]="photo.small"
                             [scrollObservable] = "scrollOrChangeImage$"
                             > </image-view>
         
-                    <img (click) = "onMouseClicked()" 
-                            *ngIf="photos === null || photos.length == 0" 
-                            class="swiper-slide"  
-                            src="../../../assets/images/download.jpg">
+                </ng-template>        
+                    
+                   
                 
             </swiper>
 

@@ -52,6 +52,7 @@ export class GooglePlacesService {
   }
 
   getDetails(placeid:string , map):Observable<any> {
+       console.log("[GooglePlace]","Inside getDEtails");
        const observable = Observable.create(
              (observer : Observer<any>) => {
                 this.googleApiLoader.load().then(() => {

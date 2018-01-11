@@ -81,6 +81,11 @@ export class PlacesEffect {
                                                           
                                                           const savedPlaces = state.city.savedPlaces || [];
                                                           const selectedPlace = state.selectedPlace;
+                                                          
+                                                          selectedPlace.phoneNumber = null;
+                                                          selectedPlace.opening_text = null;
+                                                          selectedPlace.reviews = null;
+                                                          selectedPlace.website = null;
                                                           console.log("[PlaceEffects]",selectedPlace);
                                                           const city = state.city;
                                                           
@@ -183,7 +188,9 @@ export class PlacesEffect {
                                                          console.log("[PlaceEffects]",errr);
                                                          return Observable.of(new PlaceActions.AddSavedPlacedToState([]));
                                                      });
-                                                    
+    //TODO: First check if user authenticated
+    // Then fetch if this city is pinned and set that otherwise go for google api
+    
     @Effect()
             getCityDetails = this.actions$.ofType(PlaceActions.GET_CITY_DETAILS)
                                                             .map((action:PlaceActions.GetCityDetails) => {

@@ -1,28 +1,37 @@
 <div (window:scroll) = "onScroll($event)">
+    
+    <ng-progress [positionUsing]="'marginLeft'" [minimum]="0.15" [maximum]="1"  
+        [speed]="200" [showSpinner]="false" [direction]="'rightToLeftIncreased'"
+        [color]="'red'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"></ng-progress>    
+
     <div class="cover">
-        <!-- <swiper *ngIf="place" [config]="config">
-            <div  class="swiper-wrapper">
-                <image-view class="swiper-slide" 
-                                *ngFor="let photo of photos" 
-                                [image]="photo" ></image-view> 
-                <img *ngIf="photos === null || photos.length == 0" class="swiper-slide"  src="../../../assets/images/download.jpg">
-            </div>
-            <div *ngIf="photos !== null && photos.length > 0" >
-                <div  class="swiper-pagination"></div>
-                <div  class="swiper-button-next"></div>
-                <div  class="swiper-button-prev"></div>
-            </div>
-            
-        </swiper> -->
         
+        <div class="content-container">
+                <swiper [config]="config" (indexChange) = "swiperIndexChange($event)">
+                
+                        <image-view class="swiper-slide" 
+                                *ngFor="let photo of photos" 
+                                [image]="photo"
+                                [scrollObservable] = "scrollOrChangeImage$"
+                                > </image-view>
+                
+                        <img *ngIf="photos === null || photos.length == 0" 
+                                class="swiper-slide"  
+                                src="../../../assets/images/download.jpg">
+                        
+                </swiper>
+        </div>
+
     </div>
     <div class="place-container">
 
     
-    <div class="container">
+    <div class="container" *ngIf = "place">
     
-          
-                <h2>{{place.displayName}}</h2>
+                <div>
+                        <h2>{{place.displayName}}</h2>
+                </div>
+                
                
                 <div *ngIf = "place.address">
                         <div class="col-xs-12">
@@ -113,18 +122,18 @@
                 
         
                 <agm-map id = "map" name="map" 
-                        [latitude]="place.lat" 
-                        [longitude]="place.lng" 
+                        [latitude]="place?place.lat:0" 
+                        [longitude]="place?place.lng:0" 
                         [zoom] = "zoom"
                         (mapReady) = "onMapReady($event)"
                         [zoomControl]="false"
                         #map>
                 
-                        <agm-marker   [latitude]="place.lat" 
+                        <agm-marker *ngIf="place"  [latitude]="place.lat" 
                                 [longitude]="place.lng">
                         </agm-marker>
                </agm-map>
-               <button type="button" (click) = "openInMap()">Open in Google Maps</button>
+               <button *ngIf="place" type="button" (click) = "openInMap()">Open in Google Maps</button>
                
           
 

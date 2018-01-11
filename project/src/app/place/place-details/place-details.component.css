@@ -32,7 +32,10 @@ img {
     object-fit: cover;
 }
 
-swiper{
+.content-container{
+    position: relative;
+    top:0;
+    left: 0;
     height: 300px;
     margin: 0;
     padding: 0;

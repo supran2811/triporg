@@ -37,20 +37,18 @@ export class PlaceComponent implements OnInit , OnDestroy {
     this.isLoading = true;
     this.ngProgress.start();
 
-    const myStore = this.store.select('place');
+    this.store.select('pinnedcities').take(1).subscribe((state:fromPinnedReducer.State)=>{
+      console.log("[PlaceComponent] selected pinned city",state.selectedCity);
+      if(state.selectedCity != null){
+          this.store.dispatch(new PlaceActions.SetCity(state.selectedCity));
+      }
+    });
 
-     this.store.select('pinnedcities').take(1).subscribe((state:fromPinnedReducer.State)=>{
-        console.log("[PlaceComponent] selected pinned city",state.selectedCity);
-        if(state.selectedCity != null){
-            this.store.dispatch(new PlaceActions.SetCity(state.selectedCity));
-        }
-     });
-
-    this.city = myStore.map((state:fromPlaceReducer.State) => {
+    this.city = this.store.select('place').map((state:fromPlaceReducer.State) => {
            return state.city;
     });
     console.log("[PlaceComponent]","adding subscription");
-    (this.subscription = this.city.subscribe((city:City) => {
+    this.subscription = this.city.subscribe((city:City) => {
           console.log("[PlaceComponent]","Coming inside city observable",city);
           if(city != null && city.lat){
             this.ngProgress.done();
@@ -60,7 +58,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
           else{
             this.loadCity();
           }
-    }));
+    });
     
   }
 
@@ -81,7 +79,8 @@ export class PlaceComponent implements OnInit , OnDestroy {
 
   ngOnDestroy(){
     console.log("[PlaceComponent]" , "Iam getting destroyed please help me!!!");
-    this.store.dispatch(new PlaceActions.ResetState());
     this.subscription.unsubscribe();
+    this.store.dispatch(new PlaceActions.ResetState());
+    
   }
 }

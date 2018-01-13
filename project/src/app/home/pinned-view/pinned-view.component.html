@@ -1,5 +1,5 @@
   <div class="container-fluid">
-        <div class="introtext" *ngIf = "numOfCities > 0">Cities you are planning to visit</div>
+      <div class="introtext">Cities you are planning to visit</div>
       <div class="row">
           <div class="col-xl-3 col-sm-4 col-12" style= "margin-top:20px;" *ngFor = "let city of (pinnedCities | async); let i = index">
               <app-pinned-view-item  [city] = "city"  (selectCity) = "onSelect($event)"> </app-pinned-view-item>

@@ -27,12 +27,8 @@ export class PinnedViewComponent implements OnInit {
     this.store.dispatch(new PinnedViewActions.GetPinnedCitiesFromServer());
 
     this.pinnedCities = this.store.select('pinnedcities').map((state:fromPinnedView.State) => {
-      this.numOfCities = state.cities.length;
       return state.cities;
     });
-
-
-    
 
   }
 

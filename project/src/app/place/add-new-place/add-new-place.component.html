@@ -17,7 +17,7 @@
             [latitude]="lat" 
             [longitude]="lng" 
             (boundsChange)="boundsChange($event)" 
-            [zoom] = "zoom"
+            [(zoom)] = "zoom"
             [zoomControl]="false"
             (mapReady) = "onMapReady($event)"
             #map>

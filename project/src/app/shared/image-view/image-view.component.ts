@@ -5,7 +5,7 @@ import { Component,Input ,ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'image-view',
   template: `<img
-                [defaultImage]="defaultImage"
+                [errorImage]="defaultImage"
                 [lazyLoad]="image"
                 [scrollObservable] = "scrollObservable"
                 >`,
@@ -17,7 +17,7 @@ import { Component,Input ,ChangeDetectionStrategy } from '@angular/core';
                     }
 
                     img.ng-lazyloaded {
-                        animation: fadein .5s;
+                        animation: fadein 2s;
                     }
                     @keyframes fadein {
                         from { opacity: 0; }

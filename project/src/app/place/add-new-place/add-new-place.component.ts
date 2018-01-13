@@ -3,8 +3,9 @@ import { Store } from '@ngrx/store';
 import { Component, 
           ElementRef, 
           OnInit ,
-          ViewChild} from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+          ViewChild,
+          OnDestroy} from '@angular/core';
+import { Observable,Subscription } from 'rxjs/Rx';
 import { NgProgress } from 'ngx-progressbar'
 import { FormControl } from '@angular/forms';
 
@@ -16,15 +17,18 @@ import { WindowRefService } from '../../shared/windowRef.service';
 import {Marker} from '../../models/marker.model';
 
 
+
+
 @Component({
   selector: 'app-add-new-place',
   templateUrl: './add-new-place.component.html',
   styleUrls: ['./add-new-place.component.css']
 })
-export class AddNewPlaceComponent implements OnInit  {
+export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   searchControl:FormControl;
 
+  subscription:Subscription;
 
   @ViewChild('search')
       searchElementRef:ElementRef;
@@ -37,6 +41,7 @@ export class AddNewPlaceComponent implements OnInit  {
   selectedPlace : Place;
   loaded = false;
   showMarker = false;
+  savedPlaces:Place[] = [];
   
   zoom:number = 10;
   isNew:boolean = false;
@@ -62,6 +67,10 @@ export class AddNewPlaceComponent implements OnInit  {
     this.load();
   }
 
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
+
   onMapReady(event){
     console.log("[onMapReady]",event,this.cityId);
     
@@ -70,7 +79,7 @@ export class AddNewPlaceComponent implements OnInit  {
 
   load(){
     
-    this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
+    this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
 
         if(state.selectedPlace != null && this.lat ){
           this.placeName = "";
@@ -126,11 +135,21 @@ export class AddNewPlaceComponent implements OnInit  {
           this.lng = state.city.lng;
           this.cityId = state.city.id;
           this.placeName  = "";
-          
-          if(state.city.savedPlaces){
+          this.zoom = 10;
+          if(state.city.savedPlaces && state.city.savedPlaces.length !== this.savedPlaces.length ){
+            console.log("[AddNewPlace] Something has changed",state.city.savedPlaces);
             this.markers = state.city.savedPlaces.map( (place:Place) => {
               return new Marker(place,false,false);
             } );
+
+            this.savedPlaces = state.city.savedPlaces;
+          }
+          else if(this.markers) {
+            console.log("[AddNewPlace]","Nothing has changed so just reset all markers");
+             this.markers.forEach( (marker:Marker) => {
+                marker.showInfoWindow = false;
+                marker.isNew = false;
+             } );
           }
           
           this.ngProgress.done();

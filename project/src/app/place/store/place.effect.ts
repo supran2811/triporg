@@ -165,7 +165,7 @@ export class PlacesEffect {
                                                         return this.http.get<any>(url,null)
                                                                     .catch((err) => {
                                                                         return Observable.throw({type:"error",message:err});
-                                                                    })
+                                                                    });
                                                                 
                                                      })
                                                      .map((res:any) => {
@@ -197,23 +197,65 @@ export class PlacesEffect {
                                                                 return action.payload
                                                             })
                                                             .switchMap((payload:{id:string,map:any}) => {
-                                                                return this.googlePlaces.getDetails(payload.id,payload.map);
-                                                            } )
-                                                            .withLatestFrom(this.store.select('place'))
-                                                            .map( ([res,state]) => {
-                                                                console.log("[PlaceEffetcs]",res,state);
-                                                                
-                                                                state.city.photos = res.photos.map(photo => {
 
-                                                                    return {small:photo.getUrl({'maxWidth': 200}) , 
-                                                                            large:photo.getUrl({'maxWidth': 800 })};
-                                                                })
-                                                                console.log(state.city.photos);
-                                                                
-                                                                return {
-                                                                    type:PlaceActions.SET_CITY,
-                                                                    payload:state.city
+                                                                const uid = sessionStorage.getItem('uid');
+                                                                if(uid != null){
+                                                                    const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+payload.id+"/";         
+                                                                    return this.http.get<any>(url,null).switchMap(res =>{
+                                                                        console.log("[PlaceEffects]","Got response from server as ",res);
+                                                                        if(res === null){
+                                                                            return this.googlePlaces.getDetails(payload.id,payload.map);
+                                                                        }
+                                                                        else{
+
+                                                                            return Observable.of(res);
+                                                                        }
+                                                                    })
+                                                                }     
+                                                                else{
+                                                                    return this.googlePlaces.getDetails(payload.id,payload.map);
+                                                                 }
+                                                            } )
+                                                            .map( res => {
+                                                                console.log("[PlaceEffects]",res);
+
+                                                                if(res && res.lat){
+                                                                   
+                                                                    const savedPlaces = res.places && Object.values(res.places).map((place) => (place) )
+
+                                                                    const city = new City(res.id,res.name,res.lat,res.lng,savedPlaces,res.photos);
+                                                                        
+                                                                    return {
+                                                                        type:PlaceActions.SET_CITY,
+                                                                        payload:city
+                                                                    }
                                                                 }
+                                                                else if(res.place_id){
+
+                                                                    const city = new City(res.place_id,
+                                                                                            res.name,
+                                                                                            res.geometry.location.lat(),
+                                                                                            res.geometry.location.lng());
+
+
+                                                                    city.photos = res.photos && res.photos.map(photo => {
+
+                                                                        return {small:photo.getUrl({'maxWidth': 200}) , 
+                                                                                large:photo.getUrl({'maxWidth': 800 })};
+                                                                    });
+
+                                                                    return {
+                                                                        type:PlaceActions.SET_CITY,
+                                                                        payload:city
+                                                                    }
+                                                                }
+                                                                else{
+                                                                    return {
+                                                                        type:PlaceActions.SET_CITY,
+                                                                        payload:null
+                                                                    }
+                                                                }
+                                                                
                                                             } )
                                                             .catch( errr => {
                                                                 console.log(errr);
@@ -231,6 +273,13 @@ export class PlacesEffect {
                                                                 .withLatestFrom(this.store.select('place'))
                                                                 .map( ([res,state]) => {
                                                                     console.log("[PlaceEffetcs]","GET_PLACE_DETAILS",res,state);
+                                                                    if(!state.detailsPlace){
+                                                                        state.detailsPlace = new Place(res.place_id,
+                                                                                                            res.geometry.location.lat() , 
+                                                                                                            res.geometry.location.lng(),
+                                                                                                            res.name);
+                                                                    }
+
                                                                     
                                                                     state.detailsPlace.address =  res.formatted_address;
                                                                     state.detailsPlace.opening_text = (res.opening_hours && res.opening_hours.weekday_text) || null;

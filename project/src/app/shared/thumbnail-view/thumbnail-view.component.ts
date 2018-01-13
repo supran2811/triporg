@@ -21,6 +21,7 @@ export class ThumbnailViewComponent implements OnInit {
   @Input() isPinned:boolean = false;
   @Output() onHover = new EventEmitter<any>();
   @Output() onClick = new EventEmitter<any>();
+  @Output() onLeave = new EventEmitter<any>();
 
   hover : boolean = false;
 
@@ -59,13 +60,18 @@ export class ThumbnailViewComponent implements OnInit {
   
   hovered() {
     this.hover = true;
-    this.enablePagination();
+    if(this.photos != null && this.photos.length > 1){
+      this.enablePagination();
+    }
     this.onHover.emit();
   }
  
   onMouseLeave(){
-    this.hidePagination();
+    if(this.photos != null && this.photos.length > 1){
+      this.hidePagination();
+    }
     this.hover = false;
+    this.onLeave.emit();
   }
 
   onMouseClicked(){

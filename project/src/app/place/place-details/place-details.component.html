@@ -122,8 +122,8 @@
                 
         
                 <agm-map id = "map" name="map" 
-                        [latitude]="place?place.lat:0" 
-                        [longitude]="place?place.lng:0" 
+                        [latitude]="lat" 
+                        [longitude]="lng" 
                         [zoom] = "zoom"
                         (mapReady) = "onMapReady($event)"
                         [zoomControl]="false"

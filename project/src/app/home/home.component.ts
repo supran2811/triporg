@@ -1,15 +1,13 @@
 import { Observable } from 'rxjs/Rx';
 import { Router } from '@angular/router';
-import { Component, NgModule, OnInit } from '@angular/core';
+import { Component ,OnInit } from '@angular/core';
 import {Store} from '@ngrx/store';
 
-
-import * as fromApp from '../store/app.reducer';
+import * as fromAuth from '../auth/store/auth.reducer';
 import * as fromPinned from './pinned-view/store/pinnedview.reducer';
 import * as PinnedActions from './pinned-view/store/pinnedview.action';
 import * as fromPlaceReducer from '../place/store/place.reducer';
 import * as PlaceActions from '../place/store/place.action';
-
 import { City } from './../models/city.model';
 
 @Component({
@@ -20,38 +18,20 @@ import { City } from './../models/city.model';
 
 export class HomeComponent implements OnInit {
 
-  pinnedCities : City[];
+  isAuth:Observable<boolean>; 
 
   constructor(private store:Store<fromPlaceReducer.FeatureState> , private router:Router) { }
 
-  ngOnInit() {
-    
-    this.store.select('pinnedcities').subscribe((state:fromPinned.State) =>{
-          this.pinnedCities = state.cities;
-    })
-
+  ngOnInit(){
+    this.isAuth = this.store.select('auth').map( (state:fromAuth.State) => (state.authorised));
   }
 
-
   selectPinnedCity(selectedCity:City){
-    // if(this.pinnedCities != null){
-    //   let city = this.pinnedCities.find((city:City) => {
-    //     return city.id === selectedCity.id
-    //   })
-      
-    //  // this.store.dispatch(new PlaceActions.SetCity(city));
-    //  if(city != null && city != undefined)
-    //  {
-    //   console.log("[HomeComponent]","Setting pinned city "+city);
-    //   this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
-    //  }
-    // }
-
-    let city = (this.pinnedCities && this.pinnedCities.find((city:City) => {
-          return city.id === selectedCity.id
-        })) || null;
-    this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city || selectedCity));
-    this.router.navigate(['city',selectedCity.id]);
+    this.store.select('pinnedcities').take(1).subscribe((state:fromPinned.State) =>{
+      let city = state.cities.find((city:City) => (selectedCity.id === city.id))  || selectedCity ;
+      this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
+      this.router.navigate(['city',selectedCity.id]);     
+    })
   }
 
   selectCity(selectedItem:any){
@@ -65,8 +45,8 @@ export class HomeComponent implements OnInit {
     const id = selectedItem.place_id;
     console.log("id",id);
     let selectedCity = new City(id,name);
-
     this.selectPinnedCity(selectedCity);
+  
   }
 
   formatList(city:City) : string {

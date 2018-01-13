@@ -80,7 +80,8 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
         case PlaceActions.RESET_SELECTED_PLACE:{
             return {
                 ...state,
-                selectedPlace:null
+                selectedPlace:null,
+                isHover : false
             }
         }
         case PlaceActions.ADD_SAVED_PLACED_TO_STATE:{

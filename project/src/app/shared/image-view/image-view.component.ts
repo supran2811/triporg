@@ -5,7 +5,7 @@ import { Component,Input ,ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'image-view',
   template: `<img
-                [errorImage]="defaultImage"
+                [errorImage]="errorImage"
                 [lazyLoad]="image"
                 [scrollObservable] = "scrollObservable"
                 >`,
@@ -31,7 +31,7 @@ export class ImageViewComponent {
      @Input() image;
      @Input() className;
      @Input() scrollObservable;
-     defaultImage:string  = "../../../assets/images/download.jpg";
+     @Input() errorImage:string  = "../../../assets/images/download.jpg";
      
 
 }

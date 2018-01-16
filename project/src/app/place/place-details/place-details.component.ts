@@ -36,6 +36,8 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   scrollOrChangeImage$:Observable<any>;
   subscription:Subscription;
 
+  errorImageUrl = "../../../assets/images/profilephoto.png";
+
   public config: SwiperConfigInterface = {
     scrollbar: null,
     direction: 'horizontal',
@@ -74,16 +76,20 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   load(){
     this.ngProgress.start();
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
-      console.log("[PlaceDetails]"  , state.detailsPlace);
+      
            
            if(state.detailsPlace != null){
 
-              const selectedPlaceIndexInPin = state.city.savedPlaces.findIndex( (place:Place) => {
+              this.city = state.city;
+              console.log("[PlaceDetails]"  , state.detailsPlace ,state.city.savedPlaces);
+              const selectedPlaceIndexInPin =  (state.city.savedPlaces ? state.city.savedPlaces.findIndex( (place:Place) => {
                 return place.placeId === state.detailsPlace.placeId
-              }  );
+              }  ): -1); 
+
+              
 
               this.isPinned = selectedPlaceIndexInPin >= 0;
-
+              console.log("[PlaceDetails]","isPinned "+this.isPinned,selectedPlaceIndexInPin);
               this.place = state.detailsPlace;
               this.photos = (this.place.photos && this.place.photos.map(photo => photo.large )) || [];
               
@@ -146,6 +152,14 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   openInMap(){
     const urlToOpen = "https://www.google.com/maps/search/?api=1&query="+this.place.lat+","+this.place.lng+"&query_place_id="+this.place.placeId;
     this.window.getNativeWindow().open(urlToOpen);
+  }
+
+  remove(){
+    this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());
+  }
+
+  save(){
+    this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
   }
 
   swiperIndexChange(event){

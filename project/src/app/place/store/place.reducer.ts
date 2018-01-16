@@ -29,7 +29,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
         case PlaceActions.SET_PLACE_DETAILS:{
             return {
                 ...state,
-                selectedPlace : action.payload.place,
+                selectedPlace : {...action.payload.place},
                 isHover:action.payload.isHover
             }
         }
@@ -97,7 +97,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
         case PlaceActions.SET_PLACE_TO_NAVIGATE:{
             return {
                 ...state,
-                detailsPlace:action.payload
+                detailsPlace:{...action.payload}
             }
         }
         case PlaceActions.RESET_PLACE_TO_NAVIGATE:{

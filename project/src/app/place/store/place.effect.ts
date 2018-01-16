@@ -47,12 +47,10 @@ export class PlacesEffect {
                                             }).map( (res:any) => {
                                                     console.log("[PlaceEffects]",res);
                                                      
-                                                     
-
                                                      const place  = new Place (res.place_id , 
                                                                                 res.geometry.location.lat() , 
                                                                                 res.geometry.location.lng() , 
-                                                                                res.name ,
+                                                                                res.name , res.icon,
                                                                               res.formatted_address   );
                                                       if(res.photos){
                                                             place.photos = res.photos.map(photo => (
@@ -75,17 +73,20 @@ export class PlacesEffect {
     
                                             
     @Effect()
-            savePlaceToServer = this.actions$.ofType(PlaceActions.SAVE_SELECTED_PLACE_TO_SERVER)
+            saveSelectedPlaceToServer = this.actions$.ofType(PlaceActions.SAVE_SELECTED_PLACE_TO_SERVER)
                                                     .withLatestFrom(this.store.select('place'))
                                                         .switchMap(([action,state]) =>{
                                                           
                                                           const savedPlaces = state.city.savedPlaces || [];
                                                           const selectedPlace = state.selectedPlace;
                                                           
+                                                          // Below parameters can change so resettng it....
                                                           selectedPlace.phoneNumber = null;
                                                           selectedPlace.opening_text = null;
                                                           selectedPlace.reviews = null;
                                                           selectedPlace.website = null;
+                                                          selectedPlace.rating = 0;
+
                                                           console.log("[PlaceEffects]",selectedPlace);
                                                           const city = state.city;
                                                           
@@ -119,8 +120,11 @@ export class PlacesEffect {
                                                             payload:state.selectedPlace
                                                         }];
                                                     }); 
+
+                                             
+
     @Effect()                                                                             
-          removePlaceFromServer = this.actions$.ofType(PlaceActions.REMOVE_SELECTED_PLACE_FROM_SERVER)
+          removeSelectedPlaceFromServer = this.actions$.ofType(PlaceActions.REMOVE_SELECTED_PLACE_FROM_SERVER)
                                             .withLatestFrom(this.store.select('place'))
                                                     .switchMap(([action,state]) => {
                                                         const selectedPlace = state.selectedPlace;
@@ -271,16 +275,20 @@ export class PlacesEffect {
                                                                     return this.googlePlaces.getDetails(payload.id,payload.map);
                                                                 } )
                                                                 .withLatestFrom(this.store.select('place'))
-                                                                .map( ([res,state]) => {
+                                                                .mergeMap( ([res,state]) => {
                                                                     console.log("[PlaceEffetcs]","GET_PLACE_DETAILS",res,state);
                                                                     if(!state.detailsPlace){
                                                                         state.detailsPlace = new Place(res.place_id,
                                                                                                             res.geometry.location.lat() , 
                                                                                                             res.geometry.location.lng(),
-                                                                                                            res.name);
+                                                                                                            res.name,res.icon);
                                                                     }
 
-                                                                    
+                                                                    state.detailsPlace.photos = res.photos && res.photos.map(photo => {
+
+                                                                        return {small:photo.getUrl({'maxWidth': 200}) , 
+                                                                                large:photo.getUrl({'maxWidth': 800 })};
+                                                                    });
                                                                     state.detailsPlace.address =  res.formatted_address;
                                                                     state.detailsPlace.opening_text = (res.opening_hours && res.opening_hours.weekday_text) || null;
                                                                     state.detailsPlace.phoneNumber = res.formatted_phone_number;      
@@ -288,10 +296,15 @@ export class PlacesEffect {
                                                                             {text:review.text , author_name:review.author_name , profile_photo_url:review.profile_photo_url }
                                                                     )));
                                                                     state.detailsPlace.website = res.website;
-                                                                    return {
+                                                                    state.detailsPlace.rating = res.rating || 0;
+                                                                    return [{
                                                                         type:PlaceActions.SET_PLACE_TO_NAVIGATE,
                                                                         payload:state.detailsPlace
-                                                                    }
+                                                                    },
+                                                                    {
+                                                                        type:PlaceActions.SET_PLACE_DETAILS,
+                                                                        payload:{place:state.detailsPlace,isHover:false}
+                                                                    }]
                                                                 } )
                                                                 .catch( errr => {
                                                                     console.log(errr);

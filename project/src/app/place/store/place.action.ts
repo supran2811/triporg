@@ -5,24 +5,26 @@ import { ElementRef } from '@angular/core';
 import { Place } from '../../models/place.model';
 import { City } from '../../models/city.model';
 
-// export const GET_PLACE_DETAILS  = "GET_PLACE_DETAILS";
-export const SET_PLACE_DETAILS  = "SET_PLACE_DETAILS";
-export const SET_CITY           = "SET_CITY";
-export const SET_CITY_LOCATION  = "SET_CITY_LOCATION"
-export const GET_CITY_LOCATION  = "GET_CITY_LOCATION";
-export const GET_CITY_DETAILS   = "GET_CITY_DETAILS";
-export const SET_CITY_DETAILS   = "SET_CITY_DETAILS";
-export const GET_PLACE_DETAILS  = "GET_PLACE_DETAILS";
-export const SAVE_SELECTED_PLACE = "SAVE_SELECTED_PLACE";
-export const ADD_PLACE_CHANGE_LISTENER  = "ADD_PLACE_CHANGE_LISTENER";
-export const RESET_SELECTED_PLACE = "RESET_SELECTED_PLACE";
-export const REMOVE_SELECTED_PLACE = "REMOVE_SELECTED_PLACE";
-export const SAVE_SELECTED_PLACE_TO_SERVER = "SAVE_SELECTED_PLACE_TO_SERVER";
-export const REMOVE_SELECTED_PLACE_FROM_SERVER = "REMOVE_SELECTED_PLACE_FROM_SERVER";
-export const GET_SAVED_PLACES_FROM_SERVER_BY_CITY = "GET_SAVED_PLACES_FROM_SERVER_BY_CITY";
-export const ADD_SAVED_PLACED_TO_STATE = "ADD_SAVED_PLACED_TO_STATE";
-export const SET_PLACE_TO_NAVIGATE = "SET_PLACE_TO_NAVIGATE";
-export const RESET_PLACE_TO_NAVIGATE = "RESET_PLACE_TO_NAVIGATE";
+
+export const SET_PLACE_DETAILS                                  = "SET_PLACE_DETAILS";
+export const SET_CITY                                           = "SET_CITY";
+export const SET_CITY_LOCATION                                  = "SET_CITY_LOCATION"
+export const GET_CITY_LOCATION                                  = "GET_CITY_LOCATION";
+export const GET_CITY_DETAILS                                   = "GET_CITY_DETAILS";
+export const SET_CITY_DETAILS                                   = "SET_CITY_DETAILS";
+export const GET_PLACE_DETAILS                                  = "GET_PLACE_DETAILS";
+export const SAVE_SELECTED_PLACE                                = "SAVE_SELECTED_PLACE";
+export const SAVE_PLACE                                         = "SAVE_PLACE";
+export const ADD_PLACE_CHANGE_LISTENER                          = "ADD_PLACE_CHANGE_LISTENER";
+export const RESET_SELECTED_PLACE                               = "RESET_SELECTED_PLACE";
+export const REMOVE_SELECTED_PLACE                              = "REMOVE_SELECTED_PLACE";
+export const REMOVE_PLACE                                       = "REMOVE_PLACE"
+export const SAVE_SELECTED_PLACE_TO_SERVER                      = "SAVE_SELECTED_PLACE_TO_SERVER";
+export const REMOVE_SELECTED_PLACE_FROM_SERVER                  = "REMOVE_SELECTED_PLACE_FROM_SERVER";
+export const GET_SAVED_PLACES_FROM_SERVER_BY_CITY               = "GET_SAVED_PLACES_FROM_SERVER_BY_CITY";
+export const ADD_SAVED_PLACED_TO_STATE                          = "ADD_SAVED_PLACED_TO_STATE";
+export const SET_PLACE_TO_NAVIGATE                              = "SET_PLACE_TO_NAVIGATE";
+export const RESET_PLACE_TO_NAVIGATE                            = "RESET_PLACE_TO_NAVIGATE";
 
 export const RESET_STATE = "RESET_STATE";
 
@@ -65,6 +67,17 @@ export class SaveSelectedPlace {
 export class RemoveSelectedPlace {
     readonly type = REMOVE_SELECTED_PLACE;
 }
+
+export class SavePlace {
+    readonly type = SAVE_PLACE;
+    public constructor(public payload:{city:City,place:Place}){}
+}
+
+export class RemovePlace {
+    readonly type = REMOVE_PLACE;
+    public constructor(public payload:{city:City,place:Place}){}
+}
+
 export class ResetSelectedPlace {
     readonly type = RESET_SELECTED_PLACE;
 }
@@ -119,4 +132,6 @@ export type PlaceActions = GetCityDetails|
                             AddSavedPlacedToState|
                             SetPlaceToNavigate|
                             ResetPlaceToNavigate|
-                            GetPlaceDetails;
+                            GetPlaceDetails|
+                            SavePlace|
+                            RemovePlace;

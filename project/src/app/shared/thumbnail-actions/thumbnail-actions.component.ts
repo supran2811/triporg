@@ -3,8 +3,12 @@ import { Component, OnInit ,Input , Output ,EventEmitter} from '@angular/core';
 
 @Component({
   selector: 'app-thumbnail-actions',
-  templateUrl: './thumbnail-actions.component.html',
-  styleUrls: ['./thumbnail-actions.component.css']
+  template: `<span *ngFor = "let icon of config">
+                <i [ngClass] = "icon.iconClass" aria-hidden="true" (click) = "onIconClicked(icon.id)"></i>
+            </span>`,
+  styles: [ `span > i{
+              margin-right: 4px;
+            }`]
 })
 export class ThumbnailActionsComponent implements OnInit {
 

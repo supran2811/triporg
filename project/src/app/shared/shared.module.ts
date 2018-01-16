@@ -18,6 +18,7 @@ import {CacheStateService} from './cache.state.service';
 import { ThumbnailViewComponent } from './thumbnail-view/thumbnail-view.component';
 import { ThumbnailActionsComponent } from './thumbnail-actions/thumbnail-actions.component';
 import { ImageViewComponent } from './image-view/image-view.component';
+import { RatingComponent } from './rating/rating.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -30,7 +31,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         DropDownDirective,
         ThumbnailViewComponent,
         ThumbnailActionsComponent,
-        ImageViewComponent
+        ImageViewComponent,
+        RatingComponent
     ],
     imports:[
         LazyLoadImageModule,
@@ -64,7 +66,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         LazyLoadImageModule,
         ThumbnailViewComponent,
         ThumbnailActionsComponent,
-        ImageViewComponent
+        ImageViewComponent,
+        RatingComponent
        ]
 })
 export class SharedModule{

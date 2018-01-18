@@ -13,7 +13,7 @@ import * as AuthActions from './auth/store/auth.action';
 })
 export class AppComponent implements OnInit{
   title = 'app';
-
+  
   public constructor(private store:Store<fromApp.AppState>){}
 
   ngOnInit(){

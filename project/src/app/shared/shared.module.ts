@@ -19,6 +19,8 @@ import { ThumbnailViewComponent } from './thumbnail-view/thumbnail-view.componen
 import { ThumbnailActionsComponent } from './thumbnail-actions/thumbnail-actions.component';
 import { ImageViewComponent } from './image-view/image-view.component';
 import { RatingComponent } from './rating/rating.component';
+import { BackdropComponent } from './backdrop/backdrop.component';
+import { ModalComponent } from './modal/modal.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -32,7 +34,9 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         ThumbnailViewComponent,
         ThumbnailActionsComponent,
         ImageViewComponent,
-        RatingComponent
+        RatingComponent,
+        BackdropComponent,
+        ModalComponent
     ],
     imports:[
         LazyLoadImageModule,
@@ -67,7 +71,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         ThumbnailViewComponent,
         ThumbnailActionsComponent,
         ImageViewComponent,
-        RatingComponent
+        RatingComponent,
+        ModalComponent
        ]
 })
 export class SharedModule{

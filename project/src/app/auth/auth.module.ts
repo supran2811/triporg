@@ -17,6 +17,10 @@ import { AuthRouterModule } from './auth.router.module';
         PopoverModule,
         SharedModule,
         AuthRouterModule
+    ],
+    exports:[
+        LoginComponent,
+        RegisterComponent
     ]
 })
 export class AuthModule{

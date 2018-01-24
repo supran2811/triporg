@@ -203,7 +203,9 @@ export class PlacesEffect {
                                                             .switchMap((payload:{id:string,map:any}) => {
 
                                                                 const uid = sessionStorage.getItem('uid');
+                                                                console.log("[PlaceEffects]","UID in session storage",uid);
                                                                 if(uid != null){
+                                                                    console.log("[PlaceEffects]","Going inside downloading uid");
                                                                     const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+payload.id+"/";         
                                                                     return this.http.get<any>(url,null).switchMap(res =>{
                                                                         console.log("[PlaceEffects]","Got response from server as ",res);
@@ -217,6 +219,7 @@ export class PlacesEffect {
                                                                     })
                                                                 }     
                                                                 else{
+                                                                    console.log("[PlaceEffects]","Downloading details inside google places",payload);
                                                                     return this.googlePlaces.getDetails(payload.id,payload.map);
                                                                  }
                                                             } )

@@ -21,6 +21,7 @@ import { AppRouterModule } from './app.router.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { CustomRouterReuseStrategy } from './custom.route-reuse';
+import { LoginComponent } from './auth/login/login.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { CustomRouterReuseStrategy } from './custom.route-reuse';
     HeaderComponent
    
   ],
+  
   imports: [
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyBlYYoEJ_1oksaGdQO2KG6FDjt4g9E8l0w', libraries: ['places'] }),
     AgmSnazzyInfoWindowModule,

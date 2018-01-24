@@ -15,7 +15,8 @@ import * as fromPlaceReducer from '../store/place.reducer';
 import * as fromAuth from '../../auth/store/auth.reducer';
 import { WindowRefService } from '../../shared/windowRef.service';
 import {Marker} from '../../models/marker.model';
-
+import * as AppActons from '../../store/app.actions';
+import { RegisterComponent } from '../../auth/register/register.component';
 
 
 
@@ -239,14 +240,17 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   onIconClicked($event , marker:Marker){
 
-    if(!this.authorised){
-      this.showErrorDialog();
-      return;
-    }
+    
 
     console.log("[AddNewPlace]","Clicked on "+$event);
     if($event === this.iconAdd.id){
-    
+
+        if(!this.authorised){
+          //this.showErrorDialog();
+          this.store.dispatch(new AppActons.ShowModal(RegisterComponent));
+          return;
+        }
+
         console.log("[AddNewPlace]","Handle onAdd clicked!!!");
         this.thumbnailActionConfig = [this.iconProgress,this.iconMap];
         this.onSave();

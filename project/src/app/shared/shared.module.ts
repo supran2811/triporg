@@ -21,6 +21,7 @@ import { ImageViewComponent } from './image-view/image-view.component';
 import { RatingComponent } from './rating/rating.component';
 import { BackdropComponent } from './backdrop/backdrop.component';
 import { ModalComponent } from './modal/modal.component';
+import { LoginComponent } from '../auth/login/login.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -47,6 +48,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         CommonModule,
         SwiperModule.forChild()
     ],
+    
     providers:[
         HttpService,
         {

@@ -10,8 +10,9 @@ import * as PlaceActions from '../store/place.action';
 import { Place } from '../../models/place.model';
 import { WindowRefService } from '../../shared/windowRef.service';
 import { City } from '../../models/city.model';
-
-
+import * as AppActions from '../../store/app.actions';
+import * as fromAuth from '../../auth/store/auth.reducer';
+import { RegisterComponent } from '../../auth/register/register.component';
 
 @Component({
   selector: 'app-place-details',
@@ -28,7 +29,7 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   mapPositonInInteger = 400;
   mapPostionInPixel = "400px";
   map = null;
-
+  authorised:boolean;
   lat:number = 28.6108127;
   lng:number = 77.2060241;
 
@@ -75,6 +76,15 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
 
   load(){
     this.ngProgress.start();
+
+    this.store.select('auth').map((state:fromAuth.State) =>{
+      return state.authorised;
+    }).subscribe( (authorised:boolean) => {
+      this.authorised = authorised;
+    } );
+
+
+
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
       
            
@@ -159,6 +169,10 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   }
 
   save(){
+    if(!this.authorised){
+      this.store.dispatch(new AppActions.ShowModal(RegisterComponent));
+      return;
+    }
     this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
   }
 

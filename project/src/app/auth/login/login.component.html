@@ -1,49 +1,41 @@
-<div class="container">
-<div class="row">
-    <ng-progress [positionUsing]="'marginLeft'" [minimum]="0.15" [maximum]="1"
-    [speed]="200" [showSpinner]="false" [direction]="'rightToLeftIncreased'"
-    [color]="'red'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"></ng-progress>
-   <br><br><br>
-    <div class="col-md-offset-1 col-md-4">
+<div class="loginPage">
+    <i *ngIf = "showSpinner" class = "fa fa-spinner fa-spin" aria-hidden="true" ></i>
+
+    <div *ngIf = "!showSpinner">
         <p class="error" *ngIf= "(error | async).hasError">
             {{ (error | async).errorMessage }}
         </p>
         <form (ngSubmit) = "login(f)" #f="ngForm">
-          <div class="form-group">
-               <label for="email">Enter email</label>
-               <input type="email" 
-                      class="form-control" 
-                      id="email" 
-                      placeholder="user@example.com"
-                      ngModel
-                      name="email"
-                      required
-                      email
-                      #email = "ngModel">
-          </div>
-          <div class="form-group">
-           <label for="password">Enter password</label>
-           <input type="password" 
-           class="form-control" 
-           id="password"
-           required
-           name="password"
-           ngModel
-           #password = "ngModel"
-           ng-pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
-           popover="Enter minimum 6 with atleast 1 number and capital letter"
-           popoverPlacement="auto right"
-           [popoverOnHover]="false"
-           [popoverCloseOnClickOutside]="true"
-           [popoverCloseOnMouseOutside]="false"
-           [popoverAnimation]="true"
-           [popoverDismissTimeout]="5000"
-           [popoverDisabled]="false"
-           >
+            <div class="form-group">
+                
+                <input type="email" 
+                        class="form-control" 
+                        id="email" 
+                        placeholder="Email Address"
+                        ngModel
+                        name="email"
+                        required
+                        email
+                        #email = "ngModel">
+            </div>
+            <div class="form-group">
+                    <input type="password" 
+                            class="form-control" 
+                            id="password"
+                            required
+                            name="password"
+                            placeholder="Password"
+                            ngModel
+                            #password = "ngModel"
+                            ng-pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+                    >
+            </div>
+            <button class="btn btn-primary" [disabled] = "!f.valid" type="submit">Login to Continue</button>
+         </form>
+         <div class="line"></div>
+         <div>
+              <p>Dont have an Account ? <a (click)="goToRegister()">SignUp</a></p>
          </div>
-         <button class="btn btn-primary" [disabled] = "!f.valid" type="submit">Login</button>
-         <button class="btn btn-secondary"  type="button" [routerLink] = "['../register']">SignUp</button>
-        </form>
+
       </div>
-</div>
 </div>

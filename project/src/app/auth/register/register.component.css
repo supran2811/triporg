@@ -1,3 +1,28 @@
 p.error{
     color:red;
 }
+
+
+a{
+    cursor: pointer;
+    color: blue;
+    text-decoration: none;
+}
+
+button {
+    width: 100%;
+    margin-top: 2px;
+    margin-bottom: 5px;
+}
+
+.Register{
+    padding:50px;
+    text-align: center;
+}
+
+.line{
+    width: 100%;
+    height: 2px;
+    background-color :#cfd8dc;
+    margin: 20px 0px;
+}

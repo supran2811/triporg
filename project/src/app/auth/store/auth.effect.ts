@@ -13,7 +13,7 @@ import * as fromPlaceReducer from '../../place/store/place.reducer';
 import * as PlaceActions from '../../place/store/place.action';
 import * as fromPinnedViewReducer from '../../home/pinned-view/store/pinnedview.reducer';
 import * as PinnedViewActions from '../../home/pinned-view/store/pinnedview.action';
-
+import * as AppActions from '../../store/app.actions';
 import { User } from '../../models/user.model';
 import { Location } from '@angular/common';
 
@@ -51,7 +51,7 @@ export class AuthEffect {
                                                         response => {console.log(response);},
                                                         error => {console.log(error);}
                                                 );
-                                                this.router.navigate(['/']);
+                                                //this.router.navigate(['/']);
                                                 
                                                 return [
                                                     {
@@ -64,6 +64,9 @@ export class AuthEffect {
                                                     },
                                                     {
                                                         type:AuthActions.REGISTER
+                                                    },
+                                                    {
+                                                        type:AppActions.HIDE_MODAL
                                                     }
                                                 ]
                                             })
@@ -102,9 +105,9 @@ export class AuthEffect {
                                                                 return [res];
                                                             }
                                                             const user = new User(res.email,res.fullName);
-                                                            const routeToNavigate = returnUrl === ""?"/":returnUrl;
-                                                            console.log("Navigate to",routeToNavigate);
-                                                            this.router.navigate([routeToNavigate]);
+                                                            //const routeToNavigate = returnUrl === ""?"/":returnUrl;
+                                                            //console.log("Navigate to",routeToNavigate);
+                                                            //this.router.navigate([routeToNavigate]);
                                                             return [
                                                                 {
                                                                     type:AuthActions.SET_TOKEN,
@@ -116,6 +119,9 @@ export class AuthEffect {
                                                                 },
                                                                 {
                                                                     type:AuthActions.LOGIN
+                                                                },
+                                                                {
+                                                                    type:AppActions.HIDE_MODAL
                                                                 }
                                                             ]
                                                         });

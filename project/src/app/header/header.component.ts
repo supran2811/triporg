@@ -9,7 +9,9 @@ import { User } from '../models/user.model';
 import * as fromApp from '../store/app.reducer';
 import * as fromAuth from '../auth/store/auth.reducer';
 import * as AuthActions from '../auth/store/auth.action';
-
+import * as AppActions from '../store/app.actions';
+import { LoginComponent } from '../auth/login/login.component';
+import { RegisterComponent } from '../auth/register/register.component';
 
 
 @Component({
@@ -47,14 +49,16 @@ export class HeaderComponent implements OnInit {
   }
 
   logIn(){
-    const returnUrl = this.location.path();
-    this.router.navigate(["/login"],{queryParams:{returnUrl:returnUrl}});
+    //const returnUrl = this.location.path();
+    //this.router.navigate(["/login"],{queryParams:{returnUrl:returnUrl}});
+    this.store.dispatch(new AppActions.ShowModal(LoginComponent));
   }
   
 
  register(){
-    const returnUrl = this.location.path();
-    this.router.navigate(["/register"],{queryParams:{returnUrl:returnUrl}});
+   // const returnUrl = this.location.path();
+   // this.router.navigate(["/register"],{queryParams:{returnUrl:returnUrl}});
+   this.store.dispatch(new AppActions.ShowModal(RegisterComponent));
   }
 
   goBack(){

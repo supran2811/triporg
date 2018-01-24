@@ -56,11 +56,12 @@ export class GooglePlacesService {
        const observable = Observable.create(
              (observer : Observer<any>) => {
                 this.googleApiLoader.load().then(() => {
+                    console.log("[GooglePlaces]","Loading with map",map,placeid);
                     let detailService = new google.maps.places.PlacesService(map);
                     detailService.getDetails({placeId:placeid},(place:google.maps.places.PlaceResult ,
                                                     status:google.maps.places.PlacesServiceStatus) =>{
                                                           
-
+                                                          console.log("[GooglePlaces]",status);
                                                           if(status == google.maps.places.PlacesServiceStatus.OK){
                                                               observer.next(place);
                                                           }

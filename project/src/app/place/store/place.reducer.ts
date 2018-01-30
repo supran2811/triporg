@@ -3,7 +3,7 @@ import { Place } from '../../models/place.model';
 import * as PlaceActions from './place.action';
 import * as fromApp from '../../store/app.reducer';
 import { City } from '../../models/city.model';
-import { getInitialState } from '../../shared/cache.state.service';
+
 export interface FeatureState extends fromApp.AppState{
     place:State
 }
@@ -12,14 +12,20 @@ export interface State{
     city:City,
     selectedPlace : Place,
     isHover:boolean,
-    detailsPlace:Place
+    detailsPlace:Place,
+    loadingCity : boolean,
+    loadingPlace:boolean,
+    loadingPins:boolean
 }
 
-const initialState:State = getInitialState('place') || {
+const initialState:State = {
     city:null,
     selectedPlace : null,
     isHover:false,
-    detailsPlace:null
+    detailsPlace:null,
+    loadingCity:false,
+    loadingPins:false,
+    loadingPlace:false
 
 }
 
@@ -34,14 +40,15 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.SET_CITY:{
-            console.log("Setting city state ",action.payload);
+            console.log("[PlaceReducer] SET_CITY",action.payload);
             return {
                 ...state,
+                loadingCity:false,
                 city:action.payload
             }
         }
         case PlaceActions.SET_CITY_LOCATION:{
-
+            console.log("[PlaceReducer] SET_CITY_LOCATION",action.payload);
             const city = state.city;
 
             let newCity = new City(city.id,city.name,action.payload.lat , action.payload.lng);
@@ -65,6 +72,8 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
         case PlaceActions.REMOVE_SELECTED_PLACE:{
             let updatedSavedPlaces = [ ...state.city.savedPlaces];
 
+            console.log("[PlaceReducer]",updatedSavedPlaces);
+
             let index = updatedSavedPlaces.findIndex((place) => {
                 return state.selectedPlace.placeId == place.placeId;
             } )
@@ -85,12 +94,13 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.ADD_SAVED_PLACED_TO_STATE:{
-
+            console.log("[PlaceReducer] ADD_SAVED_PLACED_TO_STATE",action.payload);
             const updatedCity = {...state.city , savedPlaces:action.payload};
             
 
             return {
                 ...state,
+                loadingPins:false,
                 city:updatedCity
             }
         }
@@ -113,6 +123,18 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
                 city:null,
                 isHover:false,
                 selectedPlace : null
+            }
+        }
+        case PlaceActions.START_LOADING_CITY:{
+            return {
+                ...state,
+                loadingCity:true
+            }
+        }
+        case PlaceActions.START_LOADING_PINS:{
+            return {
+                ...state,
+                loadingPins:true
             }
         }
     }

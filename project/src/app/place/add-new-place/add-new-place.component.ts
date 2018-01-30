@@ -17,7 +17,7 @@ import { WindowRefService } from '../../shared/windowRef.service';
 import {Marker} from '../../models/marker.model';
 import * as AppActons from '../../store/app.actions';
 import { RegisterComponent } from '../../auth/register/register.component';
-
+import * as fromPinnedReducer from '../../home/pinned-view/store/pinnedview.reducer';
 
 
 @Component({
@@ -40,9 +40,10 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   lng: number;
   cityId:string;
   selectedPlace : Place;
-  loaded = false;
+  loaded = true;
   showMarker = false;
   savedPlaces:Place[] = [];
+  map = null;
   
   zoom:number = 10;
   isNew:boolean = false;
@@ -62,9 +63,12 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
                 private store:Store<fromPlaceReducer.FeatureState>
               , private activeRoute:ActivatedRoute,
                 private router:Router,
-                private windowRef:WindowRefService) { }
+                private windowRef:WindowRefService) { 
+                  console.log("[AddNewPlace]","Inside add new place constructor");
+                }
 
   ngOnInit() {
+    console.log("[AddNewPlace]","Inside oninit");
     this.load();
   }
 
@@ -73,19 +77,21 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   }
 
   onMapReady(event){
-    console.log("[onMapReady]",event,this.cityId);
-    
-    this.store.dispatch(new PlaceActions.GetCityDetails({id:this.cityId,map:event}));
+    console.log("[AddNewPlace] onMapReady",event,this.cityId,this.lat);
+    this.map = event;
+    if(this.cityId != undefined){
+      this.store.dispatch(new PlaceActions.GetCityDetails({id:this.cityId,map:event}));
+    }
   }
 
   load(){
     
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
-
+        console.log("[AddNewPlace]",state);
         if(state.selectedPlace != null && this.lat ){
           this.placeName = "";
           
-          console.log("[PlaceEffects]",state.city.savedPlaces);
+          console.log("[AddNewPlace]",state.city.savedPlaces);
 
           let selectedPlaceIndexInPin = state.city.savedPlaces?(state.city.savedPlaces.findIndex( (place:Place) => {
             return place.placeId === state.selectedPlace.placeId
@@ -102,7 +108,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
                 return marker.isNew === false;
           } );
         
-          console.log("[PlaceEffects]",selectedPlaceIndexInPin,selectedPlaceIndexInMarker);
+          console.log("[AddNewPlace]",selectedPlaceIndexInPin,selectedPlaceIndexInMarker);
 
           if(selectedPlaceIndexInMarker >= 0 && selectedPlaceIndexInPin >= 0){
              
@@ -130,7 +136,8 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
             this.showDetailInfoWindow(newMarker);
           }
          }
-         else if(state.city != null && state.city.lat != 0 ){
+         else if(state.city != null && state.city.lat && state.city.lat != 0  ){
+           console.log("[AddNewPlace]","coming here to set lat of city ",state.city);
           this.loaded = true;
           this.lat = state.city.lat;
           this.lng = state.city.lng;
@@ -152,14 +159,19 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
                 marker.isNew = false;
              } );
           }
-          
+      
+
           this.ngProgress.done();
         }
-        else if(state.city != null){
+        else if(state.city != null && state.loadingCity === false && this.loaded){
           this.ngProgress.start();   
+          console.log("[AddNewPlace]","Coming here to get city location");
+          this.store.dispatch(new PlaceActions.StartLoadingCity());
           this.store.dispatch(new PlaceActions.GetCityLocation(state.city.id));
           this.loaded = false;
+      
         }
+      
     });
 
     this.store.select('auth').map((state:fromAuth.State) =>{

@@ -6,11 +6,13 @@ import { AddNewPlaceComponent } from './add-new-place/add-new-place.component';
 import { PlaceComponent } from './place.component';
 
 import { PlaceDetailsComponent } from './place-details/place-details.component';
+import { AddNewInterniryComponent } from './add-new-interniry/add-new-interniry.component';
 
 
 const placeRoutes:Routes = [
     {
-        path:'' , component:PlaceComponent , children :[
+        path:'' , component:PlaceComponent 
+        , children :[
             {path:'' , component:AddNewPlaceComponent},
         ]
     },

@@ -26,6 +26,10 @@ export const ADD_SAVED_PLACED_TO_STATE                          = "ADD_SAVED_PLA
 export const SET_PLACE_TO_NAVIGATE                              = "SET_PLACE_TO_NAVIGATE";
 export const RESET_PLACE_TO_NAVIGATE                            = "RESET_PLACE_TO_NAVIGATE";
 
+export const START_LOADING_CITY                                 = "START_LOADING_CITY";
+export const START_LOADING_PINS                                 = "START_LOADING_PINS";
+export const START_LOADING_PLACE                                 = "START_LOADING_PLACE";
+
 export const RESET_STATE = "RESET_STATE";
 
 
@@ -117,6 +121,19 @@ export class GetPlaceDetails {
     public constructor(public payload:{id:string,map:any}){}
 }
 
+export class StartLoadingCity {
+    readonly type = START_LOADING_CITY;
+}
+
+export class StartLoadingPlace {
+    readonly type = START_LOADING_PLACE;
+}
+
+export class StartLoadingPins {
+    readonly type = START_LOADING_PINS;
+}
+
+
 export type PlaceActions = GetCityDetails|
                             SetPlaceDetails|
                             SetCity|
@@ -134,4 +151,7 @@ export type PlaceActions = GetCityDetails|
                             ResetPlaceToNavigate|
                             GetPlaceDetails|
                             SavePlace|
-                            RemovePlace;
+                            RemovePlace|
+                            StartLoadingCity|
+                            StartLoadingPins|
+                            StartLoadingPlace;

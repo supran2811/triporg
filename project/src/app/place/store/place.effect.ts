@@ -228,7 +228,7 @@ export class PlacesEffect {
 
                                                                 if(res && res.lat){
                                                                    
-                                                                    const savedPlaces = res.places && Object.values(res.places).map((place) => (place) )
+                                                                    const savedPlaces = (res.places && Object.values(res.places).map((place) => (place) )) || [];
 
                                                                     const city = new City(res.id,res.name,res.lat,res.lng,savedPlaces,res.photos);
                                                                         

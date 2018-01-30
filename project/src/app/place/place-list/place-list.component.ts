@@ -1,44 +1,55 @@
-import { Component, OnInit ,ChangeDetectorRef} from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Component, OnInit ,ChangeDetectorRef , OnDestroy} from '@angular/core';
+import { Observable,Subscription } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 
 import { Place } from '../../models/place.model';
 import * as PlaceActions from '../store/place.action';
 import * as fromPlaceReducer from '../store/place.reducer';
 
+
+
 @Component({
   selector: 'app-place-list',
   templateUrl: './place-list.component.html',
   styleUrls: ['./place-list.component.css']
 })
-export class PlaceListComponent implements OnInit {
+export class PlaceListComponent implements OnInit,OnDestroy {
 
-  savedplaces : Observable<Place[]>
+  savedplaces : Place[] = [];
+  subscription:Subscription;
   showEmptySection:boolean = true;
   constructor(private store:Store<fromPlaceReducer.FeatureState>,
-                  private changeDetectRef:ChangeDetectorRef) { }
+                  private changeDetectRef:ChangeDetectorRef) { 
+
+                    console.log("[PlaceListComponent]","Inside constructor");
+                  }
 
   ngOnInit() {
-
-    this.savedplaces = this.store.select('place').map((state:fromPlaceReducer.State) => {
-        console.log("[PlaceList]","Check for saved places in city ",state.city);
-        if( !state.city || !state.city.savedPlaces  || state.city.savedPlaces.length == 0){
+    console.log("[PlaceListComponent]","Inside onInit");
+    this.subscription =  this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
+        console.log("[PlaceListComponent]","Check for saved places in city ",state.city);
+        if( state.city != null  && state.city.savedPlaces != null && state.city.savedPlaces.length == 0 ){
           this.showEmptySection = true;
+          this.savedplaces = state.city.savedPlaces || [];
         }
-        else{
+        else if(state.city != null){
+          this.savedplaces = state.city.savedPlaces;
           this.showEmptySection = false;
         }
-        return (state.city && state.city.savedPlaces) || null;
+
+        if(state.city != null && state.city.savedPlaces == null && state.loadingPins === false){
+          this.store.dispatch(new PlaceActions.StartLoadingPins());
+          this.store.dispatch(new PlaceActions.GetSavedPlacesFrmServerByCity());
+
+        }
+
     });
 
-    this.savedplaces.take(1).subscribe( (places:Place[]) => {
-      console.log("[PlaceList]","Retunring placess as ",places);
-      if(places == null){
-        console.log("[PlaceList]","Sending request to server to get place list");
-        this.store.dispatch(new PlaceActions.GetSavedPlacesFrmServerByCity());
-      }
-    } );
-
   }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
+
 
 }

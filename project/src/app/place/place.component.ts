@@ -2,7 +2,7 @@
 import { Observable } from 'rxjs';
 import {Store} from '@ngrx/store';
 import { ActivatedRoute, Params, Router} from '@angular/router';
-import { Component, OnInit ,OnDestroy } from '@angular/core';
+import { Component, OnInit ,OnDestroy,OnChanges,ChangeDetectorRef,NgZone } from '@angular/core';
 import { NgProgress } from 'ngx-progressbar';
 
 import { City } from '../models/city.model';
@@ -13,12 +13,14 @@ import { CacheStateService } from '../shared/cache.state.service';
 import { Subscription } from 'rxjs/Subscription';
 
 
+
+
 @Component({
   selector: 'app-place',
   templateUrl: './place.component.html',
   styleUrls: ['./place.component.css']
 })
-export class PlaceComponent implements OnInit , OnDestroy {
+export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
 
   city:Observable<City>;
   isLoading = false;
@@ -29,7 +31,17 @@ export class PlaceComponent implements OnInit , OnDestroy {
   constructor(private activeRoute:ActivatedRoute,
                   private store:Store<fromPlaceReducer.FeatureState>,
                 private router:Router,
-              private ngProgress:NgProgress) { }
+              private ngProgress:NgProgress,
+              private changeDetector : ChangeDetectorRef,
+            private zone:NgZone) { 
+                console.log("[PlaceComponent]","Inside Placecomponent contructor");
+                setTimeout( () => {
+                    this.zone.run(() => {
+                      this.changeDetector.detectChanges();
+                    })
+                     
+                },0 )
+              }
 
   ngOnInit() {
    
@@ -60,6 +72,10 @@ export class PlaceComponent implements OnInit , OnDestroy {
           }
     });
     
+  }
+  
+  ngOnChanges(){
+    console.log("[PlaceComponent]","Inside ngOnChanges");
   }
 
   loadCity(){

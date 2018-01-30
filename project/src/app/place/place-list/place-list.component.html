@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-xl-3 col-sm-6 col-12" 
                  style= "margin-top:20px;" 
-                 *ngFor = "let place of (savedplaces | async); let i = index">
+                 *ngFor = "let place of (savedplaces); let i = index">
                 <app-place-item [place] = "place" [shadow] = true>      </app-place-item>
             </div>  
           </div>

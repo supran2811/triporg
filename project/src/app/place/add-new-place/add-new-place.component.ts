@@ -35,7 +35,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
       searchElementRef:ElementRef;
 
   authorised:boolean;
-  
+  blockActions = false;
   lat: number;
   lng: number;
   cityId:string;
@@ -87,6 +87,11 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   load(){
     
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
+        
+        this.blockActions = state.removingPins || state.savingPins;
+
+        if(this.blockActions) return;
+
         console.log("[AddNewPlace]",state);
         if(state.selectedPlace != null && this.lat ){
           this.placeName = "";
@@ -184,6 +189,9 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
 
   boundsChange(event){
+
+    if(this.blockActions) return;
+
     const latLngBounds = new google.maps.LatLngBounds(new google.maps.LatLng(event.getSouthWest().lat(), event.getSouthWest().lng())
                              , new google.maps.LatLng(event.getNorthEast().lat(),event.getNorthEast().lng()));
     this.store.dispatch(new PlaceActions.AddPlaceChangeListener({input:this.searchElementRef,boundary:latLngBounds}));
@@ -192,13 +200,20 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
 
   onSave(){
-    console.log("Inside onSave!!!");
 
+    if(this.blockActions) return;
+
+    console.log("Inside onSave!!!");
+    this.store.dispatch(new PlaceActions.StartSavingPlaceToServer());
     this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
   }
 
   onRemove(){
+
+    if(this.blockActions) return;
+
     console.log("Inside onRemove!!!");
+    this.store.dispatch(new PlaceActions.StartRemovingPlaceFromServer());
     this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());
   }
 
@@ -225,12 +240,17 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   }
 
   placeSelected(marker:Marker){
+
+    if(this.blockActions) return;
+
     console.log("Selected",marker);
     this.showDetailInfoWindow(marker);
     this.store.dispatch(new PlaceActions.SetPlaceDetails({place:marker.place,isHover:false}));
   }
 
   showDetailInfoWindow(marker:Marker){
+    if(this.blockActions) return;
+
     this.showDetailWindow = true;
       this.thumbnailActionConfig =  [ marker.isNew?this.iconAdd:this.iconRemove,this.iconMap];
       marker.showInfoWindow = true;
@@ -238,6 +258,8 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   }
 
   hideDetailInfoWindow(marker:Marker){
+
+    
     this.showDetailWindow = false;
 
     if(marker) marker.showInfoWindow = false;
@@ -252,6 +274,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   onIconClicked($event , marker:Marker){
 
+    if(this.blockActions) return;
     
 
     console.log("[AddNewPlace]","Clicked on "+$event);
@@ -280,6 +303,8 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   }
 
   onClicked(place:Place){
+    if(this.blockActions) return;
+
     console.log("Inside onClicked");
     this.store.dispatch(new PlaceActions.SetPlaceToNavigate(place));
     this.router.navigate(["place",place.placeId],{relativeTo:this.activeRoute});

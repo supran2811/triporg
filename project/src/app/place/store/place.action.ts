@@ -19,8 +19,16 @@ export const ADD_PLACE_CHANGE_LISTENER                          = "ADD_PLACE_CHA
 export const RESET_SELECTED_PLACE                               = "RESET_SELECTED_PLACE";
 export const REMOVE_SELECTED_PLACE                              = "REMOVE_SELECTED_PLACE";
 export const REMOVE_PLACE                                       = "REMOVE_PLACE"
+
+export const START_SAVING_PLACE_TO_SERVER                       = "START_SAVING_PLACE_TO_SERVER";
 export const SAVE_SELECTED_PLACE_TO_SERVER                      = "SAVE_SELECTED_PLACE_TO_SERVER";
+
+
+export const START_REMOVING_PLACE_FROM_SERVER                   = "START_REMOVING_PLACE_FROM_SERVER";
 export const REMOVE_SELECTED_PLACE_FROM_SERVER                  = "REMOVE_SELECTED_PLACE_FROM_SERVER";
+
+
+
 export const GET_SAVED_PLACES_FROM_SERVER_BY_CITY               = "GET_SAVED_PLACES_FROM_SERVER_BY_CITY";
 export const ADD_SAVED_PLACED_TO_STATE                          = "ADD_SAVED_PLACED_TO_STATE";
 export const SET_PLACE_TO_NAVIGATE                              = "SET_PLACE_TO_NAVIGATE";
@@ -133,6 +141,13 @@ export class StartLoadingPins {
     readonly type = START_LOADING_PINS;
 }
 
+export class StartSavingPlaceToServer {
+    readonly type = START_SAVING_PLACE_TO_SERVER;
+}
+
+export class StartRemovingPlaceFromServer {
+    readonly type = START_REMOVING_PLACE_FROM_SERVER;
+}
 
 export type PlaceActions = GetCityDetails|
                             SetPlaceDetails|
@@ -154,4 +169,6 @@ export type PlaceActions = GetCityDetails|
                             RemovePlace|
                             StartLoadingCity|
                             StartLoadingPins|
-                            StartLoadingPlace;
+                            StartLoadingPlace|
+                            StartSavingPlaceToServer|
+                            StartRemovingPlaceFromServer;

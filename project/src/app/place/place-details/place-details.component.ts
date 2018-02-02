@@ -165,6 +165,7 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   }
 
   remove(){
+    this.store.dispatch(new PlaceActions.StartRemovingPlaceFromServer());
     this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());
   }
 
@@ -173,6 +174,7 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
       this.store.dispatch(new AppActions.ShowModal(RegisterComponent));
       return;
     }
+    this.store.dispatch(new PlaceActions.StartSavingPlaceToServer());
     this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
   }
 

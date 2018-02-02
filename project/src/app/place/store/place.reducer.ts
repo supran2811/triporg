@@ -15,7 +15,9 @@ export interface State{
     detailsPlace:Place,
     loadingCity : boolean,
     loadingPlace:boolean,
-    loadingPins:boolean
+    loadingPins:boolean,
+    removingPins:boolean,
+    savingPins:boolean
 }
 
 const initialState:State = {
@@ -25,7 +27,9 @@ const initialState:State = {
     detailsPlace:null,
     loadingCity:false,
     loadingPins:false,
-    loadingPlace:false
+    loadingPlace:false,
+    removingPins:false,
+    savingPins:false
 
 }
 
@@ -58,35 +62,76 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
                 city:newCity
             }
         }
-        case PlaceActions.SAVE_SELECTED_PLACE:{
-            let newSavedPlaces =state.city.savedPlaces ? [ ...state.city.savedPlaces]:[];
-            newSavedPlaces.push({...state.selectedPlace});
-
-            const updatedCity = {...state.city , savedPlaces:newSavedPlaces}    
-            console.log("[PlaceReducer]","Added new place ",updatedCity);
+        case PlaceActions.START_SAVING_PLACE_TO_SERVER:{
             return {
                 ...state,
-                city:updatedCity
+                savingPins:true
             }
         }
-        case PlaceActions.REMOVE_SELECTED_PLACE:{
-            let updatedSavedPlaces = [ ...state.city.savedPlaces];
+        case PlaceActions.SAVE_PLACE:{
 
-            console.log("[PlaceReducer]",updatedSavedPlaces);
+            if(action.payload.city && state.city && action.payload.city.id === state.city.id){
+                console.log("[PlaceReducer]","Coming here to save place");
+                let newSavedPlaces =state.city.savedPlaces ? [ ...state.city.savedPlaces]:[];
+                newSavedPlaces.push({...action.payload.place});
 
-            let index = updatedSavedPlaces.findIndex((place) => {
-                return state.selectedPlace.placeId == place.placeId;
-            } )
+                const updatedCity = {...state.city , savedPlaces:newSavedPlaces}    
+                console.log("[PlaceReducer]","Added new place ",updatedCity);
+                return {
+                    ...state,
+                    city:updatedCity,
+                    savingPins:false
+                }
+            }
+            return {...state,savingPins:false};
 
-            updatedSavedPlaces.splice(index,1);
-            const updatedCity = {...state.city , savedPlaces:updatedSavedPlaces}
-
+            
+        }
+        case PlaceActions.START_REMOVING_PLACE_FROM_SERVER:{
             return {
                 ...state,
-                city:updatedCity
+                removingPins:true
+            }
+        }
+        case PlaceActions.REMOVE_PLACE:{
+            console.log("[PlaceReducer]","Coming here to remove place",action.payload,state);
+            if(action.payload.city && state.city && action.payload.city.id === state.city.id){
+
+                console.log("[PlaceReducer]","Coming here to remove place");
+
+                let updatedSavedPlaces = [ ...state.city.savedPlaces];
+
+                console.log("[PlaceReducer]",updatedSavedPlaces,action.payload.place);
+
+                let index = updatedSavedPlaces.findIndex((place) => {
+                    return action.payload.place.placeId == place.placeId;
+                } )
+                if(index >= 0){
+                    updatedSavedPlaces.splice(index,1);
+                    const updatedCity = {...state.city , savedPlaces:updatedSavedPlaces}
+
+                    return {
+                        ...state,
+                        city:updatedCity,
+                        removingPins:false
+                    }
+                }
+                else{
+                    return {
+                        ...state,
+                        removingPins:false
+                    };
+                }
+            }
+            else{
+                 return {
+                    ...state,
+                    removingPins:false
+                };;
             }
         }
         case PlaceActions.RESET_SELECTED_PLACE:{
+            console.log("[PlaceReducer]","Coming here to reset place");
             return {
                 ...state,
                 selectedPlace:null,

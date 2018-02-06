@@ -1,9 +1,9 @@
 .pinned-item {
    
-    width: 300px;
+    width: 30rem;
     height: auto;
-    border: 1px solid #eee;
-    box-shadow: 1px 3px 1px #cccccc;
+    border: .1rem solid #eee;
+    box-shadow: .1rem .3rem .1rem #cccccc;
     box-sizing: border-box;
  }
  

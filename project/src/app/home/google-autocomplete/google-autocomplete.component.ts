@@ -1,4 +1,4 @@
-import { Component, Input,Output, OnInit,EventEmitter,ChangeDetectorRef } from '@angular/core';
+import { Component, Input,Output, OnInit,EventEmitter,ChangeDetectorRef  ,ElementRef} from '@angular/core';
 import { GooglePlacesService } from '../../shared/google.places.service';
 
 import { Observable } from 'rxjs/Rx';
@@ -7,7 +7,10 @@ import { Observable } from 'rxjs/Rx';
 @Component({
   selector: 'app-google-autocomplete',
   templateUrl: './google-autocomplete.component.html',
-  styleUrls: ['./google-autocomplete.component.css']
+  styleUrls: ['./google-autocomplete.component.css'],
+  host:{
+    '(document:click)': 'handleClick($event)',
+  }
 })
 export class GoogleAutocompleteComponent implements OnInit {
 
@@ -19,7 +22,8 @@ export class GoogleAutocompleteComponent implements OnInit {
 
   query:string = "";
   constructor(private googlePlaces:GooglePlacesService ,
-                private changeDetectRef:ChangeDetectorRef) { }
+                private changeDetectRef:ChangeDetectorRef,
+                private elementRef:ElementRef) { }
 
   ngOnInit() {
   }
@@ -45,7 +49,13 @@ export class GoogleAutocompleteComponent implements OnInit {
   }
 
   selectItem(item:any){
+    console.log("[GoogleAutoComplete]",item);
      this.selectPrediction.emit(item);
+  }
 
+  handleClick(event){
+     if(this.elementRef.nativeElement !== event.target){
+      this.updateItems([]);
+     }
   }
 }

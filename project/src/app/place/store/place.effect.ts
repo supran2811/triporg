@@ -90,7 +90,7 @@ export class PlacesEffect {
                                                           console.log("[PlaceEffects]",selectedPlace);
                                                           const selectedCity = state.city;
                                                           
-                                                          const uid = sessionStorage.getItem('uid');
+                                                          const uid = firebase.auth().currentUser.uid; 
                                                           let url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+selectedCity.id;  
 
                                                           if(savedPlaces.length == 0){
@@ -133,7 +133,7 @@ export class PlacesEffect {
                                                         const selectedPlace = state.selectedPlace;
                                                         const selectedCity = state.city;
                                                         const savedPlaces  = state.city.savedPlaces || [];
-                                                        const uid = sessionStorage.getItem('uid');
+                                                        const uid = firebase.auth().currentUser.uid;
                                                         let url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+selectedCity.id;         
                                                         if(savedPlaces.length > 1){
                                                             url = url +"/places/"+selectedPlace.placeId;
@@ -173,7 +173,7 @@ export class PlacesEffect {
                                                      .switchMap(([action,state]) => {
                                                         
                                                         const city = state.city;
-                                                        const uid = sessionStorage.getItem('uid');
+                                                        const uid = firebase.auth().currentUser.uid;
                                                         const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id+"/places/";         
                                                         return this.http.get<any>(url,null)
                                                                     .catch((err) => {
@@ -211,8 +211,8 @@ export class PlacesEffect {
                                                             })
                                                             .switchMap((payload:{id:string,map:any}) => {
 
-                                                                const uid = sessionStorage.getItem('uid');
-                                                                console.log("[PlaceEffects]","UID in session storage",uid);
+                                                                const uid = firebase.auth().currentUser ? firebase.auth().currentUser.uid  : null ;
+                                                                console.log("[PlaceEffects]","UID in firebase",uid);
                                                                 if(uid != null){
                                                                     console.log("[PlaceEffects]","Going inside downloading uid");
                                                                     const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+payload.id+"/";         

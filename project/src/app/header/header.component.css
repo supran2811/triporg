@@ -4,29 +4,29 @@
     width:100%;
     margin: 0;
     padding: 0;
-    height: 65px;
+    height: 6.5rem;
 }
 
 .navbar-brand{
-    margin: 10px;
+    margin: 1rem;
 }
 
 ul.navbar-nav > li {
-    border: 1px solid salmon;
-    border-radius: 5px;
-    margin: 10px;
+    border: .1rem solid salmon;
+    border-radius: .5rem;
+    margin: 1rem;
     background-color: white;
 }
 
 ul.navbar-nav > li > a {
-    padding: 10px;
+    padding: 1rem;
     font-weight: bold;
 }
 
 .backbutton {
-    padding: 10px;
+    padding: 1rem;
     font-weight: bold;
-    margin: 10px;
+    margin: 1rem;
     border: none;
     color: salmon;
 }

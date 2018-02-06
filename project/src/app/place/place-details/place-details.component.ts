@@ -99,9 +99,9 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
               this.isPinned = selectedPlaceIndexInPin >= 0;
               console.log("[PlaceDetails]","isPinned "+this.isPinned,selectedPlaceIndexInPin);
               this.place = state.detailsPlace;
-              this.photos = (this.place.photos && this.place.photos.map(photo => photo.large )) || [];
+              this.photos = (this.place.photos ? this.place.photos.map(photo => photo.large ) : [] );
               
-              console.log("[PlaceDetails]",this.place);
+              console.log("[PlaceDetails]",this.photos);
 
               this.lat = this.place.lat;
               this.lng = this.place.lng;

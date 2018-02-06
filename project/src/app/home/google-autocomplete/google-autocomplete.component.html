@@ -1,12 +1,15 @@
 
     
     <div class = "autocomplete-input">
-       <input type= "search" 
+      <input type= "text" 
+            autocorrect="off" 
+            autocapitalize="off" 
+            spellcheck="off" 
+            autocomplete="off"
             class="form-control" 
             placeholder="Search for any city you are planning to visit"
             [(ngModel)] ="query" 
-            (ngModelChange) = "fireSearchQuery()"
-            autocomplete="off">
+            (ngModelChange) = "fireSearchQuery()">
        
     </div>
     <div class="autocomplete-list">

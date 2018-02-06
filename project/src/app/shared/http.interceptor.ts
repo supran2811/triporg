@@ -18,10 +18,7 @@ export class HttpAuthInterceptor implements HttpInterceptor{
               
               return state.token;
         }).switchMap(token => {
-              if(token === ''){
-                  token = sessionStorage.getItem('token');
-              }
-              console.log("NewToken : "+token);
+   
               const clonedReq = req.clone({url:req.url+".json",params : req.params.set('auth',token)});
               
               return next.handle(clonedReq);

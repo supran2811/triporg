@@ -8,7 +8,8 @@ export interface State{
     uid:string,
     authorised:boolean,
     hasError:boolean,
-    errorMessage:string
+    errorMessage:string,
+    loading:boolean
 }
 
 const initialState : State = {
@@ -17,16 +18,22 @@ const initialState : State = {
     uid:"",
     authorised:false,
     hasError:false,
-    errorMessage:''
+    errorMessage:'',
+    loading:false
 }
 
 export function AuthReducer(state=initialState , action:AuthActions.AuthActions){
     switch(action.type){
+        case AuthActions.START_AUTH:{
+            return {
+                ...state,
+                loading:true
+            }
+        }
         case AuthActions.LOGIN:
         case AuthActions.REGISTER:{
             return {
-                 ...state,
-                 authorised:true
+                 ...state
              }   
         }
         case AuthActions.SET_TOKEN:{
@@ -37,22 +44,21 @@ export function AuthReducer(state=initialState , action:AuthActions.AuthActions)
             }
         }
         case AuthActions.SET_USER :{
-            console.log("Inside Set User");
-            console.log(action.payload);
-            sessionStorage.setItem('fullname',action.payload.fullName);
-            sessionStorage.setItem('email',action.payload.email);
-            console.log(sessionStorage);
+          
             return {
                 ...state,
-                user:action.payload
+                user:action.payload,
+                loading:false,
+                authorised:true
             }
         }
         case AuthActions.SHOW_ERROR:{
-            console.log("Coming here to set error message");
+          
             return {
                 ...state,
                 hasError:true,
-                errorMessage:action.payload
+                errorMessage:action.payload,
+                loading:false
             }
         }
         case AuthActions.RESET_ERROR:{
@@ -63,10 +69,6 @@ export function AuthReducer(state=initialState , action:AuthActions.AuthActions)
             }
         }
         case AuthActions.LOGOUT:{
-            sessionStorage.removeItem('token');
-            sessionStorage.removeItem('fullname');
-            sessionStorage.removeItem('email');
-            sessionStorage.removeItem('uid');
             return {
                 ...state,
                 user:null,

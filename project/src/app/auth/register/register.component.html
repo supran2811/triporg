@@ -3,8 +3,8 @@
   <i *ngIf = "showSpinner" class = "fa fa-spinner fa-spin" aria-hidden="true" ></i>
 
   <div *ngIf = "!showSpinner">
-    <p class="error" *ngIf= "(error | async).hasError">
-          {{ (error | async).errorMessage }}
+    <p class="error" *ngIf= "(authData | async).hasError">
+          {{ (authData | async).errorMessage }}
     </p>
     <form (ngSubmit) = "register(f)" #f="ngForm">
       <div id="user-data" ngModelGroup = "userdata">

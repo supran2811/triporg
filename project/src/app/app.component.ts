@@ -26,24 +26,21 @@ export class AppComponent implements OnInit{
       authDomain: "triporg-1508486982436.firebaseapp.com"
     });
 
-    console.log(sessionStorage);
-    if(sessionStorage.getItem('token') != null){
-          const token = sessionStorage.getItem('token');
-          const email = sessionStorage.getItem('email');
-          const fullName = sessionStorage.getItem('fullname');
-          const uid = sessionStorage.getItem('uid');
-
-          this.store.dispatch(new AuthActions.SetTokenAction({token:token,uid:uid}));
-          this.store.dispatch(new AuthActions.SetUserAction(new User(email,fullName)));
-          this.store.dispatch(new AuthActions.LoginAction());
-    }
 
     this.store.select('app').subscribe((state:fromApp.State ) => {
       console.log("[AppComponent]",state);
          this.showModal = state.showModal;
          this.componentToRender = state.componentToRender;
     })
-
+    firebase.auth().onAuthStateChanged( (user) => {
+            console.log("OnAuthStateChanged",user);
+            if(user != null){
+                this.store.dispatch(new AuthActions.GetTokenAction());
+            }
+            else{
+                this.store.dispatch(new AuthActions.LogoutAciton());
+            }
+    } )
   }
 
   hideModal(){

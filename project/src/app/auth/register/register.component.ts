@@ -17,17 +17,17 @@ import { LoginComponent } from '../login/login.component';
 })
 export class RegisterComponent implements OnInit  , OnDestroy {
 
-  error : Observable<{hasError:boolean , errorMessage:string}>;
-  showSpinner:boolean = true;
+  authData : Observable<{hasError:boolean , errorMessage:string,loading:boolean}>;
+  showSpinner:boolean = false;
   constructor(private store:Store<fromApp.AppState>) { }
 
   ngOnInit() {
-    this.error = this.store.select('auth').map((state:fromAuth.State) => {
-        return {hasError:state.hasError,errorMessage:state.errorMessage}
+    this.authData = this.store.select('auth').map((state:fromAuth.State) => {
+        return {hasError:state.hasError,errorMessage:state.errorMessage,loading:state.loading}
     })
 
-    this.error.subscribe(hasError => {
-       this.showSpinner = !hasError;
+    this.authData.subscribe(data => {
+       this.showSpinner = data.loading;
     })
   }
 
@@ -39,6 +39,7 @@ export class RegisterComponent implements OnInit  , OnDestroy {
     this.showSpinner = true;
     const user = new User(form.value.userdata.email , form.value.userdata.fullname);
     const password = form.value.password;
+    this.store.dispatch(new AuthActions.StartAuth());
     this.store.dispatch(new AuthActions.DoRegisterAction({user:user ,password:password}));
   }
 

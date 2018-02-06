@@ -251,7 +251,7 @@ export class PlacesEffect {
                                                                     const city = new City(res.place_id,
                                                                                             res.name,
                                                                                             res.geometry.location.lat(),
-                                                                                            res.geometry.location.lng());
+                                                                                            res.geometry.location.lng(),[]);
 
 
                                                                     city.photos = res.photos && res.photos.map(photo => {

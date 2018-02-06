@@ -30,47 +30,37 @@ export class AuthEffect {
                                     let email = payload.user.email;
                                     let password = payload.password;
                                     this.user = payload.user;
-                                    return fromPromise(firebase.auth().createUserWithEmailAndPassword(email,password))
-                                        .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}) )
-                                        .switchMap((error) => {
-                                            
-                                            if(error && error.type == AuthActions.SHOW_ERROR){
-                                                return Observable.of(error);
-                                            }
-                                            
-                                            return fromPromise(firebase.auth().currentUser.getIdToken())
+                                    
+                                    return fromPromise(firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)).switchMap(() =>{
+                                         return fromPromise(firebase.auth().createUserWithEmailAndPassword(email,password))
+                                         .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}) )
+                                         
+                                    }) 
+                                    .switchMap((res) => {
+
+                                        if(res && res.type == AuthActions.SHOW_ERROR){
+                                            return Observable.of(res);
+                                        }
+
+                                        return fromPromise(firebase.auth().currentUser.updateProfile({displayName:this.user.fullName , photoURL:"http://samplephoto.com/"}))
                                             .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
-                                            .mergeMap((res) =>{
-                                                if(res && res.type == AuthActions.SHOW_ERROR){
-                                                    return [res];
-                                                }
-                                                const token = res;
-                                                sessionStorage.setItem('token',token);
-                                                sessionStorage.setItem('uid',firebase.auth().currentUser.uid);                         
-                                                this.http.put(this.USER_URL+"/"+firebase.auth().currentUser.uid, this.user).subscribe(
-                                                        response => {console.log(response);},
-                                                        error => {console.log(error);}
-                                                );
-                                                //this.router.navigate(['/']);
-                                                
-                                                return [
-                                                    {
-                                                        type:AuthActions.SET_TOKEN,
-                                                        payload:{token:token,uid:firebase.auth().currentUser.uid}
-                                                    },
-                                                    {
-                                                        type:AuthActions.SET_USER,
-                                                        payload:this.user
-                                                    },
-                                                    {
-                                                        type:AuthActions.REGISTER
-                                                    },
-                                                    {
-                                                        type:AppActions.HIDE_MODAL
-                                                    }
-                                                ]
-                                            })
-                                        })
+                                    })
+                                    .mergeMap((res) =>{
+                                        if(res && res.type == AuthActions.SHOW_ERROR){
+                                            return [res];
+                                        }
+                                      
+                                   
+                                        return [
+                                            {
+                                              type:AuthActions.SET_USER,
+                                              payload:this.user
+                                            },
+                                            {
+                                              type:AppActions.HIDE_MODAL
+                                            }
+                                        ]
+                                    })
                                         
                                 } );
 
@@ -81,59 +71,27 @@ export class AuthEffect {
                                            const email  = payload.email;
                                            const password = payload.password;
                                            const returnUrl = payload.returnUrl;
-                                           return fromPromise(firebase.auth().signInWithEmailAndPassword(email,password))
-                                           .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
-                                           .switchMap((error) => {
-                                            if(error && error.type == AuthActions.SHOW_ERROR){
-                                                return Observable.of(error);
+                                           return fromPromise(firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)).switchMap(() => {
+                                             return fromPromise(firebase.auth().signInWithEmailAndPassword(email,password))
+                                             .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}));
+                                           })
+                                           .mergeMap((res ) => {
+                                            if(res && res.type == AuthActions.SHOW_ERROR){
+                                                return [res];
                                             }
-
-                                            return fromPromise(firebase.auth().currentUser.getIdToken())
-                                            .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
-                                            .switchMap((res) => {
-
-                                                if(res && res.type == AuthActions.SHOW_ERROR){
-                                                    return  Observable.of(res);
+                                          
+                                            return [
+                                                {
+                                                    type:AppActions.HIDE_MODAL
                                                 }
-                                                const token = res;
-                                                sessionStorage.setItem('token',token);
-                                                sessionStorage.setItem('uid',firebase.auth().currentUser.uid);    
-                                                return this.http.get<User>(this.USER_URL+"/"+firebase.auth().currentUser.uid+"/",null)
-                                                        .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
-                                                        .mergeMap((res:(User|any)) => {
-                                                            if(res && res.type == AuthActions.SHOW_ERROR){
-                                                                return [res];
-                                                            }
-                                                            const user = new User(res.email,res.fullName);
-                                                            //const routeToNavigate = returnUrl === ""?"/":returnUrl;
-                                                            //console.log("Navigate to",routeToNavigate);
-                                                            //this.router.navigate([routeToNavigate]);
-                                                            return [
-                                                                {
-                                                                    type:AuthActions.SET_TOKEN,
-                                                                    payload:{token:token,uid:firebase.auth().currentUser.uid}
-                                                                },
-                                                                {
-                                                                    type:AuthActions.SET_USER,
-                                                                    payload:user
-                                                                },
-                                                                {
-                                                                    type:AuthActions.LOGIN
-                                                                },
-                                                                {
-                                                                    type:AppActions.HIDE_MODAL
-                                                                }
-                                                            ]
-                                                        });
-                                            })
-                                        })
+                                            ]
+                                        });
                                     } );
                                     
     @Effect() logout = this.$actions.ofType(AuthActions.DO_LOGOUT)
                                         .switchMap(() => firebase.auth().signOut())
                                         .mergeMap(() => {
-                                            console.log("777");
-                                            this.router.navigate(['/']);
+                                            
                                             return [
                                                 {
                                                     type : AuthActions.LOGOUT
@@ -146,6 +104,31 @@ export class AuthEffect {
                                                 }
                                             ]
                                         });
+
+     @Effect() getToken  = this.$actions.ofType(AuthActions.GET_TOKEN)
+                                                    .switchMap(() => {
+                                                      return fromPromise(firebase.auth().currentUser.getIdToken());              
+                                                }).mergeMap(res => {
+                                                      
+                                                     const response = [
+                                                        {
+                                                            type:AuthActions.SET_TOKEN,
+                                                            payload:{token:res,uid:firebase.auth().currentUser.uid}
+                                                        },
+                                                        {
+                                                            type:AuthActions.LOGIN
+                                                        }
+                                                     ]
+                                                     if(firebase.auth().currentUser.displayName != null){
+                                                        const user = new User(firebase.auth().currentUser.email,firebase.auth().currentUser.displayName);
+                                                        response.push({
+                                                                type:AuthActions.SET_USER,
+                                                                payload:user
+                                                        });
+                                                     }
+
+                                                     return response;
+                                                })                                  
                                 
     constructor(private $actions:Actions,
                 private router:Router,

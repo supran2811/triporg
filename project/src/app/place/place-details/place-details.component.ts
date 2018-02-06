@@ -96,8 +96,6 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
                 return place.placeId === state.detailsPlace.placeId
               }  ): -1); 
 
-              
-
               this.isPinned = selectedPlaceIndexInPin >= 0;
               console.log("[PlaceDetails]","isPinned "+this.isPinned,selectedPlaceIndexInPin);
               this.place = state.detailsPlace;

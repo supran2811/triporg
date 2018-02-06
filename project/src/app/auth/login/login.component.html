@@ -2,8 +2,8 @@
     <i *ngIf = "showSpinner" class = "fa fa-spinner fa-spin" aria-hidden="true" ></i>
 
     <div *ngIf = "!showSpinner">
-        <p class="error" *ngIf= "(error | async).hasError">
-            {{ (error | async).errorMessage }}
+        <p class="error" *ngIf= "(authData | async).hasError">
+            {{ (authData | async).errorMessage }}
         </p>
         <form (ngSubmit) = "login(f)" #f="ngForm">
             <div class="form-group">

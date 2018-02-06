@@ -1,17 +1,20 @@
 import { Action } from '@ngrx/store';
+import * as firebase from 'firebase';
 
 import { User } from '../../models/user.model';
 
-export const DO_REGISTER = "DO_REGISTER";
-export const DO_LOGIN    = "DO_LOGIN";
-export const DO_LOGOUT   = "DO_LOGOUT";
-export const SET_TOKEN   = "SET_TOKEN";
-export const SET_USER    = "SET_USER";
-export const REGISTER    = "REGISTER";
-export const LOGIN       = "LOGIN";
-export const LOGOUT      = "LOGOUT";
-export const SHOW_ERROR  = "SHOW_ERROR";
-export const RESET_ERROR = "RESET_ERROR";
+export const DO_REGISTER    = "DO_REGISTE  R";
+export const START_AUTH = "START_AUTH";
+export const DO_LOGIN       = "DO_LOGI N";
+export const DO_LOGOUT      = "DO_LOGOU    T";
+export const SET_TOKEN      = "SET_TOKE    N";
+export const SET_USER       = "SET_USE R";
+export const REGISTER       = "REGISTE R";
+export const LOGIN          = "LOGI    N";
+export const LOGOUT         = "LOGOU   T";
+export const SHOW_ERROR     = "SHOW_ERR    OR";
+export const RESET_ERROR    = "RESET_ERRO  R";
+export const GET_TOKEN      = "GET_TOK  EN";
 
 export class DoRegisterAction implements Action {
     readonly type = DO_REGISTER;
@@ -59,6 +62,13 @@ export class ResetErrorMessageAction implements Action {
     readonly type = RESET_ERROR;
 }
 
+export class GetTokenAction implements Action {
+    readonly type = GET_TOKEN;
+}
+
+export class StartAuth implements Action {
+    readonly type = START_AUTH;
+}
 export type AuthActions = DoRegisterAction |
                           RegisterAction | 
                           DoLoginAction |
@@ -67,4 +77,6 @@ export type AuthActions = DoRegisterAction |
                           SetTokenAction |
                           SetUserAction|
                           ShowErrorMessageAction|
-                          ResetErrorMessageAction;
+                          ResetErrorMessageAction|
+                          GetTokenAction|
+                          StartAuth;

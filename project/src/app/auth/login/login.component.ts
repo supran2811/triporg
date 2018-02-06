@@ -20,25 +20,18 @@ export class LoginComponent implements OnInit , OnDestroy{
 
   showSpinner:boolean = false;
 
-  error: Observable<{hasError:boolean , errorMessage:string}>;
+  authData : Observable<{hasError:boolean , errorMessage:string , loading:boolean}>;
   returnUrl:string;
   constructor(private store:Store<fromApp.AppState>,
               private activatedRoute:ActivatedRoute) {}
 
   ngOnInit() {
-    this.error = this.store.select('auth').map((state:fromAuth.State) => {
-      return {hasError:state.hasError,errorMessage:state.errorMessage}
+    this.authData = this.store.select('auth').map((state:fromAuth.State) => {
+      return {hasError:state.hasError,errorMessage:state.errorMessage , loading:state.loading}
     });
 
-
-    // this.activatedRoute.queryParams.subscribe((params:Params) =>{
-    //    this.returnUrl = params['returnUrl'];
-    //    console.log("Return url",this.returnUrl);
-    // })
-    
-
-    this.error.subscribe(hasError => {
-      this.showSpinner = !hasError;
+    this.authData.subscribe(data => {
+      this.showSpinner = data.loading;
     })
   }
 
@@ -51,6 +44,7 @@ export class LoginComponent implements OnInit , OnDestroy{
     const email = form.value.email;
     const password = form.value.password;
     this.showSpinner = true;
+    this.store.dispatch(new AuthActions.StartAuth());
     this.store.dispatch(new AuthActions.DoLoginAction({email:email , password:password , returnUrl:this.returnUrl}));
   }
 

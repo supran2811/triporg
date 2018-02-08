@@ -46,7 +46,6 @@ export class HomeComponent implements OnInit {
     console.log("id",id);
     let selectedCity = new City(id,name);
     this.selectPinnedCity(selectedCity);
-  
   }
 
   formatList(city:City) : string {

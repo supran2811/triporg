@@ -7,6 +7,12 @@
     height: 6.5rem;
 }
 
+.navbar-form{
+    margin-top: 1.5rem;
+    width: 30vw;
+}
+
+
 .navbar-brand{
     margin: 1rem;
 }

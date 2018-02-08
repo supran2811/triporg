@@ -1,5 +1,5 @@
 
-import { Observable } from 'rxjs/Rx';
+import { Observable , Subscription} from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot,Router,NavigationEnd } from '@angular/router';
@@ -8,10 +8,15 @@ import { Location } from '@angular/common';
 import { User } from '../models/user.model';
 import * as fromApp from '../store/app.reducer';
 import * as fromAuth from '../auth/store/auth.reducer';
+import * as fromPinned from '../home/pinned-view/store/pinnedview.reducer';
 import * as AuthActions from '../auth/store/auth.action';
+import * as PinnedActions from '../home/pinned-view/store/pinnedview.action';
 import * as AppActions from '../store/app.actions';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
+import { City } from '../models/city.model';
+
+
 
 
 @Component({
@@ -22,7 +27,11 @@ import { RegisterComponent } from '../auth/register/register.component';
 export class HeaderComponent implements OnInit {
 
   authState:Observable<fromAuth.State>;
+  cityName:Observable<string>;
+
   HOME_URL = "/";
+  
+  subscription :Subscription;
 
   currentUrl:string = this.HOME_URL;
 
@@ -35,6 +44,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.authState = this.store.select('auth');
+    
+    this.cityName = this.store.select('pinnedcities').map( (state:fromPinned.State) => {
+           return state.selectedCity ? state.selectedCity.name : "";
+    } )
+
     this.router.events.forEach((event) => {
       if(event instanceof NavigationEnd){
         console.log("[Header]",event.url);
@@ -64,4 +78,28 @@ export class HeaderComponent implements OnInit {
   goBack(){
    this.location.back();
   }
+
+
+  selectPinnedCity(selectedCity:City){
+    this.store.select('pinnedcities').take(1).subscribe((state:fromPinned.State) =>{
+      let city = state.cities.find((city:City) => (selectedCity.id === city.id))  || selectedCity ;
+      this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
+      this.router.navigate(['city',selectedCity.id]);     
+    })
+  }
+
+  selectCity(selectedItem:any){
+    console.log("[HomeComponent] Inside selectCity ",selectedItem);
+
+    const name = selectedItem.structured_formatting && 
+                          selectedItem.structured_formatting.main_text?
+                          selectedItem.structured_formatting.main_text:
+                          selectedItem.description;
+
+    const id = selectedItem.place_id;
+    console.log("id",id);
+    let selectedCity = new City(id,name);
+    this.selectPinnedCity(selectedCity);
+  }
+
 }

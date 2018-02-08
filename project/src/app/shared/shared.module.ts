@@ -22,6 +22,7 @@ import { RatingComponent } from './rating/rating.component';
 import { BackdropComponent } from './backdrop/backdrop.component';
 import { ModalComponent } from './modal/modal.component';
 import { LoginComponent } from '../auth/login/login.component';
+import { GoogleAutocompleteComponent } from './google-autocomplete/google-autocomplete.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -37,7 +38,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         ImageViewComponent,
         RatingComponent,
         BackdropComponent,
-        ModalComponent
+        ModalComponent,
+        GoogleAutocompleteComponent
     ],
     imports:[
         LazyLoadImageModule,
@@ -74,7 +76,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         ThumbnailActionsComponent,
         ImageViewComponent,
         RatingComponent,
-        ModalComponent
+        ModalComponent,
+        GoogleAutocompleteComponent
        ]
 })
 export class SharedModule{

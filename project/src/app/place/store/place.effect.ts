@@ -32,11 +32,16 @@ export class PlacesEffect {
                                         })
                                         .switchMap((payload:string) => {
                                               return this.googlePlaces.getGeoCode(payload);
-                                        }).map((city:City) =>{
-                                            return {
-                                                type:PlaceActions.SET_CITY,
-                                                payload:city
-                                            }
+                                        }).mergeMap((city:City) =>{
+                                            return [{
+                                                    type:PlaceActions.SET_CITY,
+                                                    payload:city
+                                                },
+                                                {
+                                                    type:PinnedViewAction.SET_SELECTED_PINNED_CITY,
+                                                    payload:city
+                                                }
+                                            ]
                                         });                                   
     @Effect()
             addPlaceChange = this.actions$.ofType(PlaceActions.ADD_PLACE_CHANGE_LISTENER)

@@ -13,8 +13,6 @@ import { CacheStateService } from '../shared/cache.state.service';
 import { Subscription } from 'rxjs/Subscription';
 
 
-
-
 @Component({
   selector: 'app-place',
   templateUrl: './place.component.html',
@@ -25,8 +23,7 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
   city:Observable<City>;
   isLoading = false;
   subscription:Subscription;
-
-
+  pinnedViewSubscription :Subscription;
 
   constructor(private activeRoute:ActivatedRoute,
                   private store:Store<fromPlaceReducer.FeatureState>,
@@ -46,10 +43,11 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
   ngOnInit() {
    
     console.log("[PlaceComponent]","Loading111");
+
     this.isLoading = true;
     this.ngProgress.start();
 
-    this.store.select('pinnedcities').take(1).subscribe((state:fromPinnedReducer.State)=>{
+    this.pinnedViewSubscription = this.store.select('pinnedcities').subscribe((state:fromPinnedReducer.State)=>{
       console.log("[PlaceComponent] selected pinned city",state.selectedCity);
       if(state.selectedCity != null){
           this.store.dispatch(new PlaceActions.SetCity(state.selectedCity));
@@ -64,10 +62,10 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
           console.log("[PlaceComponent]","Coming inside city observable",city);
           if(city != null && city.lat){
             this.ngProgress.done();
-           
             this.isLoading = false;
           }
           else{
+            console.log("[PlaceComponent]","Coming inside loading city ",city);
             this.loadCity();
           }
     });
@@ -79,11 +77,9 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
   }
 
   loadCity(){
-    this.activeRoute.params.subscribe( (params:Params) => {
+    this.activeRoute.params.take(1).subscribe( (params:Params) => {
       let  id = params['id'];
       console.log("[PlaceComponent]",id);
-
-      
       this.store.dispatch(new PlaceActions.GetCityLocation(id));
     } );
   }
@@ -96,6 +92,7 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
   ngOnDestroy(){
     console.log("[PlaceComponent]" , "Iam getting destroyed please help me!!!");
     this.subscription.unsubscribe();
+    this.pinnedViewSubscription.unsubscribe();
     this.store.dispatch(new PlaceActions.ResetState());
     
   }

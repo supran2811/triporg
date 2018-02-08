@@ -8,15 +8,14 @@ import { SharedModule } from '../shared/shared.module';
 import { HomeComponent } from './home.component';
 import { PinnedViewComponent } from './pinned-view/pinned-view.component';
 import { PinnedViewItemComponent } from './pinned-view/pinned-view-item/pinned-view-item.component';
-import { GoogleAutocompleteComponent } from './google-autocomplete/google-autocomplete.component';
+
 
 @NgModule(
     {
         declarations:[
             HomeComponent,
             PinnedViewComponent,
-            PinnedViewItemComponent,
-            GoogleAutocompleteComponent
+            PinnedViewItemComponent
         ],
         imports:[
             SharedModule,

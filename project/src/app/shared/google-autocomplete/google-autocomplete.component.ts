@@ -16,11 +16,13 @@ export class GoogleAutocompleteComponent implements OnInit {
 
   @Input() offset:number;
   @Output() selectPrediction = new EventEmitter<any>();
-  
+  @Input() query:string;
+
   predictions:any[] = [];
   isError = false;
 
-  query:string = "";
+  
+
   constructor(private googlePlaces:GooglePlacesService ,
                 private changeDetectRef:ChangeDetectorRef,
                 private elementRef:ElementRef) { }

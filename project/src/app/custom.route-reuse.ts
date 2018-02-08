@@ -1,5 +1,7 @@
 
-import { ActivatedRouteSnapshot ,RouteReuseStrategy ,DetachedRouteHandle } from "@angular/router";
+import { ActivatedRouteSnapshot,
+            RouteReuseStrategy,
+            DetachedRouteHandle } from "@angular/router";
 import { PlaceComponent } from "./place/place.component";
 import { PlaceDetailsComponent } from "./place/place-details/place-details.component";
 import { HomeComponent } from "./home/home.component";

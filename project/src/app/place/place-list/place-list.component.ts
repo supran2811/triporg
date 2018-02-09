@@ -35,10 +35,12 @@ export class PlaceListComponent implements OnInit,OnDestroy {
         else if(state.city != null){
           this.savedplaces = state.city.savedPlaces;
           this.showEmptySection = false;
+          console.log("[PlaceListComponent] Coming here to enable show empty section");
         }
 
         if(state.city != null && state.city.savedPlaces == null && state.loadingPins === false){
           this.store.dispatch(new PlaceActions.StartLoadingPins());
+          console.log("[PlaceListComponent] Calling GetSavedPlacesFrmServerByCity");
           this.store.dispatch(new PlaceActions.GetSavedPlacesFrmServerByCity());
 
         }

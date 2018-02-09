@@ -33,7 +33,8 @@ export class PlacesEffect {
                                         .switchMap((payload:string) => {
                                               return this.googlePlaces.getGeoCode(payload);
                                         }).mergeMap((city:City) =>{
-                                            return [{
+                                            return [
+                                                {
                                                     type:PlaceActions.SET_CITY,
                                                     payload:city
                                                 },
@@ -165,24 +166,17 @@ export class PlacesEffect {
 
     @Effect()
         getSavedPlaceFrmServerByCity = this.actions$.ofType(PlaceActions.GET_SAVED_PLACES_FROM_SERVER_BY_CITY)
-                                                    .withLatestFrom(this.store.select('auth'))
-                                                     .map(([action,state]) =>{
-                                                        
-                                                            if(!state.authorised){
-                                                                throw new Error("Not authorised!!");
-                                                            }
-                                                            else
-                                                            return state.authorised;
-                                                     })
                                                      .withLatestFrom(this.store.select('place'))
                                                      .switchMap(([action,state]) => {
-                                                        
+                                                        if(firebase.auth().currentUser === null){
+                                                            return Observable.of({type:"error",message:"Error not authorised"});
+                                                        }
                                                         const city = state.city;
                                                         const uid = firebase.auth().currentUser.uid;
                                                         const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id+"/places/";         
                                                         return this.http.get<any>(url,null)
                                                                     .catch((err) => {
-                                                                        return Observable.throw({type:"error",message:err});
+                                                                        return Observable.of({type:"error",message:"Error not authorised"});
                                                                     });
                                                                 
                                                      })
@@ -201,13 +195,8 @@ export class PlacesEffect {
                                                                 payload:savedPlaces
                                                             }
 
-                                                     })
-                                                     .catch(errr => {
-                                                         console.log("[PlaceEffects]",errr);
-                                                         return Observable.of(new PlaceActions.AddSavedPlacedToState([]));
                                                      });
-    //TODO: First check if user authenticated
-    // Then fetch if this city is pinned and set that otherwise go for google api
+                                                    
     
     @Effect()
             getCityDetails = this.actions$.ofType(PlaceActions.GET_CITY_DETAILS)

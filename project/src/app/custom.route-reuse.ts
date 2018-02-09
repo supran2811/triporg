@@ -60,7 +60,7 @@ export class CustomRouterReuseStrategy implements RouteReuseStrategy {
             //     console.log("[CustomRouterReuseStrategy]","My future is Home Component from anywhere");
             //     this.handlers = {};
             // }
-
+            console.log("[CustomRouterReuseStrategy]","Not reusing route");
             return false;
       }  
 

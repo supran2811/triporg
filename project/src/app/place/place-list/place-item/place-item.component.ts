@@ -63,6 +63,7 @@ export class PlaceItemComponent implements OnInit,OnDestroy  {
   }
 
   onClicked(){
+    console.log("[Placeitem] ",this.blockActions);
       if(this.blockActions) return;
 
       console.log("Inside onClicked");

@@ -40,7 +40,9 @@ export class HeaderComponent implements OnInit {
               private location:Location,
                private router:Router,
               private route:ActivatedRoute,
-            ) { }
+            ) {
+              
+             }
 
   ngOnInit() {
     this.authState = this.store.select('auth');

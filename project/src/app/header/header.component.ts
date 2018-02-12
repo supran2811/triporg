@@ -86,7 +86,12 @@ export class HeaderComponent implements OnInit {
     this.store.select('pinnedcities').take(1).subscribe((state:fromPinned.State) =>{
       let city = state.cities.find((city:City) => (selectedCity.id === city.id))  || selectedCity ;
       this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
-      this.router.navigate(['city',selectedCity.id]);     
+    this.router.navigate(['city',selectedCity.id]);     
+
+    //  this.router.navigate(['same']).then( () => {
+    //   this.router.navigate(['city',selectedCity.id]);     
+    //  });
+
     })
   }
 

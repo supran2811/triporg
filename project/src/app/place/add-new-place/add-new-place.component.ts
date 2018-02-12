@@ -307,7 +307,15 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
     console.log("Inside onClicked");
     this.store.dispatch(new PlaceActions.SetPlaceToNavigate(place));
-    this.router.navigate(["place",place.placeId],{relativeTo:this.activeRoute});
+
+    console.log("[AddNew] ", this.activeRoute.snapshot.routeConfig.path);
+
+    this.router.navigate(["/"]).then(() =>{
+       console.log("AddNew" , "Navigation sucess!!")
+    })
+    .catch(error => {
+        console.log("[AddNew]","Navigation failed!!",error);
+    });
   }
 
 }

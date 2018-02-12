@@ -66,10 +66,11 @@ export class PlaceItemComponent implements OnInit,OnDestroy  {
     console.log("[Placeitem] ",this.blockActions);
       if(this.blockActions) return;
 
-      console.log("Inside onClicked");
+      
        this.store.dispatch(new PlaceActions.SetPlaceToNavigate(this.place));
+       
        this.router.navigate(["place",this.place.placeId],{relativeTo:this.activatedRoute});
-
+       
   }
 
   onRemove(){

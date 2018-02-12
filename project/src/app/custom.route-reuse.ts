@@ -5,6 +5,7 @@ import { ActivatedRouteSnapshot,
 import { PlaceComponent } from "./place/place.component";
 import { PlaceDetailsComponent } from "./place/place-details/place-details.component";
 import { HomeComponent } from "./home/home.component";
+import { LoadingSameRouteComponent } from "./loading-same-route/loading-same-route.component";
 
 
 export class CustomRouterReuseStrategy implements RouteReuseStrategy {

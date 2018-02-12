@@ -18,7 +18,7 @@ const placeRoutes:Routes = [
     },
     {
         path:'place/:id',component:PlaceDetailsComponent
-    },
+    }
 ]
 
 @NgModule({

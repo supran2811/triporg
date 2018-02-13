@@ -19,6 +19,7 @@
     border: 0.5px solid #eee;
     background-color: white;
     box-sizing: border-box;
+    padding: 1rem .5rem;
 }
 
 .autocomplete-list a:hover{
@@ -31,13 +32,13 @@
 }
 
 span.main-text{
-    font-size: 0.8em;
+    font-size: 1em;
     font-weight: 500;
 }
 
 span.secondary-text {
-    font-weight: normal;   
-    font-size: 0.5em;
+    font-weight: 300;   
+    font-size: 0.8em;
     color: #918b8b;
 }
 
@@ -54,15 +55,17 @@ span.secondary-text {
 
 span.pac-icon {
     width: 2rem;
-    height: 1.5rem;
+    height: 2.2rem;
     background-image: url("../../../assets/images/autocomplete-icons.png");
     background-size: 34px;
-    background-position-y: -161px;
+    background-position-y: -158px;
     background-position-x: 0;
+    padding:0;
+    margin: 0;
 }
 
 #search {
     color: #777777;
-    font-weight: 500;
+    font-weight: 200;
     font-size: 1em;
 }

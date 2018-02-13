@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
   constructor(private store:Store<fromApp.AppState>,
               private location:Location,
                private router:Router,
-              private route:ActivatedRoute,
+              private route:ActivatedRoute
             ) {
               
              }

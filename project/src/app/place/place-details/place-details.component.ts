@@ -62,6 +62,7 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   
   ngOnInit() {
     this.load();
+    this.hidePagination();
     this.scrollOrChangeImage$ = Observable.merge(
       Observable.fromEvent(window,'scroll'),
       this.changeIndexAndRefresh
@@ -105,7 +106,9 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
 
               this.lat = this.place.lat;
               this.lng = this.place.lng;
-
+              if(this.photos != null && this.photos.length > 1){
+                this.enablePagination();
+              }
 
               this.ngProgress.done();
            }
@@ -179,6 +182,18 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   swiperIndexChange(event){
     console.log("[ThumbnailView]" , "Swiper index change" , event,this.photos,this.photos[event].small);
     this.changeIndexAndRefresh.next();
+  }
+
+  enablePagination(){
+    this.config.pagination = '.swiper-pagination';
+    this.config.nextButton = '.swiper-button-next';
+    this.config.prevButton = '.swiper-button-prev';
+  }
+
+  hidePagination(){
+    this.config.pagination = 'none';
+    this.config.nextButton = 'none';
+    this.config.prevButton = 'none';
   }
 
 }

@@ -54,7 +54,7 @@ export class ThumbnailViewComponent implements OnInit {
       this.changeIndexAndRefresh
     );
 
-    this.title = this.title.length > 30? this.title.substr(0,30)+"...":this.title;
+    this.title = this.title.length > 25? this.title.substr(0,25)+"...":this.title;
 
   }
   

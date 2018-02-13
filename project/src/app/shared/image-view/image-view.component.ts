@@ -1,4 +1,7 @@
-import { Component,Input ,ChangeDetectionStrategy } from '@angular/core';
+
+import { Component,
+                Input ,
+                ChangeDetectionStrategy } from '@angular/core';
 
 
 

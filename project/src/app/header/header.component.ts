@@ -82,31 +82,5 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  selectPinnedCity(selectedCity:City){
-    this.store.select('pinnedcities').take(1).subscribe((state:fromPinned.State) =>{
-      let city = state.cities.find((city:City) => (selectedCity.id === city.id))  || selectedCity ;
-      this.store.dispatch(new PinnedActions.SetSelectedPinnedCity(city));
-    this.router.navigate(['city',selectedCity.id]);     
-
-    //  this.router.navigate(['same']).then( () => {
-    //   this.router.navigate(['city',selectedCity.id]);     
-    //  });
-
-    })
-  }
-
-  selectCity(selectedItem:any){
-    console.log("[HomeComponent] Inside selectCity ",selectedItem);
-
-    const name = selectedItem.structured_formatting && 
-                          selectedItem.structured_formatting.main_text?
-                          selectedItem.structured_formatting.main_text:
-                          selectedItem.description;
-
-    const id = selectedItem.place_id;
-    console.log("id",id);
-    let selectedCity = new City(id,name);
-    this.selectPinnedCity(selectedCity);
-  }
 
 }

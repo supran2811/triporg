@@ -9,6 +9,7 @@ import { City } from '../models/city.model';
 import * as fromPlaceReducer from './store/place.reducer'
 import * as fromPinnedReducer from '../home/pinned-view/store/pinnedview.reducer';
 import * as PlaceActions from './store/place.action';
+import * as PinnedViewActions from '../home/pinned-view/store/pinnedview.action';
 import { CacheStateService } from '../shared/cache.state.service';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -50,11 +51,10 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
     this.isLoading = true;
     this.ngProgress.start();
 
-    this.pinnedViewSubscription = this.store.select('pinnedcities').subscribe((state:fromPinnedReducer.State)=>{
+     this.store.select('pinnedcities').take(1).subscribe((state:fromPinnedReducer.State)=>{
       console.log("[PlaceComponent] selected pinned city",state.selectedCity);
       if(state.selectedCity != null){
           this.store.dispatch(new PlaceActions.SetCity(state.selectedCity));
-          
       }
     });
 
@@ -99,7 +99,7 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
   ngOnDestroy(){
     console.log("[PlaceComponent]" , "Iam getting destroyed please help me!!!");
     this.subscription.unsubscribe();
-   this.pinnedViewSubscription.unsubscribe();
+    this.store.dispatch(new PinnedViewActions.ResetSelectedPinnedCity());
     this.store.dispatch(new PlaceActions.ResetState());
     
   }

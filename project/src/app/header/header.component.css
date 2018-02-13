@@ -4,35 +4,23 @@
     width:100%;
     margin: 0;
     padding: 0;
-    height: 6.5rem;
 }
 
-.navbar-form{
-    margin-top: 1.5rem;
-    width: 30vw;
-}
-
-
-.navbar-brand{
-    margin: 1rem;
-}
-
-ul.navbar-nav > li {
-    border: .1rem solid salmon;
-    border-radius: .5rem;
-    margin: 1rem;
+ul.right-nav > li {
+   
     background-color: white;
 }
 
-ul.navbar-nav > li > a {
-    padding: 1rem;
+ul.right-nav > li > a {
     font-weight: bold;
 }
 
-.backbutton {
-    padding: 1rem;
-    font-weight: bold;
-    margin: 1rem;
-    border: none;
-    color: salmon;
+
+
+ul.left-nav > li > a {
+    font-weight: normal;
+}
+
+.navbar-default{
+    border:none;
 }

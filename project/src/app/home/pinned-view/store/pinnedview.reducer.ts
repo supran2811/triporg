@@ -137,6 +137,12 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
             }
             return state;
         }
+        case PinnedViewActions.RESET_SELECTED_PINNED_CITY:{
+            return {
+                ...state,
+                selectedCity:null
+            }
+        }   
         case PinnedViewActions.RESET_PINNED_STATE:{
             return {
                 cities : [],

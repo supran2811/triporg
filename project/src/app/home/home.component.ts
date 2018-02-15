@@ -6,9 +6,9 @@ import {Store} from '@ngrx/store';
 import * as fromAuth from '../auth/store/auth.reducer';
 import * as fromPinned from './pinned-view/store/pinnedview.reducer';
 import * as PinnedActions from './pinned-view/store/pinnedview.action';
-import * as fromPlaceReducer from '../place/store/place.reducer';
-import * as PlaceActions from '../place/store/place.action';
+import * as fromApp from '../store/app.reducer';
 import { City } from './../models/city.model';
+import * as AppConstants from '../shared/constants';
 
 @Component({
   selector: 'app-home',
@@ -19,8 +19,9 @@ import { City } from './../models/city.model';
 export class HomeComponent implements OnInit {
 
   isAuth:Observable<boolean>; 
+  appTitle = AppConstants.APP_TITLE;
 
-  constructor(private store:Store<fromPlaceReducer.FeatureState> , private router:Router) { }
+  constructor(private store:Store<fromApp.AppState> , private router:Router) { }
 
   ngOnInit(){
     this.isAuth = this.store.select('auth').map( (state:fromAuth.State) => (state.authorised));
@@ -35,25 +36,15 @@ export class HomeComponent implements OnInit {
   }
 
   selectCity(selectedItem:any){
-    console.log("[HomeComponent] Inside selectCity ",selectedItem);
-
+    
     const name = selectedItem.structured_formatting && 
                           selectedItem.structured_formatting.main_text?
                           selectedItem.structured_formatting.main_text:
                           selectedItem.description;
 
     const id = selectedItem.place_id;
-    console.log("id",id);
     let selectedCity = new City(id,name);
     this.selectPinnedCity(selectedCity);
   }
 
-  formatList(city:City) : string {
-    return city.name;
-  }
-
-  autoCompleteCallback1(data){
-    console.log("Result ",data);
-  }
- 
 }

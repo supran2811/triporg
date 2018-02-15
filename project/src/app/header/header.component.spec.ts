@@ -1,23 +1,17 @@
-import {TestBed , async}        from '@angular/core/testing';
+import {TestBed , async, tick, fakeAsync}        from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { StoreModule }          from '@ngrx/store';
+import { Store }          from '@ngrx/store';
 import { APP_BASE_HREF }        from '@angular/common';
 
-import { HeaderComponent }      from './header.component';
-import { DropDownDirective }    from './dropdown.directive';
-import { globalReducer }        from '../store/app.reducer';
-import { SharedModule }         from '../shared/shared.module';
-import { AppRouterModule }      from '../app.router.module';
 import { AppModule }            from '../app.module';
-import { AuthModule } from '../auth/auth.module';
-import { HomeModule } from '../home/home.module';
-import { AuthRouterModule } from '../auth/auth.router.module';
-import { log } from 'util';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-
+import { HeaderComponent }      from './header.component';
+import * as fromApp from '../store/app.reducer';
+import * as fromAuth from '../auth/store/auth.reducer';
+import * as AuthActions from '../auth/store/auth.action';
+import { User } from '../models/user.model';
 
 let fixture,header;    
+let store:Store<fromApp.AppState>;
 
 describe('HeaderComponent', () => {
     beforeEach(async(() => {
@@ -43,7 +37,7 @@ describe('HeaderComponent', () => {
         fixture.detectChanges();
         const de = fixture.debugElement.query(By.css(".navbar-brand"));
         const el = de.nativeElement;
-        expect(el.textContent.trim()).toBe("Trip Organizer");
+        expect(el.textContent.trim()).toBe(header.appName);
         
     }));
 
@@ -56,4 +50,30 @@ describe('HeaderComponent', () => {
         
     }));
   
+    it("SigIn and SignOut must not be visible only when user is loggedin" ,  fakeAsync(() => {
+        store = fixture.debugElement.injector.get( Store );
+        store.dispatch(new AuthActions.SetUserAction(new User("test@test.com","test name")));
+        tick(100);
+        fixture.detectChanges();
+        const de = fixture.debugElement.query(By.css(".right-nav"));
+        expect(de).toBeNull();
+    }));
+
+    it("Logout must be visible when user has loggedin" , fakeAsync(() => {
+        store = fixture.debugElement.injector.get( Store );
+        store.dispatch(new AuthActions.SetUserAction(new User("test@test.com","test name")));
+        tick(100);
+        fixture.detectChanges();
+        const de = fixture.debugElement.query(By.css(".dropdown-menu"));
+        expect(de.nativeElement.textContent.trim()).toEqual(header.logOutLabel);
+    }));
+
+    it("Loggedin User must see his name in header" , fakeAsync(() => {
+        store = fixture.debugElement.injector.get( Store );
+        store.dispatch(new AuthActions.SetUserAction(new User("test@test.com","test name")));
+        tick(100);
+        fixture.detectChanges();
+        const de = fixture.debugElement.query(By.css(".dropdown-toggle"));
+        expect(de.nativeElement.textContent.trim()).toEqual("test name");
+    }))
   });

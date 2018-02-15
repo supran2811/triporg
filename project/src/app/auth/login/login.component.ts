@@ -1,15 +1,15 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { NgForm } from '@angular/forms/src/directives';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-
+import { NgForm } from '@angular/forms';
 
 import * as fromApp from '../../store/app.reducer';
 import * as AuthActions from '../store/auth.action';
 import * as fromAuth from '../store/auth.reducer';
 import * as AppActions from '../../store/app.actions';
 import { RegisterComponent } from '../register/register.component';
+import * as AppConstants from '../../shared/constants';
 
 @Component({
   selector: 'app-login',
@@ -18,10 +18,18 @@ import { RegisterComponent } from '../register/register.component';
 })
 export class LoginComponent implements OnInit , OnDestroy{
 
-  showSpinner:boolean = false;
+  signUpLabel               = AppConstants.SIGN_UP;
+  loginButtonLabel          = AppConstants.LOGIN_LABEL;
+  navigateToRegisterText    = AppConstants.NAVIGATE_TO_REGISTER_TEXT;
+  emailAddressPlaceHolder   = AppConstants.EMAIL_ADDRESS_PLACEHOLDER;
+  passwordPlaceHolder       = AppConstants.PASSWORD_PLACEHOLDER;
+
+  showSpinner               = false;
 
   authData : Observable<{hasError:boolean , errorMessage:string , loading:boolean}>;
+
   returnUrl:string;
+
   constructor(private store:Store<fromApp.AppState>,
               private activatedRoute:ActivatedRoute) {}
 

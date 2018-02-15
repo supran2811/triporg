@@ -19,7 +19,7 @@ import { Location } from '@angular/common';
 
 @Injectable()
 export class AuthEffect {
-    USER_URL = "https://triporg-1508486982436.firebaseio.com/user";
+    USER_URL = "/user";
   
 
     user:User;

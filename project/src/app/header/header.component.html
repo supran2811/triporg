@@ -2,7 +2,7 @@
     <div class="container-fluid">
       <div class="navbar-header">
           <a class="navbar-brand" routerLink="/">
-            <i class="fa fa-suitcase"></i>  <strong *ngIf = "currentUrl === HOME_URL">Trip Organizer</strong>
+            <i class="fa fa-suitcase"></i>  <strong *ngIf = "currentUrl === HOME_URL">{{appName}}</strong>
           </a>
          
       </div>
@@ -16,10 +16,10 @@
         <ul class="nav navbar-nav navbar-right">
           <ul class="nav navbar-nav right-nav" *ngIf = "!(authState | async).authorised else loggedInUser">
             <li routerLinkActive = "active">
-               <a style="cursor:pointer;"  (click)="logIn()">SignIn</a>
+               <a style="cursor:pointer;"  (click)="logIn()">{{signInLabel}}</a>
             </li>
             <li routerLinkActive = "active">
-                <a style="cursor:pointer;" (click)="register()">SignUp</a>
+                <a style="cursor:pointer;" (click)="register()">{{signUpLabel}}</a>
               </li>
           </ul>
           <ng-template #loggedInUser>
@@ -27,7 +27,7 @@
                 
               <a  class  = "dropdown-toggle" role="button">{{ (authState | async).user.fullName }} <span class = "caret"></span></a>
               <ul class = "dropdown-menu">
-                <li><a style="cursor:pointer;" (click) = "logOut()">Logout</a></li>
+                <li><a style="cursor:pointer;" (click) = "logOut()">{{logOutLabel}}</a></li>
               </ul>
                
             </li>

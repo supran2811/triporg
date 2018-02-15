@@ -4,16 +4,17 @@ import { Store } from '@ngrx/store';
 import { Actions,Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
+import { Observable } from 'rxjs/Observable';
 
 import { HttpService } from '../../../shared/http.service';
 import * as PinnedViewActions from './pinnedview.action';
 import * as fromApp from '../../../store/app.reducer';
-import { Observable } from 'rxjs/Observable';
+import * as AppConstants from '../../../shared/constants';
 
 @Injectable()
 export class PinnedViewEffects{
 
-    PINS_URL = "https://triporg-1508486982436.firebaseio.com/pins/";
+    PINS_URL = "/pins/";
 
     @Effect()
         getPinnedCities = this.actions$.ofType(PinnedViewActions.GET_PINNED_CITIES_FROM_SERVER)

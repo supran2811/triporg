@@ -10,7 +10,6 @@ import * as fromPlaceReducer from './store/place.reducer'
 import * as fromPinnedReducer from '../home/pinned-view/store/pinnedview.reducer';
 import * as PlaceActions from './store/place.action';
 import * as PinnedViewActions from '../home/pinned-view/store/pinnedview.action';
-import { CacheStateService } from '../shared/cache.state.service';
 import { Subscription } from 'rxjs/Subscription';
 
 

@@ -9,6 +9,7 @@ import * as AuthActions from '../store/auth.action';
 import * as fromAuth from '../store/auth.reducer';
 import * as AppActions from '../../store/app.actions';
 import { LoginComponent } from '../login/login.component';
+import * as AppConstants from '../../shared/constants';
 
 @Component({
   selector: 'app-register',
@@ -17,8 +18,15 @@ import { LoginComponent } from '../login/login.component';
 })
 export class RegisterComponent implements OnInit  , OnDestroy {
 
+  navigateToLoginText = AppConstants.NAVIGATE_TO_LOGIN_TEXT;
+  registerLabel       = AppConstants.REGISTER_LABEL;
+  fullNamePlaceHolder = AppConstants.FULLNAME_PLACEHOLDER;
+  emailAddressPlaceHolder = AppConstants.EMAIL_ADDRESS_PLACEHOLDER;
+  passwordPlaceHolder = AppConstants.PASSWORD_PLACEHOLDER;
+
   authData : Observable<{hasError:boolean , errorMessage:string,loading:boolean}>;
   showSpinner:boolean = false;
+  
   constructor(private store:Store<fromApp.AppState>) { }
 
   ngOnInit() {

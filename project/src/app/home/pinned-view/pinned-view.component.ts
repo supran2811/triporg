@@ -7,6 +7,7 @@ import { City } from '../../models/city.model';
 import * as fromApp from '../../store/app.reducer';
 import * as fromPinnedView from './store/pinnedview.reducer';
 import * as PinnedViewActions from './store/pinnedview.action';
+import * as AppConstants from '../../shared/constants';
 
 @Component({
   selector: 'app-pinned-view',
@@ -16,14 +17,17 @@ import * as PinnedViewActions from './store/pinnedview.action';
 export class PinnedViewComponent implements OnInit {
 
   pinnedCities: Observable<City[]>
+  
   numOfCities : number  = 0;
+
+  title = AppConstants.PINNEDVIEW_TITLE;
 
   @Output() selectPinnedCity = new EventEmitter<City>();
 
   constructor(private store:Store<fromApp.AppState>) { }
 
   ngOnInit() {
-    console.log("Sending request to get pinned city");
+    
     this.store.dispatch(new PinnedViewActions.GetPinnedCitiesFromServer());
 
     this.pinnedCities = this.store.select('pinnedcities').map((state:fromPinnedView.State) => {
@@ -33,7 +37,6 @@ export class PinnedViewComponent implements OnInit {
   }
 
   onSelect(city:City){
-      console.log("[PinnedViewComponent]",city);
       this.selectPinnedCity.emit(city);
   }
 

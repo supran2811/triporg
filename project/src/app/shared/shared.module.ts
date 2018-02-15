@@ -14,7 +14,7 @@ import { GooglePlacesService } from './google.places.service';
 import { HttpService } from './http.service';
 import { HttpAuthInterceptor } from './http.interceptor';
 import {WindowRefService} from './windowRef.service';
-import {CacheStateService} from './cache.state.service';
+
 import { ThumbnailViewComponent } from './thumbnail-view/thumbnail-view.component';
 import { ThumbnailActionsComponent } from './thumbnail-actions/thumbnail-actions.component';
 import { ImageViewComponent } from './image-view/image-view.component';
@@ -60,8 +60,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         },
         GoogleMapsAPIWrapper,
         GooglePlacesService,
-        WindowRefService,
-        CacheStateService
+        WindowRefService
        ],
        exports:[
         CommonModule,

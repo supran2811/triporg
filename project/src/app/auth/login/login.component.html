@@ -11,7 +11,7 @@
                 <input type="email" 
                         class="form-control" 
                         id="email" 
-                        placeholder="Email Address"
+                        [placeholder]="emailAddressPlaceHolder"
                         ngModel
                         name="email"
                         required
@@ -24,17 +24,17 @@
                             id="password"
                             required
                             name="password"
-                            placeholder="Password"
+                            [placeholder]="passwordPlaceHolder"
                             ngModel
                             #password = "ngModel"
                             ng-pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                     >
             </div>
-            <button class="btn btn-primary" [disabled] = "!f.valid" type="submit">Login to Continue</button>
+            <button class="btn btn-primary" [disabled] = "!f.valid" type="submit">{{loginButtonLabel}}</button>
          </form>
          <div class="line"></div>
          <div>
-              <p>Dont have an Account ? <a (click)="goToRegister()">SignUp</a></p>
+              <p>{{navigateToRegisterText}} <a (click)="goToRegister()">{{signUpLabel}}</a></p>
          </div>
 
       </div>

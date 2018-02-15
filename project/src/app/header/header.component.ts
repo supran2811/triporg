@@ -15,7 +15,7 @@ import * as AppActions from '../store/app.actions';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { City } from '../models/city.model';
-
+import * as AppConstants from '../shared/constants';
 
 
 
@@ -30,7 +30,11 @@ export class HeaderComponent implements OnInit {
   cityName:Observable<string>;
 
   HOME_URL = "/";
-  
+  appName     = AppConstants.APP_NAME;
+  signInLabel = AppConstants.SIGN_IN;
+  signUpLabel = AppConstants.SIGN_UP;
+  logOutLabel = AppConstants.LOGOUT;
+
   subscription :Subscription;
 
   currentUrl:string = this.HOME_URL;
@@ -60,20 +64,15 @@ export class HeaderComponent implements OnInit {
   }
 
   logOut(){
-    console.log("Logging out");
     this.store.dispatch(new AuthActions.DoLogoutAction());
   }
 
   logIn(){
-    //const returnUrl = this.location.path();
-    //this.router.navigate(["/login"],{queryParams:{returnUrl:returnUrl}});
     this.store.dispatch(new AppActions.ShowModal(LoginComponent));
   }
   
 
  register(){
-   // const returnUrl = this.location.path();
-   // this.router.navigate(["/register"],{queryParams:{returnUrl:returnUrl}});
    this.store.dispatch(new AppActions.ShowModal(RegisterComponent));
   }
 

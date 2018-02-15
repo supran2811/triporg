@@ -5,6 +5,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 
 import * as fromApp from '../store/app.reducer';
 import * as fromAuth from '../auth/store/auth.reducer';
+import * as AppConstants from './constants';
 
 @Injectable()
 export class HttpAuthInterceptor implements HttpInterceptor{
@@ -19,7 +20,7 @@ export class HttpAuthInterceptor implements HttpInterceptor{
               return state.token;
         }).switchMap(token => {
    
-              const clonedReq = req.clone({url:req.url+".json",params : req.params.set('auth',token)});
+              const clonedReq = req.clone({url:AppConstants.BASE_URL+req.url+".json",params : req.params.set('auth',token)});
               
               return next.handle(clonedReq);
         })

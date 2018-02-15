@@ -1,13 +1,14 @@
-import { Store } from '@ngrx/store';
+
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
-import { Route, Router } from '@angular/router';
 import * as firebase from 'firebase';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 
 import { HttpService } from '../../shared/http.service';
+import { FireBaseWraperService } from '../../shared/firebase.service';
+
 import * as AuthActions from './auth.action';
 import * as fromPlaceReducer from '../../place/store/place.reducer';
 import * as PlaceActions from '../../place/store/place.action';
@@ -70,26 +71,26 @@ export class AuthEffect {
                                     } ).switchMap( (payload:{email:string,password:string,returnUrl:string}) =>{
                                            const email  = payload.email;
                                            const password = payload.password;
-                                           const returnUrl = payload.returnUrl;
-                                           return fromPromise(firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)).switchMap(() => {
-                                             return fromPromise(firebase.auth().signInWithEmailAndPassword(email,password))
-                                             .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}));
-                                           })
-                                           .mergeMap((res ) => {
+                                          
+                                           return this.firebaseService.signIn(email,password)
+                                           .map((res ) => {
                                             if(res && res.type == AuthActions.SHOW_ERROR){
-                                                return [res];
+                                                return res;
                                             }
                                           
-                                            return [
+                                            return( 
                                                 {
                                                     type:AppActions.HIDE_MODAL
-                                                }
-                                            ]
+                                                });
+                                            
+                                        })
+                                        .catch(error => {
+                                             return Observable.of(error);
                                         });
                                     } );
                                     
     @Effect() logout = this.$actions.ofType(AuthActions.DO_LOGOUT)
-                                        .switchMap(() => firebase.auth().signOut())
+                                        .switchMap(() => this.firebaseService.logOut())
                                         .mergeMap(() => {
                                             
                                             return [
@@ -107,7 +108,7 @@ export class AuthEffect {
 
      @Effect() getToken  = this.$actions.ofType(AuthActions.GET_TOKEN)
                                                     .switchMap(() => {
-                                                      return fromPromise(firebase.auth().currentUser.getIdToken());              
+                                                      return this.firebaseService.getToken();              
                                                 }).mergeMap(res => {
                                                       
                                                      const response = [
@@ -128,11 +129,9 @@ export class AuthEffect {
                                                      }
 
                                                      return response;
+                                                }).catch(error => {
+                                                     return Observable.of({type : AuthActions.LOGOUT})
                                                 })                                  
                                 
-    constructor(private $actions:Actions,
-                private router:Router,
-                private http:HttpService,
-                private store:Store<fromPlaceReducer.FeatureState>,
-                ){}
+    constructor(private $actions:Actions , private firebaseService:FireBaseWraperService){}
 }

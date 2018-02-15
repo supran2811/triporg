@@ -79,7 +79,7 @@ export class GooglePlacesService {
   }
 
   addPlaceChangeListener(searchEleRef:ElementRef, boundary:google.maps.LatLngBounds ):Observable<any> {
-    const observable = Observable.create((observer:any) => {
+    const observable = Observable.create((observer:Observer<any>) => {
         this.googleApiLoader.load().then(() => {
                 
             let autocomplete = new google.maps.places.Autocomplete(searchEleRef.nativeElement,

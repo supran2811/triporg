@@ -10,9 +10,10 @@ import { User } from '../models/user.model';
 
 @Injectable()
 export class FireBaseWraperService {
-    public constructor(private store:Store<fromApp.AppState>){
-        console.log("[FirebaseWrapper]","Init firebase service");
-        firebase.initializeApp({
+    public constructor(private store:Store<fromApp.AppState>){}
+
+    initialiseFirebase() {
+          firebase.initializeApp({
             apiKey: "AIzaSyBJPM4QjLcMSGN_17eRHCcRhHrct08guhM",
             authDomain: "triporg-1508486982436.firebaseapp.com"
           });
@@ -25,12 +26,33 @@ export class FireBaseWraperService {
                 this.store.dispatch(new AuthActions.LogoutAciton());
             }
         } )
+    }
 
+    register(email:string,password:string , displayName:string) : Observable<any>{
+        const observable = Observable.create(
+                            (observer:Observer<any>) => {
+                                firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+                                    firebase.auth().createUserWithEmailAndPassword(email,password).then(() => {
+                                        firebase.auth().currentUser.updateProfile({displayName:displayName , photoURL:"htttp://samplephoto.com/"}).then(() =>{
+                                                observer.next(true);
+                                        }).catch(error => {
+                                                observer.error({type:AuthActions.SHOW_ERROR , payload:error.message});
+                                        })
+                                    }).catch(error => {
+                                        observer.error({type:AuthActions.SHOW_ERROR , payload:error.message});
+                                    })
+                                }).catch(error => {
+                                    observer.error({type:AuthActions.SHOW_ERROR , payload:error.message});
+                                })
+                            }
+        );
+
+        return observable;
     }
 
     signIn(email:string , password:string) : Observable<any>{
         const observable = Observable.create(
-                            (observer:any) => {
+                            (observer:Observer<any>) => {
                                 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
                                     firebase.auth().signInWithEmailAndPassword(email,password).then(() => {
                                         observer.next(true);

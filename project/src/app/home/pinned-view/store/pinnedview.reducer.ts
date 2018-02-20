@@ -6,12 +6,17 @@ import { Place } from '../../../models/place.model';
 
 export interface State {
     cities:City[],
-    selectedCity : City
+    selectedCity : City,
+    loading:boolean,
+    error:Error
 }
 
 const initialState:State = {
     cities : [],
-    selectedCity:null
+    selectedCity:null,
+    loading:false,
+    error:null
+
 }
 
 export function pinnedViewReducer (state=initialState , action:PinnedViewActions.PinnedViewActions){
@@ -20,13 +25,27 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
         case PinnedViewActions.SET_PINNED_CITIES:{
             return {
                 ...state,
-                cities:action.payload
+                cities:[...action.payload],
+                loading:false,
+                error:null
+            }
+        }
+        case PinnedViewActions.START_LOADING_PINS:{
+            return {
+                ...state,
+                loading:true
+            }
+        }
+        case PinnedViewActions.SET_ERROR_LOADING_PINS:{
+            return {
+                ...state,
+                error: {...action.payload}
             }
         }
         case PinnedViewActions.SET_SELECTED_PINNED_CITY:{
             return {
                 ...state,
-                selectedCity:action.payload
+                selectedCity:{...action.payload}
             }
         }
         case PinnedViewActions.ADD_SELECTED_PINNED_CITY:{
@@ -145,8 +164,10 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
         }   
         case PinnedViewActions.RESET_PINNED_STATE:{
             return {
+                ...state,
                 cities : [],
-                selectedCity:null
+                selectedCity:null,
+                error:null
             }
         }   
     }

@@ -13,6 +13,7 @@ import { User } from '../models/user.model';
 let fixture,header;    
 let store:Store<fromApp.AppState>;
 
+
 describe('HeaderComponent', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
@@ -21,14 +22,12 @@ describe('HeaderComponent', () => {
         ],
         providers:[{provide: APP_BASE_HREF, useValue: '/'}]
       }).compileComponents();
-
+      
       fixture = TestBed.createComponent(HeaderComponent);
       header = fixture.debugElement.componentInstance;
-
     }));
     
     it('should create the header first', async(() => {
-      
       expect(header).toBeTruthy();
     }));
   

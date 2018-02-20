@@ -1,8 +1,9 @@
   <div class="container-fluid">
       <div class="introtext">{{title}}</div>
       <div class="row">
-          <div class="col-xl-3 col-sm-4 col-12" style= "margin-top:20px;" *ngFor = "let city of (pinnedCities | async); let i = index">
-              <app-pinned-view-item  [city] = "city"  (selectCity) = "onSelect($event)"> </app-pinned-view-item>
+          <div class="col-xl-3 col-sm-4 col-12" style= "margin-top:20px;" *ngFor = "let city of (pinnedViewState|async).cities;">
+              <app-pinned-view-item *ngIf="city.id" [city] = "city"  (selectCity) = "onSelect($event)"> </app-pinned-view-item>
           </div>  
         </div>
+        <app-loading-spinner *ngIf="(pinnedViewState|async).loading"></app-loading-spinner>
   </div>

@@ -24,6 +24,7 @@ import { BackdropComponent } from './backdrop/backdrop.component';
 import { ModalComponent } from './modal/modal.component';
 import { LoginComponent } from '../auth/login/login.component';
 import { GoogleAutocompleteComponent } from './google-autocomplete/google-autocomplete.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
     direction: 'horizontal',
@@ -40,7 +41,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         RatingComponent,
         BackdropComponent,
         ModalComponent,
-        GoogleAutocompleteComponent
+        GoogleAutocompleteComponent,
+        LoadingSpinnerComponent
     ],
     imports:[
         LazyLoadImageModule,
@@ -78,7 +80,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         ImageViewComponent,
         RatingComponent,
         ModalComponent,
-        GoogleAutocompleteComponent
+        GoogleAutocompleteComponent,
+        LoadingSpinnerComponent
        ]
 })
 export class SharedModule{

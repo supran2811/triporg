@@ -1,7 +1,6 @@
 
 import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
-import * as firebase from 'firebase';
 import { fromPromise } from 'rxjs/observable/fromPromise';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
@@ -32,26 +31,12 @@ export class AuthEffect {
                                     let password = payload.password;
                                     this.user = payload.user;
                                     
-                                    return fromPromise(firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)).switchMap(() =>{
-                                         return fromPromise(firebase.auth().createUserWithEmailAndPassword(email,password))
-                                         .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}) )
-                                         
-                                    }) 
-                                    .switchMap((res) => {
-
-                                        if(res && res.type == AuthActions.SHOW_ERROR){
-                                            return Observable.of(res);
-                                        }
-
-                                        return fromPromise(firebase.auth().currentUser.updateProfile({displayName:this.user.fullName , photoURL:"http://samplephoto.com/"}))
-                                            .catch(error => Observable.of({type:AuthActions.SHOW_ERROR , payload:error.message}))
-                                    })
+                                    return this.firebaseService.register(email,password,this.user.fullName)
                                     .mergeMap((res) =>{
                                         if(res && res.type == AuthActions.SHOW_ERROR){
                                             return [res];
                                         }
                                       
-                                   
                                         return [
                                             {
                                               type:AuthActions.SET_USER,
@@ -61,6 +46,9 @@ export class AuthEffect {
                                               type:AppActions.HIDE_MODAL
                                             }
                                         ]
+                                    })
+                                    .catch(error => {
+                                        return Observable.of(error);
                                     })
                                         
                                 } );
@@ -114,20 +102,17 @@ export class AuthEffect {
                                                      const response = [
                                                         {
                                                             type:AuthActions.SET_TOKEN,
-                                                            payload:{token:res,uid:firebase.auth().currentUser.uid}
+                                                            payload:{token:res.token,uid:res.uid}
                                                         },
                                                         {
                                                             type:AuthActions.LOGIN
+                                                        },
+                                                        {
+                                                            type:AuthActions.SET_USER,
+                                                            payload:res.user
                                                         }
                                                      ]
-                                                     if(firebase.auth().currentUser.displayName != null){
-                                                        const user = new User(firebase.auth().currentUser.email,firebase.auth().currentUser.displayName);
-                                                        response.push({
-                                                                type:AuthActions.SET_USER,
-                                                                payload:user
-                                                        });
-                                                     }
-
+                                                     
                                                      return response;
                                                 }).catch(error => {
                                                      return Observable.of({type : AuthActions.LOGOUT})

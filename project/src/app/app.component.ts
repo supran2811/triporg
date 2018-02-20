@@ -6,6 +6,7 @@ import { User } from './models/user.model';
 import * as fromApp from './store/app.reducer';
 import * as AuthActions from './auth/store/auth.action';
 import * as AppActions from './store/app.actions';
+import { FireBaseWraperService } from './shared/firebase.service';
 
 @Component({
   selector: 'app-root',
@@ -18,9 +19,13 @@ export class AppComponent implements OnInit{
   showModal : boolean = false;
   componentToRender:Type<any> = null;
 
-  public constructor(private store:Store<fromApp.AppState>){}
+  public constructor(private store:Store<fromApp.AppState> , private firebaseService:FireBaseWraperService){
+
+  }
 
   ngOnInit(){
+    
+    this.firebaseService.initialiseFirebase();
 
     this.store.select('app').subscribe((state:fromApp.State ) => {
       console.log("[AppComponent]",state);

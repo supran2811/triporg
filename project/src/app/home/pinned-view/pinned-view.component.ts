@@ -16,7 +16,7 @@ import * as AppConstants from '../../shared/constants';
 })
 export class PinnedViewComponent implements OnInit {
 
-  pinnedCities: Observable<City[]>
+  pinnedViewState: Observable<fromPinnedView.State>
   
   numOfCities : number  = 0;
 
@@ -28,11 +28,10 @@ export class PinnedViewComponent implements OnInit {
 
   ngOnInit() {
     
+    this.store.dispatch(new PinnedViewActions.StartLoadingPins());
     this.store.dispatch(new PinnedViewActions.GetPinnedCitiesFromServer());
 
-    this.pinnedCities = this.store.select('pinnedcities').map((state:fromPinnedView.State) => {
-      return state.cities;
-    });
+    this.pinnedViewState = this.store.select('pinnedcities');
 
   }
 

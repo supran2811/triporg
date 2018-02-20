@@ -1,6 +1,6 @@
 .searchhome{
     width: 100%;
-    height: 30rem;
+    height: 20rem;
     display: flex;
     align-items: center;
     align-content: center;
@@ -9,8 +9,7 @@
 
 
 .pinnedview{
-    margin-left: 10%;
-    margin-right: 10%;
+    margin : 0  10%;
 }
 
 

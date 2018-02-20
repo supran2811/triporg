@@ -21,7 +21,7 @@ import { City } from '../../models/city.model';
 @Injectable()
 export class PlacesEffect {
 
-    USER_SAVE_PLACES_URL = "https://triporg-1508486982436.firebaseio.com/pins";
+    USER_SAVE_PLACES_URL = "/pins";
 
 
     

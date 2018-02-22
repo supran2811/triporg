@@ -2,7 +2,7 @@
 import { Observable } from 'rxjs';
 import {Store} from '@ngrx/store';
 import { ActivatedRoute, Params, Router , ActivatedRouteSnapshot } from '@angular/router';
-import { Component, OnInit ,OnDestroy,OnChanges,ChangeDetectorRef,NgZone } from '@angular/core';
+import { Component, OnInit ,OnDestroy ,ChangeDetectorRef,NgZone } from '@angular/core';
 import { NgProgress } from 'ngx-progressbar';
 
 import { City } from '../models/city.model';
@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './place.component.html',
   styleUrls: ['./place.component.css']
 })
-export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
+export class PlaceComponent implements OnInit , OnDestroy {
 
   city:Observable<City>;
   isLoading = false;
@@ -33,9 +33,8 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
               private ngProgress:NgProgress,
               private changeDetector : ChangeDetectorRef,
             private zone:NgZone) { 
-                console.log("[PlaceComponent]","Inside Placecomponent contructor");
-
-                setTimeout( () => {
+                
+              setTimeout( () => {
                     this.zone.run(() => {
                       this.changeDetector.detectChanges();
                     })
@@ -45,8 +44,6 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
 
   ngOnInit() {
    
-    console.log("[PlaceComponent]","Loading111");
-
     this.isLoading = true;
     this.ngProgress.start();
 
@@ -60,10 +57,10 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
     this.city = this.store.select('place').map((state:fromPlaceReducer.State) => {
            return state.city;
     });
-    console.log("[PlaceComponent]","adding subscription");
+    
     this.subscription = this.city.subscribe((city:City) => {
-          console.log("[PlaceComponent]","Coming inside city observable",city);
-          if(city != null && city.lat){
+    
+      if(city != null && city.lat){
             this.ngProgress.done();
             this.isLoading = false;
           }
@@ -71,21 +68,16 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
             this.loadCity(city.id);
           }
           else{
-            console.log("[PlaceComponent]","Coming inside loading city ",city);
             this.loadCity(null);
           }
     });
     
   }
   
-  ngOnChanges(){
-    console.log("[PlaceComponent]","Inside ngOnChanges");
-  }
 
   loadCity(cityId){
     
     let id = cityId || this.activeRoute.snapshot.params['id'];
-    console.log("[PlaceComponent] Got placeid as ",id);
     this.store.dispatch(new PlaceActions.GetCityLocation(id));
     
   }
@@ -96,10 +88,8 @@ export class PlaceComponent implements OnInit , OnDestroy , OnChanges {
   }
 
   ngOnDestroy(){
-    console.log("[PlaceComponent]" , "Iam getting destroyed please help me!!!");
     this.subscription.unsubscribe();
     this.store.dispatch(new PinnedViewActions.ResetSelectedPinnedCity());
     this.store.dispatch(new PlaceActions.ResetState());
-    
   }
 }

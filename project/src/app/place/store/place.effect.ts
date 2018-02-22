@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { ElementRef, Injectable, state } from '@angular/core';
-import * as firebase from 'firebase';
 
 import { HttpService } from '../../shared/http.service';
 import { GooglePlacesService } from '../../shared/google.places.service';
@@ -51,8 +50,6 @@ export class PlacesEffect {
                                             } ).switchMap((payload:{input:ElementRef,boundary:google.maps.LatLngBounds}) =>{
                                                 return this.googlePlaces.addPlaceChangeListener(payload.input,payload.boundary);
                                             }).map( (res:any) => {
-                                                    console.log("[PlaceEffects]",res);
-                                                     
                                                      const place  = new Place (res.place_id , 
                                                                                 res.geometry.location.lat() , 
                                                                                 res.geometry.location.lng() , 
@@ -65,7 +62,6 @@ export class PlacesEffect {
                                                             ));
                                                       }  
 
-                                                      console.log("After getting place",place);
                                                      return {
                                                          type:PlaceActions.SET_PLACE_DETAILS,
                                                          payload:{place:place,isHover:false}
@@ -80,11 +76,11 @@ export class PlacesEffect {
                                             
     @Effect()
             saveSelectedPlaceToServer = this.actions$.ofType(PlaceActions.SAVE_SELECTED_PLACE_TO_SERVER)
-                                                    .withLatestFrom(this.store.select('place'))
-                                                        .switchMap(([action,state]) =>{
+                                                    .withLatestFrom(this.store.select('place'),this.store.select('auth'))
+                                                        .switchMap(([action,placeState,authState]) =>{
                                                           
-                                                          const savedPlaces = state.city.savedPlaces || [];
-                                                          const selectedPlace = state.selectedPlace;
+                                                          const savedPlaces = placeState.city.savedPlaces || [];
+                                                          const selectedPlace = placeState.selectedPlace;
                                                           
                                                           // Below parameters can change so resettng it....
                                                           selectedPlace.phoneNumber = null;
@@ -93,10 +89,9 @@ export class PlacesEffect {
                                                           selectedPlace.website = null;
                                                           selectedPlace.rating = 0;
 
-                                                          console.log("[PlaceEffects]",selectedPlace);
-                                                          const selectedCity = state.city;
+                                                          const selectedCity = placeState.city;
                                                           
-                                                          const uid = firebase.auth().currentUser.uid; 
+                                                          const uid = authState.uid;
                                                           let url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+selectedCity.id;  
 
                                                           if(savedPlaces.length == 0){
@@ -118,8 +113,7 @@ export class PlacesEffect {
                                                           
                                                     })
                                                     .mergeMap((response:any  ) => {
-                                                        console.log(response);
-
+                                                        
                                                         return [{
                                                            type:PlaceActions.SAVE_PLACE,
                                                            payload:{city:response.city,place:response.place}
@@ -134,18 +128,16 @@ export class PlacesEffect {
 
     @Effect()                                                                             
           removeSelectedPlaceFromServer = this.actions$.ofType(PlaceActions.REMOVE_SELECTED_PLACE_FROM_SERVER)
-                                            .withLatestFrom(this.store.select('place'))
-                                                    .switchMap(([action,state]) => {
-                                                        const selectedPlace = state.selectedPlace;
-                                                        const selectedCity = state.city;
-                                                        const savedPlaces  = state.city.savedPlaces || [];
-                                                        const uid = firebase.auth().currentUser.uid;
+                                            .withLatestFrom(this.store.select('place'),this.store.select('auth'))
+                                                    .switchMap(([action,placeState,authState]) => {
+                                                        const selectedPlace = placeState.selectedPlace;
+                                                        const selectedCity = placeState.city;
+                                                        const savedPlaces  = placeState.city.savedPlaces || [];
+                                                        const uid = authState.uid;
                                                         let url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+selectedCity.id;         
                                                         if(savedPlaces.length > 1){
                                                             url = url +"/places/"+selectedPlace.placeId;
                                                         }
-                                                        console.log("[PlaceEffects]","Trying to remove place with utl "+url);    
-
                                                         return this.http.remove(url).map(res =>{
                                                               return Observable.of({place:selectedPlace,city:selectedCity});
                                                         })
@@ -153,7 +145,6 @@ export class PlacesEffect {
                                                                     
                                                     })
                                                     .mergeMap((response:any) => {
-                                                        console.log("[PlaceEffects]",response);
                                                         return [{
                                                             type:PlaceActions.REMOVE_PLACE,
                                                             payload:{city:response.value.city,place:response.value.place}
@@ -166,14 +157,17 @@ export class PlacesEffect {
 
     @Effect()
         getSavedPlaceFrmServerByCity = this.actions$.ofType(PlaceActions.GET_SAVED_PLACES_FROM_SERVER_BY_CITY)
-                                                     .withLatestFrom(this.store.select('place'))
-                                                     .switchMap(([action,state]) => {
-                                                        if(firebase.auth().currentUser === null){
+                                                     .withLatestFrom(this.store.select('place'),this.store.select('auth'))
+                                                     .switchMap(([action,placeState,authState]) => {
+                                                    
+                                                        const city = placeState.city;
+                                                        const uid = authState.uid;
+                                                        const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id+"/places/";         
+
+                                                        if(uid === ""){
                                                             return Observable.of({type:"error",message:"Error not authorised"});
                                                         }
-                                                        const city = state.city;
-                                                        const uid = firebase.auth().currentUser.uid;
-                                                        const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id+"/places/";         
+
                                                         return this.http.get<any>(url,null)
                                                                     .catch((err) => {
                                                                         return Observable.of({type:"error",message:"Error not authorised"});
@@ -181,7 +175,7 @@ export class PlacesEffect {
                                                                 
                                                      })
                                                      .map((res:any) => {
-                                                            console.log(res);
+                                                            
                                                             let savedPlaces:Place[] = [];
                                                             
                                                             if(res && !res.type){
@@ -189,7 +183,7 @@ export class PlacesEffect {
                                                                     return place;
                                                                 } )
                                                             }
-                                                            console.log("[PlaceEffects]",savedPlaces);
+                                                            
                                                             return {
                                                                 type:PlaceActions.ADD_SAVED_PLACED_TO_STATE,
                                                                 payload:savedPlaces
@@ -200,38 +194,30 @@ export class PlacesEffect {
     
     @Effect()
             getCityDetails = this.actions$.ofType(PlaceActions.GET_CITY_DETAILS)
-                                                            .map((action:PlaceActions.GetCityDetails) => {
-                                                                return action.payload
-                                                            })
-                                                            .switchMap((payload:{id:string,map:any}) => {
-
-                                                                const uid = firebase.auth().currentUser ? firebase.auth().currentUser.uid  : null ;
-                                                                console.log("[PlaceEffects]","UID in firebase",uid);
-                                                                if(uid != null){
-                                                                    console.log("[PlaceEffects]","Going inside downloading uid");
+                                                            .map((action:PlaceActions.GetCityDetails) => (action.payload) )
+                                                            .withLatestFrom(this.store.select('auth'))
+                                                            .switchMap( ([payload,state]) => {
+                                                                const uid = state.uid;
+                                                                if(uid != ""){
                                                                     const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+payload.id+"/";         
                                                                     return this.http.get<any>(url,null).switchMap(res =>{
-                                                                        console.log("[PlaceEffects]","Got response from server as ",res);
                                                                         if(res === null){
                                                                             return this.googlePlaces.getDetails(payload.id,payload.map);
                                                                         }
                                                                         else{
-
                                                                             return Observable.of(res);
                                                                         }
                                                                     })
                                                                 }     
                                                                 else{
-                                                                    console.log("[PlaceEffects]","Downloading details inside google places",payload);
                                                                     return this.googlePlaces.getDetails(payload.id,payload.map);
                                                                  }
                                                             } )
                                                             .map( res => {
-                                                                console.log("[PlaceEffects]",res);
-
+                                                                
                                                                 if(res && res.lat){
                                                                    
-                                                                    const savedPlaces = (res.places && Object.values(res.places).map((place) => (place) )) || [];
+                                                                    const savedPlaces : Place[] = (res.places && Object.values(res.places).map((place) => (place) )) || [];
 
                                                                     const city = new City(res.id,res.name,res.lat,res.lng,savedPlaces,res.photos);
                                                                         
@@ -282,7 +268,6 @@ export class PlacesEffect {
                                                                 } )
                                                                 .withLatestFrom(this.store.select('place'))
                                                                 .mergeMap( ([res,state]) => {
-                                                                    console.log("[PlaceEffetcs]","GET_PLACE_DETAILS",res,state);
                                                                     if(!state.detailsPlace){
                                                                         state.detailsPlace = new Place(res.place_id,
                                                                                                             res.geometry.location.lat() , 

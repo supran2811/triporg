@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 
 import { City } from '../../../models/city.model';
 import { Place } from '../../../models/place.model';
+import { ErrorModel } from '../../../models/error.model';
 
 export const GET_PINNED_CITIES_FROM_SERVER          = "GET_PINNED_CITIES_FROM_SERVER";
 export const SET_PINNED_CITIES                      = "SET_PINNED_CITIES";
@@ -72,7 +73,7 @@ export class StartLoadingPins {
 
 export class SetErrorInLoadingPins {
     readonly type = SET_ERROR_LOADING_PINS;
-    public constructor(public payload:Error){}
+    public constructor(public payload:ErrorModel){}
 }
 
 export type PinnedViewActions = GetPinnedCitiesFromServer|

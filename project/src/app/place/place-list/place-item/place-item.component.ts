@@ -13,8 +13,6 @@ import { WindowRefService } from '../../../shared/windowRef.service';
 import { Subscription } from 'rxjs/Rx';
 
 
-
-
 @Component({
   selector: 'app-place-item',
   templateUrl: './place-item.component.html',
@@ -39,7 +37,6 @@ export class PlaceItemComponent implements OnInit,OnDestroy  {
             ,private windowRef:WindowRefService) { }
 
   ngOnInit() {
-    console.log("[PlaceItemComponent]",this.place.photos , this.shadow);
      this.subscription = this.store.select('place').subscribe( (state:fromPlaceReducer.State) =>{
           this.blockActions = state.savingPins || state.removingPins;
      } )
@@ -51,32 +48,23 @@ export class PlaceItemComponent implements OnInit,OnDestroy  {
 
   onHover(){
       if(this.blockActions) return;
-
-      console.log("Inside onHover of "+this.place.displayName);
-     this.store.dispatch(new PlaceActions.SetPlaceDetails({place:this.place,isHover:true}));
+      this.store.dispatch(new PlaceActions.SetPlaceDetails({place:this.place,isHover:true}));
    }
 
   onMouseLeave(){
     if(this.blockActions) return;
-
     this.store.dispatch(new PlaceActions.ResetSelectedPlace());
   }
 
   onClicked(){
-    console.log("[Placeitem] ",this.blockActions);
       if(this.blockActions) return;
-
-      
        this.store.dispatch(new PlaceActions.SetPlaceToNavigate(this.place));
-       
        this.router.navigate(["place",this.place.placeId],{relativeTo:this.activatedRoute});
-       
   }
 
   onRemove(){
     if(this.blockActions) return;
-
-    console.log("Inside onRemove!!!");
+   
      this.store.dispatch(new PlaceActions.StartRemovingPlaceFromServer());
      this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());
   }
@@ -89,17 +77,14 @@ export class PlaceItemComponent implements OnInit,OnDestroy  {
 }
 
   onIconClicked($event){
-    console.log("[PlaceItemComponent]","Clicked on "+$event);
-
+    
     if(this.blockActions) return;
 
     if($event === this.iconRemove.id){
-        console.log("[PlaceItemComponent]","Handle onRemove clicked!!!");
         this.thumbnailActionConfig = [this.iconProgress,this.iconMap];
         this.onRemove();
     }
     else if($event === this.iconMap.id){
-        console.log("[PlaceItemComponent]","Handle map clicked!!!");
         this.openInMap();
     }
 

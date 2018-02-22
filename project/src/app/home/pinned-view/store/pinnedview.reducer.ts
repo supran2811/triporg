@@ -2,13 +2,14 @@ import { City } from '../../../models/city.model';
 
 import * as PinnedViewActions from './pinnedview.action';
 import { Place } from '../../../models/place.model';
+import { ErrorModel } from '../../../models/error.model';
 
 
 export interface State {
     cities:City[],
     selectedCity : City,
     loading:boolean,
-    error:Error
+    error:ErrorModel
 }
 
 const initialState:State = {

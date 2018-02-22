@@ -1,3 +1,3 @@
-export class Error {
-    constructor(public code:string , message:string){}
+export class ErrorModel {
+    constructor(public code:number , public message:string){}
 }

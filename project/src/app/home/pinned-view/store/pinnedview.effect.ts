@@ -10,6 +10,8 @@ import { HttpService } from '../../../shared/http.service';
 import * as PinnedViewActions from './pinnedview.action';
 import * as fromApp from '../../../store/app.reducer';
 import * as AppConstants from '../../../shared/constants';
+import { ErrorModel } from '../../../models/error.model';
+
 
 @Injectable()
 export class PinnedViewEffects{
@@ -29,18 +31,26 @@ export class PinnedViewEffects{
                                         const url = this.PINS_URL+"/"+res.uid;
                                         
                                         return this.http.get(url,null)
-                                                    .catch(err =>{
-                                                            return Observable.of(new PinnedViewActions.SetPinnedCities([]));
+                                                    .catch(error =>{
+                                                           return Observable.of(new PinnedViewActions.SetErrorInLoadingPins(error)); 
                                                      })
-                                                    .map((response) =>{
+                                                    .map((response:any) =>{
                                                         let cities = [];   
                                                         if(response != null){
+
+                                                         if(response.type){
+                                                            return {
+                                                               type : response.type,
+                                                               payload:response.payload
+                                                            }
+                                                         }   
+
                                                          cities = Object.values(response).map(res =>{
                                                               let savedPlaces = [];
                                                               if(res.places != null){
                                                                 savedPlaces = Object.values(res.places).map(place =>{
                                                                     return new Place(place.placeId,place.lat,place.lng,place.displayName,
-                                                                                place.address,place.photos);
+                                                                                place.iconUrl,place.address,place.photos);
                                                                 })
                                                               }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Rx';
+import { ErrorModel } from '../models/error.model';
 @Injectable()
 export class HttpService{
   
@@ -12,8 +13,17 @@ export class HttpService{
         return this.http.get<T>(url,{
             params:parameters
         }).map( data => {
+            console.log("[HttpService]","Getting data",data);
+
             return data;
-        });
+
+        }).catch( (error:HttpErrorResponse)  => {
+            console.log("[HttpService] Gettng error ",error);
+
+            const errorModel = new ErrorModel(error.status,error.statusText);
+
+            return Observable.throw(errorModel);
+        });;
     }
 
     post<T> (url:string , data:any){

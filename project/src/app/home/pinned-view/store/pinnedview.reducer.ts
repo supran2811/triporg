@@ -33,7 +33,8 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
         case PinnedViewActions.START_LOADING_PINS:{
             return {
                 ...state,
-                loading:true
+                loading:true,
+                error:null
             }
         }
         case PinnedViewActions.SET_ERROR_LOADING_PINS:{

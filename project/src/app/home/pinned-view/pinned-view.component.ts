@@ -33,6 +33,11 @@ export class PinnedViewComponent implements OnInit {
 
     this.pinnedViewState = this.store.select('pinnedcities');
 
+    this.pinnedViewState.subscribe( (state:fromPinnedView.State) => {
+         if(state.error != null){
+            this.store.dispatch(new PinnedViewActions.GetPinnedCitiesFromServer());
+         }
+    } )
   }
 
   onSelect(city:City){

@@ -28,7 +28,6 @@ export class AppComponent implements OnInit{
     this.firebaseService.initialiseFirebase();
 
     this.store.select('app').subscribe((state:fromApp.State ) => {
-      console.log("[AppComponent]",state);
          this.showModal = state.showModal;
          this.componentToRender = state.componentToRender;
     })

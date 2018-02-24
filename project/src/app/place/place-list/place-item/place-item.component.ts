@@ -39,6 +39,11 @@ export class PlaceItemComponent implements OnInit,OnDestroy  {
   ngOnInit() {
      this.subscription = this.store.select('place').subscribe( (state:fromPlaceReducer.State) =>{
           this.blockActions = state.savingPins || state.removingPins;
+
+          if(state.removingPins && state.error != null){
+            this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());
+          } 
+             
      } )
   }
 

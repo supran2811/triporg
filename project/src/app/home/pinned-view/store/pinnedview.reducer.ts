@@ -31,7 +31,7 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
                 error:null
             }
         }
-        case PinnedViewActions.START_LOADING_PINS:{
+        case PinnedViewActions.START_LOADING_PINS_PINNED_VIEW:{
             return {
                 ...state,
                 loading:true,
@@ -133,7 +133,7 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
             return state;
         }
         case PinnedViewActions.REMOVE_PLACE_FROM_SELECTED_PINNED_CITY:{
-            if(state.selectedCity != null){
+            if(state.selectedCity != null && state.selectedCity.savedPlaces != null){
                 const index = state.cities.findIndex((city:City) => ( state.selectedCity.id === city.id ));
                 
                 const updatedCity = {...state.selectedCity};

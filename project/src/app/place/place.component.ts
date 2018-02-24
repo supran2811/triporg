@@ -59,15 +59,18 @@ export class PlaceComponent implements OnInit , OnDestroy {
     });
     
     this.subscription = this.city.subscribe((city:City) => {
-    
+      console.log("[PlaceComponent] selected pinned city","222222");
       if(city != null && city.lat){
+        console.log("[PlaceComponent] selected pinned city","3333");
             this.ngProgress.done();
             this.isLoading = false;
           }
           else if(city != null){
+            console.log("[PlaceComponent] selected pinned city","44444444444444");
             this.loadCity(city.id);
           }
           else{
+            console.log("[PlaceComponent] selected pinned city","5555555555555555");
             this.loadCity(null);
           }
     });
@@ -76,7 +79,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
   
 
   loadCity(cityId){
-    
+    console.log("[Place]","Loading city ",cityId);
     let id = cityId || this.activeRoute.snapshot.params['id'];
     this.store.dispatch(new PlaceActions.GetCityLocation(id));
     

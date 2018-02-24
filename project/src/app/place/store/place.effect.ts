@@ -13,6 +13,7 @@ import * as fromPlaceReducer from './place.reducer';
 import * as fromAuthReducer from '../../auth/store/auth.reducer';
 import { Place } from '../../models/place.model';
 import { City } from '../../models/city.model';
+import { ErrorModel } from '../../models/error.model';
 
 
 
@@ -30,6 +31,7 @@ export class PlacesEffect {
                                             return action.payload;
                                         })
                                         .switchMap((payload:string) => {
+                                              console.log("[PlaceEffects] inside get city location")
                                               return this.googlePlaces.getGeoCode(payload);
                                         }).mergeMap((city:City) =>{
                                             return [
@@ -69,8 +71,8 @@ export class PlacesEffect {
                                                      }                           
 
                                             } ).catch(errr => {
-                                                console.log(errr);
-                                                return Observable.of([]); /// TODO Need to handle error cases
+                                                
+                                                return Observable.of(new PlaceActions.SetError(errr)); /// TODO Need to handle error cases
                                             });
     
                                             
@@ -96,19 +98,19 @@ export class PlacesEffect {
 
                                                           if(savedPlaces.length == 0){
                                                             return this.http.put(url,selectedCity)
-                                                                    .catch((err) => Observable.of({type:"error",message:err}))
+                                                                    .catch((err) => Observable.of(new PlaceActions.SetError(err)))
                                                                     .switchMap(() => {
                                                                         url = url+"/places/"+selectedPlace.placeId;
                                                                         return this.http.put(url, selectedPlace)
                                                                                     .map(res => ({place:selectedPlace,city:selectedCity}))
-                                                                                    .catch((err) => Observable.of({type:"error",message:err}));
+                                                                                    .catch((err) => Observable.of(new PlaceActions.SetError(err)));
                                                                     });
                                                           }
                                                           else{
                                                             url = url+"/places/"+selectedPlace.placeId;
                                                             return this.http.put(url, selectedPlace)
                                                                          .map(res => ({place:selectedPlace,city:selectedCity}))
-                                                                        .catch((err) => Observable.of({type:"error",message:err}));
+                                                                        .catch((err) => Observable.of(new PlaceActions.SetError(err)));
                                                           }
                                                           
                                                     })
@@ -141,10 +143,17 @@ export class PlacesEffect {
                                                         return this.http.remove(url).map(res =>{
                                                               return Observable.of({place:selectedPlace,city:selectedCity});
                                                         })
-                                                        .catch((err) => Observable.of({type:"error" , message:err }));
+                                                        .catch((err) => Observable.of(new PlaceActions.SetError(err)));
                                                                     
                                                     })
                                                     .mergeMap((response:any) => {
+                                                        if(response.type){
+                                                            return [{
+                                                                type : response.type,
+                                                                payload:response.payload
+                                                             }]
+                                                        }
+
                                                         return [{
                                                             type:PlaceActions.REMOVE_PLACE,
                                                             payload:{city:response.value.city,place:response.value.place}
@@ -163,14 +172,13 @@ export class PlacesEffect {
                                                         const city = placeState.city;
                                                         const uid = authState.uid;
                                                         const url = this.USER_SAVE_PLACES_URL+"/"+uid+"/"+city.id+"/places/";         
-
                                                         if(uid === ""){
-                                                            return Observable.of({type:"error",message:"Error not authorised"});
+                                                            return Observable.of(new PlaceActions.SetError(new ErrorModel(500,"Not authorised")));
                                                         }
 
                                                         return this.http.get<any>(url,null)
                                                                     .catch((err) => {
-                                                                        return Observable.of({type:"error",message:"Error not authorised"});
+                                                                        return Observable.of(new PlaceActions.SetError(err));
                                                                     });
                                                                 
                                                      })
@@ -178,6 +186,13 @@ export class PlacesEffect {
                                                             
                                                             let savedPlaces:Place[] = [];
                                                             
+                                                            if(res.type){
+                                                                return {
+                                                                    type : res.type,
+                                                                    payload:res.payload
+                                                                 }
+                                                            }
+
                                                             if(res && !res.type){
                                                                  savedPlaces = Object.values(res).map( (place:Place) =>{
                                                                     return place;
@@ -217,7 +232,10 @@ export class PlacesEffect {
                                                                 
                                                                 if(res && res.lat){
                                                                    
-                                                                    const savedPlaces : Place[] = (res.places && Object.values(res.places).map((place) => (place) )) || [];
+                                                                    let savedPlaces:Place[] = <Place[]>[];
+                                                                    if(res.places){
+                                                                        savedPlaces =  <Place[]>Object.values(res.places).map((place) => (place) );
+                                                                    }
 
                                                                     const city = new City(res.id,res.name,res.lat,res.lng,savedPlaces,res.photos);
                                                                         
@@ -255,7 +273,7 @@ export class PlacesEffect {
                                                             } )
                                                             .catch( errr => {
                                                                 console.log(errr);
-                                                                return Observable.of([]);
+                                                                return Observable.of(new PlaceActions.SetError(errr));
                                                             })
 
                 @Effect()
@@ -298,8 +316,7 @@ export class PlacesEffect {
                                                                     }]
                                                                 } )
                                                                 .catch( errr => {
-                                                                    console.log(errr);
-                                                                    return Observable.of([]);
+                                                                    return Observable.of(new PlaceActions.SetError(errr));
                                                                 })
                                                             
                                                             

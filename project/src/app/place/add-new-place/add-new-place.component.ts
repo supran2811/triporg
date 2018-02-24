@@ -63,12 +63,9 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
                 private store:Store<fromPlaceReducer.FeatureState>
               , private activeRoute:ActivatedRoute,
                 private router:Router,
-                private windowRef:WindowRefService) { 
-                  console.log("[AddNewPlace]","Inside add new place constructor");
-                }
+                private windowRef:WindowRefService) { }
 
   ngOnInit() {
-    console.log("[AddNewPlace]","Inside oninit");
     this.load();
   }
 
@@ -77,7 +74,6 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   }
 
   onMapReady(event){
-    console.log("[AddNewPlace] onMapReady",event,this.cityId,this.lat);
     this.map = event;
     if(this.cityId != undefined){
       this.store.dispatch(new PlaceActions.GetCityDetails({id:this.cityId,map:event}));
@@ -90,14 +86,14 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
         
         this.blockActions = state.removingPins || state.savingPins;
 
+        if(state.savingPins && state.error != null){
+        //  this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
+        }
         if(this.blockActions) return;
 
-        console.log("[AddNewPlace]",state);
+    
         if(state.selectedPlace != null && this.lat ){
           this.placeName = "";
-          
-          console.log("[AddNewPlace]",state.city.savedPlaces);
-
           let selectedPlaceIndexInPin = state.city.savedPlaces?(state.city.savedPlaces.findIndex( (place:Place) => {
             return place.placeId === state.selectedPlace.placeId
           }  )) : -1;
@@ -113,8 +109,6 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
                 return marker.isNew === false;
           } );
         
-          console.log("[AddNewPlace]",selectedPlaceIndexInPin,selectedPlaceIndexInMarker);
-
           if(selectedPlaceIndexInMarker >= 0 && selectedPlaceIndexInPin >= 0){
              
               if(!state.isHover){
@@ -142,7 +136,6 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
           }
          }
          else if(state.city != null && state.city.lat && state.city.lat != 0  ){
-           console.log("[AddNewPlace]","coming here to set lat of city ",state.city);
           this.loaded = true;
           this.lat = state.city.lat;
           this.lng = state.city.lng;
@@ -150,7 +143,6 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
           this.placeName  = "";
           this.zoom = 10;
           if(state.city.savedPlaces && state.city.savedPlaces.length !== this.savedPlaces.length ){
-            console.log("[AddNewPlace] Something has changed",state.city.savedPlaces);
             this.markers = state.city.savedPlaces.map( (place:Place) => {
               return new Marker(place,false,false);
             } );
@@ -158,19 +150,15 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
             this.savedPlaces = state.city.savedPlaces;
           }
           else if(this.markers) {
-            console.log("[AddNewPlace]","Nothing has changed so just reset all markers");
              this.markers.forEach( (marker:Marker) => {
                 marker.showInfoWindow = false;
                 marker.isNew = false;
              } );
           }
-      
-
           this.ngProgress.done();
         }
         else if(state.city != null && state.loadingCity === false && this.loaded){
           this.ngProgress.start();   
-          console.log("[AddNewPlace]","Coming here to get city location");
           this.store.dispatch(new PlaceActions.StartLoadingCity());
           this.store.dispatch(new PlaceActions.GetCityLocation(state.city.id));
           this.loaded = false;
@@ -203,7 +191,6 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
     if(this.blockActions) return;
 
-    console.log("Inside onSave!!!");
     this.store.dispatch(new PlaceActions.StartSavingPlaceToServer());
     this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
   }
@@ -212,30 +199,11 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
     if(this.blockActions) return;
 
-    console.log("Inside onRemove!!!");
     this.store.dispatch(new PlaceActions.StartRemovingPlaceFromServer());
     this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());
   }
 
-  showErrorDialog(){
-    alert("Please resgister or login!!!");
-  }
-
-  doAction(marker:Marker){
-    if(!this.authorised){
-      this.showErrorDialog();
-    }
-    else if(marker.isNew === true){
-      this.onSave();
-    }
-    else{
-      this.onRemove();
-    }
-  }
-
   infoWindowClosed(marker:Marker){
-    console.log("[AddNewPlace]","info window closed!!");
-    //this.hideDetailInfoWindow(marker);
     marker.showInfoWindow = false;
   }
 
@@ -243,7 +211,6 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
     if(this.blockActions) return;
 
-    console.log("Selected",marker);
     this.showDetailInfoWindow(marker);
     this.store.dispatch(new PlaceActions.SetPlaceDetails({place:marker.place,isHover:false}));
   }
@@ -254,14 +221,12 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
     this.showDetailWindow = true;
       this.thumbnailActionConfig =  [ marker.isNew?this.iconAdd:this.iconRemove,this.iconMap];
       marker.showInfoWindow = true;
-      console.log("[AddNewPlace]","Show detail window "+this.showDetailWindow);
   }
 
   hideDetailInfoWindow(marker:Marker){
-
-    
+ 
     this.showDetailWindow = false;
-
+ 
     if(marker) marker.showInfoWindow = false;
   }
 
@@ -275,28 +240,22 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   onIconClicked($event , marker:Marker){
 
     if(this.blockActions) return;
-    
-
-    console.log("[AddNewPlace]","Clicked on "+$event);
+ 
     if($event === this.iconAdd.id){
 
         if(!this.authorised){
-          //this.showErrorDialog();
           this.store.dispatch(new AppActons.ShowModal(RegisterComponent));
           return;
         }
-
-        console.log("[AddNewPlace]","Handle onAdd clicked!!!");
+ 
         this.thumbnailActionConfig = [this.iconProgress,this.iconMap];
         this.onSave();
     }
     else if($event === this.iconRemove.id){
-        console.log("[AddNewPlace]","Handle onRemove clicked!!!");
         this.thumbnailActionConfig = [this.iconProgress,this.iconMap];
         this.onRemove();
     }
     else if($event === this.iconMap.id){
-        console.log("[AddNewPlace]","Handle map clicked!!!");
         this.openInMap(marker)
     }
 

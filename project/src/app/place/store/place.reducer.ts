@@ -3,6 +3,7 @@ import { Place } from '../../models/place.model';
 import * as PlaceActions from './place.action';
 import * as fromApp from '../../store/app.reducer';
 import { City } from '../../models/city.model';
+import { ErrorModel } from '../../models/error.model';
 
 export interface FeatureState extends fromApp.AppState{
     place:State
@@ -17,7 +18,8 @@ export interface State{
     loadingPlace:boolean,
     loadingPins:boolean,
     removingPins:boolean,
-    savingPins:boolean
+    savingPins:boolean,
+    error:ErrorModel
 }
 
 const initialState:State = {
@@ -29,7 +31,8 @@ const initialState:State = {
     loadingPins:false,
     loadingPlace:false,
     removingPins:false,
-    savingPins:false
+    savingPins:false,
+    error:null
 
 }
 
@@ -44,7 +47,6 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.SET_CITY:{
-            console.log("[PlaceReducer] SET_CITY",action.payload);
             return {
                 ...state,
                 loadingCity:false,
@@ -52,7 +54,6 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.SET_CITY_LOCATION:{
-            console.log("[PlaceReducer] SET_CITY_LOCATION",action.payload);
             const city = state.city;
 
             let newCity = new City(city.id,city.name,action.payload.lat , action.payload.lng);
@@ -65,43 +66,46 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
         case PlaceActions.START_SAVING_PLACE_TO_SERVER:{
             return {
                 ...state,
-                savingPins:true
+                savingPins:true,
+                error:null
             }
         }
         case PlaceActions.SAVE_PLACE:{
 
             if(action.payload.city && state.city && action.payload.city.id === state.city.id){
-                console.log("[PlaceReducer]","Coming here to save place");
+                
                 let newSavedPlaces =state.city.savedPlaces ? [ ...state.city.savedPlaces]:[];
                 newSavedPlaces.push({...action.payload.place});
 
                 const updatedCity = {...state.city , savedPlaces:newSavedPlaces}    
-                console.log("[PlaceReducer]","Added new place ",updatedCity);
+                
                 return {
                     ...state,
                     city:updatedCity,
-                    savingPins:false
+                    savingPins:false,
+                    error:null
                 }
             }
-            return {...state,savingPins:false};
+            return {...state,savingPins:false,error:null};
 
             
         }
         case PlaceActions.START_REMOVING_PLACE_FROM_SERVER:{
             return {
                 ...state,
-                removingPins:true
+                removingPins:true,
+                error:null
             }
         }
         case PlaceActions.REMOVE_PLACE:{
-            console.log("[PlaceReducer]","Coming here to remove place",action.payload,state);
+            
             if(action.payload.city && state.city && action.payload.city.id === state.city.id){
 
-                console.log("[PlaceReducer]","Coming here to remove place");
+            
 
                 let updatedSavedPlaces = [ ...state.city.savedPlaces];
 
-                console.log("[PlaceReducer]",updatedSavedPlaces,action.payload.place);
+            
 
                 let index = updatedSavedPlaces.findIndex((place) => {
                     return action.payload.place.placeId == place.placeId;
@@ -113,33 +117,37 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
                     return {
                         ...state,
                         city:updatedCity,
-                        removingPins:false
+                        removingPins:false,
+                        error:null
                     }
                 }
                 else{
                     return {
                         ...state,
-                        removingPins:false
+                        removingPins:false,
+                        error:null
                     };
                 }
             }
             else{
                  return {
                     ...state,
-                    removingPins:false
+                    removingPins:false,
+                    error:null
                 };;
             }
         }
         case PlaceActions.RESET_SELECTED_PLACE:{
-            console.log("[PlaceReducer]","Coming here to reset place");
+            
             return {
                 ...state,
                 selectedPlace:null,
-                isHover : false
+                isHover : false,
+                error:null
             }
         }
         case PlaceActions.ADD_SAVED_PLACED_TO_STATE:{
-            console.log("[PlaceReducer] ADD_SAVED_PLACED_TO_STATE",action.payload);
+           
             const updatedCity = {...state.city , savedPlaces:action.payload};
             
 
@@ -162,24 +170,32 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
             }
         }
         case PlaceActions.RESET_STATE:{
-            console.log("Coming here in reset state...");
             return {
                 ...state,
                 city:null,
                 isHover:false,
-                selectedPlace : null
+                selectedPlace : null,
+                error:null
             }
         }
         case PlaceActions.START_LOADING_CITY:{
             return {
                 ...state,
-                loadingCity:true
+                loadingCity:true,
+                error:null
             }
         }
         case PlaceActions.START_LOADING_PINS:{
             return {
                 ...state,
-                loadingPins:true
+                loadingPins:true,
+                error:null
+            }
+        }
+        case PlaceActions.ERROR_OCCURED:{
+            return {
+                ...state,
+                error:action.payload
             }
         }
     }

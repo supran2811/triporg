@@ -15,7 +15,7 @@ export const SET_SELECTED_PINNED_CITY               = "SET_SELECTED_PINNED_CITY"
 export const REMOVE_PINNED_CITY_FROM_SERVER         = "REMOVE_PINNED_CITIES_FROM_SERVER";
 export const RESET_PINNED_STATE                     = "RESET_PINNED_STATE";
 export const RESET_SELECTED_PINNED_CITY             = "RESET_SELECTED_PINNED_CITY";
-export const START_LOADING_PINS                     = "START_LOADING_PINS";
+export const START_LOADING_PINS_PINNED_VIEW         = "START_LOADING_PINS_PINNED_VIEW";
 export const SET_ERROR_LOADING_PINS                 = "SET_ERROR_LOADING_PINS"
 
 export class GetPinnedCitiesFromServer{
@@ -68,7 +68,7 @@ export class ResetSelectedPinnedCity {
 }
 
 export class StartLoadingPins {
-    readonly type = START_LOADING_PINS;
+    readonly type = START_LOADING_PINS_PINNED_VIEW;
 }
 
 export class SetErrorInLoadingPins {

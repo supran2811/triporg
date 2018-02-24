@@ -4,6 +4,7 @@ import { ElementRef } from '@angular/core';
 
 import { Place } from '../../models/place.model';
 import { City } from '../../models/city.model';
+import { ErrorModel } from '../../models/error.model';
 
 
 export const SET_PLACE_DETAILS                                  = "SET_PLACE_DETAILS";
@@ -40,6 +41,7 @@ export const START_LOADING_PLACE                                 = "START_LOADIN
 
 export const RESET_STATE = "RESET_STATE";
 
+export const ERROR_OCCURED                                      = "ERROR_OCCURED";
 
 export class SetCity{
     readonly type = SET_CITY;
@@ -149,6 +151,11 @@ export class StartRemovingPlaceFromServer {
     readonly type = START_REMOVING_PLACE_FROM_SERVER;
 }
 
+export class SetError {
+    readonly type = ERROR_OCCURED;
+    public constructor(public payload:ErrorModel){}
+}
+
 export type PlaceActions = GetCityDetails|
                             SetPlaceDetails|
                             SetCity|
@@ -171,4 +178,5 @@ export type PlaceActions = GetCityDetails|
                             StartLoadingPins|
                             StartLoadingPlace|
                             StartSavingPlaceToServer|
-                            StartRemovingPlaceFromServer;
+                            StartRemovingPlaceFromServer|
+                            SetError;

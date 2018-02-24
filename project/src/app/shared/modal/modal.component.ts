@@ -27,13 +27,9 @@ export class ModalComponent implements OnInit , OnChanges{
   constructor(private resover:ComponentFactoryResolver) { }
 
   ngOnInit() {
-    // console.log("[ModalComponent] Coming here inside childcomponent render ",this.component);
-    // const childComponent = this.resover.resolveComponentFactory(this.component);
-    // this.parent.createComponent(childComponent);
   }
 
   ngOnChanges(changes:SimpleChanges){
-    console.log("[ModalComponent] ngOnChanges",changes);
     const newComponent  = changes.component.currentValue;
     const childComponent = this.resover.resolveComponentFactory(newComponent);
     this.parent.clear();

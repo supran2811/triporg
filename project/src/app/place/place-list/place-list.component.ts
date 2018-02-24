@@ -16,18 +16,28 @@ export class PlaceListComponent implements OnInit,OnDestroy {
   savedplaces : Place[] = [];
   subscription:Subscription;
   showEmptySection:boolean = true;
-
+  showLoading = false;
   constructor(private store:Store<fromPlaceReducer.FeatureState>) {}
 
   ngOnInit() {
     this.subscription =  this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
-        if( state.city != null  && state.city.savedPlaces != null && state.city.savedPlaces.length == 0 ){
+        if(state.loadingPins === true){
+          this.showLoading = true;
+          this.showEmptySection = false;
+
+          if(state.error != null){
+             this.store.dispatch(new PlaceActions.GetSavedPlacesFrmServerByCity());
+          }
+        }
+        else if( state.city != null  && state.city.savedPlaces != null && state.city.savedPlaces.length == 0 ){
           this.showEmptySection = true;
+          this.showLoading = false;
           this.savedplaces = state.city.savedPlaces || [];
         }
         else if(state.city != null){
           this.savedplaces = state.city.savedPlaces;
           this.showEmptySection = false;
+          this.showLoading = false;
         }
 
         if(state.city != null && state.city.savedPlaces == null && state.loadingPins === false){

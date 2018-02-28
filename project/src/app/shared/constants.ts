@@ -27,3 +27,7 @@ export const APP_TITLE                          = "Plan your vacation here";
 //PinnedView 
 
 export const PINNEDVIEW_TITLE                   = "Cities you are planning to visit";
+
+///Place
+
+export const PLACE_NOT_PINNED                   = "See your pinned places here";

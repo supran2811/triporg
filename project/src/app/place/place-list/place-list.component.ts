@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Place } from '../../models/place.model';
 import * as PlaceActions from '../store/place.action';
 import * as fromPlaceReducer from '../store/place.reducer';
+import * as AppConstants from '../../shared/constants';
 
 @Component({
   selector: 'app-place-list',
@@ -17,6 +18,8 @@ export class PlaceListComponent implements OnInit,OnDestroy {
   subscription:Subscription;
   showEmptySection:boolean = true;
   showLoading = false;
+  emptyMessage = AppConstants.PLACE_NOT_PINNED;
+  
   constructor(private store:Store<fromPlaceReducer.FeatureState>) {}
 
   ngOnInit() {
@@ -24,7 +27,6 @@ export class PlaceListComponent implements OnInit,OnDestroy {
         if(state.loadingPins === true){
           this.showLoading = true;
           this.showEmptySection = false;
-
           if(state.error != null){
              this.store.dispatch(new PlaceActions.GetSavedPlacesFrmServerByCity());
           }

@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class PlaceComponent implements OnInit , OnDestroy {
 
-  city:Observable<City>;
+
   isLoading = false;
   subscription:Subscription;
   pinnedViewSubscription :Subscription;
@@ -48,46 +48,31 @@ export class PlaceComponent implements OnInit , OnDestroy {
     this.ngProgress.start();
 
      this.store.select('pinnedcities').take(1).subscribe((state:fromPinnedReducer.State)=>{
-      console.log("[PlaceComponent] selected pinned city",state.selectedCity);
       if(state.selectedCity != null){
           this.store.dispatch(new PlaceActions.SetCity(state.selectedCity));
       }
     });
 
-    this.city = this.store.select('place').map((state:fromPlaceReducer.State) => {
-           return state.city;
-    });
-    
-    this.subscription = this.city.subscribe((city:City) => {
-      console.log("[PlaceComponent] selected pinned city","222222");
-      if(city != null && city.lat){
-        console.log("[PlaceComponent] selected pinned city","3333");
+ 
+    this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
+      if(state.city != null && state.city.lat){
             this.ngProgress.done();
             this.isLoading = false;
           }
-          else if(city != null){
-            console.log("[PlaceComponent] selected pinned city","44444444444444");
-            this.loadCity(city.id);
+          else if(state.city != null){
+            this.loadCity(state.city.id);
           }
           else{
-            console.log("[PlaceComponent] selected pinned city","5555555555555555");
             this.loadCity(null);
           }
     });
     
   }
   
-
   loadCity(cityId){
-    console.log("[Place]","Loading city ",cityId);
     let id = cityId || this.activeRoute.snapshot.params['id'];
     this.store.dispatch(new PlaceActions.GetCityLocation(id));
     
-  }
-
-  addNewPlace() {
-    this.store.dispatch(new PlaceActions.ResetSelectedPlace());
-    this.router.navigate(['new','place'],{relativeTo:this.activeRoute});
   }
 
   ngOnDestroy(){

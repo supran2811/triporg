@@ -47,8 +47,7 @@ export class ThumbnailViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log("[ThumbnailViewComponent]" ,this.photos );
-
+    
     this.scrollOrChangeImage$ = Observable.merge(
       Observable.fromEvent(window,'scroll'),
       this.changeIndexAndRefresh
@@ -79,7 +78,6 @@ export class ThumbnailViewComponent implements OnInit {
   }
 
   swiperIndexChange(event){
-    console.log("[ThumbnailView]" , "Swiper index change" , event,this.photos,this.photos[event].small);
     this.changeIndexAndRefresh.next();
   }
 

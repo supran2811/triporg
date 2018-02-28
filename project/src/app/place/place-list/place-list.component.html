@@ -11,7 +11,7 @@
     </div>
   
   <div *ngIf = "showEmptySection" >
-     <p class="emptysection">See your pinned places here</p>  
+     <p class="emptysection">{{emptyMessage}}</p>  
   </div>  
   <app-loading-spinner *ngIf="showLoading"></app-loading-spinner>
 </div>

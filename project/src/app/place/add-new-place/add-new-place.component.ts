@@ -87,7 +87,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
         this.blockActions = state.removingPins || state.savingPins;
 
         if(state.savingPins && state.error != null){
-        //  this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
+           this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
         }
         if(this.blockActions) return;
 

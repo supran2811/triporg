@@ -18,12 +18,9 @@ export class ThumbnailActionsComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log("[ThumnailAction]",this.config);
-  }
+  ngOnInit() {}
 
   onIconClicked(id:string){
-      console.log("[ThumnailAction]","icon clicked is "+id);
       this.iconClicked.emit(id);
   }
 }

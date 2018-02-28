@@ -31,7 +31,6 @@ export class PlacesEffect {
                                             return action.payload;
                                         })
                                         .switchMap((payload:string) => {
-                                              console.log("[PlaceEffects] inside get city location")
                                               return this.googlePlaces.getGeoCode(payload);
                                         }).mergeMap((city:City) =>{
                                             return [
@@ -44,6 +43,8 @@ export class PlacesEffect {
                                                     payload:city
                                                 }
                                             ]
+                                        }).catch(error => {
+                                            return Observable.of(new PlaceActions.SetError(error));
                                         });                                   
     @Effect()
             addPlaceChange = this.actions$.ofType(PlaceActions.ADD_PLACE_CHANGE_LISTENER)
@@ -72,7 +73,7 @@ export class PlacesEffect {
 
                                             } ).catch(errr => {
                                                 
-                                                return Observable.of(new PlaceActions.SetError(errr)); /// TODO Need to handle error cases
+                                                return Observable.of(new PlaceActions.SetError(errr));
                                             });
     
                                             
@@ -186,7 +187,7 @@ export class PlacesEffect {
                                                             
                                                             let savedPlaces:Place[] = [];
                                                             
-                                                            if(res.type){
+                                                            if(res && res.type && res.payload.message !== "Not authorised"){
                                                                 return {
                                                                     type : res.type,
                                                                     payload:res.payload

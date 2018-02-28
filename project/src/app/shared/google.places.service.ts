@@ -89,10 +89,8 @@ export class GooglePlacesService {
                     this.ngZone.run(() => {
                         let place = autocomplete.getPlace();
 
-                        console.log("[GooglePlacesService]",place);
-
                         if(place == null || place == undefined){
-                            observer.error("Empty Place");
+                            observer.error(new ErrorModel(-1 , "Place Not Available"));
                         }
                         
                          observer.next(place);
@@ -108,31 +106,28 @@ export class GooglePlacesService {
   }
 
   getGeoCode(placeid:string):Observable<City>{
-      console.log("[GooglePlace]","Get geo code");
+      
       const  observable = Observable.create((observer:Observer<City>) =>{
-        console.log("[GooglePlace]","Calling google api loader...");
+        
             this.googleApiLoader.load().then(() => {
-                console.log("[GooglePlace]","After google api loader then");
+        
                 let geoCoder = new google.maps.Geocoder;
-                console.log("Place id === ",placeid);
+        
 
                 geoCoder.geocode({'placeId': placeid} ,(results:google.maps.GeocoderResult[] , status) => {
-                            console.log(results,status);
+         
                             
                             if(results != null && results[0].geometry != null){
                                 const city = new City(placeid,results[0].address_components[0].short_name , results[0].geometry.location.lat(),
                                             results[0].geometry.location.lng());
-                                console.log("[GooglePlace]","Got geocode as ",city);            
                                 observer.next(city);
                             }
                             else{
-                                console.log("[GooglePlace]","Error in getting geocode");
                                 observer.error(new ErrorModel(-1 , "Unable to get geocode")); 
                             }
                             
                 });
             }).catch(error => {
-                console.log("[GooglePlace]","After google api loader errr",error);
                 observer.error(new ErrorModel(-1 , "Unable to get geocode"));
             })
       });

@@ -9,32 +9,32 @@ export class HttpService{
     }
 
     get<T> (url:string,parameters:HttpParams){
-        console.log("Inside sending get request!!!!!");
         return this.http.get<T>(url,{
             params:parameters
-        }).map( data => {
-            console.log("[HttpService]","Getting data",data);
-
-            return data;
-
-        }).catch( (error:HttpErrorResponse)  => {
-            console.log("[HttpService] Gettng error ",error);
-
+        }).map( data => data).catch( (error:HttpErrorResponse)  => {
             const errorModel = new ErrorModel(error.status,error.statusText);
-
             return Observable.throw(errorModel);
-        });;
+        });
     }
 
     post<T> (url:string , data:any){
-        return this.http.post(url,data);
+        return this.http.post(url,data).map(data => data).catch( (error:HttpErrorResponse) => {
+            const errorModel = new ErrorModel(error.status,error.statusText);
+            return Observable.throw(errorModel);
+        }) ;
     }
 
     put (url:string , data:any){
-        return this.http.put(url,data);
+        return this.http.put(url,data).map(data => data).catch( (error:HttpErrorResponse) => {
+            const errorModel = new ErrorModel(error.status,error.statusText);
+            return Observable.throw(errorModel);
+        });
     }
 
     remove(url:string){
-        return this.http.delete(url);
+        return this.http.delete(url).map(data => data).catch( (error:HttpErrorResponse) => {
+            const errorModel = new ErrorModel(error.status,error.statusText);
+            return Observable.throw(errorModel);
+        });
     }
 }

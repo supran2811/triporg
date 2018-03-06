@@ -36,6 +36,7 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   changeIndexAndRefresh = new Subject();
   scrollOrChangeImage$:Observable<any>;
   subscription:Subscription;
+  authSubscription:Subscription;
 
   errorImageUrl = "../../../assets/images/profilephoto.png";
 
@@ -71,39 +72,34 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   }
 
   ngOnDestroy(){
-    this.store.dispatch(new PlaceActions.ResetPlaceToNavigate());
     this.subscription.unsubscribe();
+    this.authSubscription.unsubscribe();
+    this.store.dispatch(new PlaceActions.ResetPlaceToNavigate());
   }
 
   load(){
     this.ngProgress.start();
 
-    this.store.select('auth').map((state:fromAuth.State) =>{
-      return state.authorised;
-    }).subscribe( (authorised:boolean) => {
-      this.authorised = authorised;
-    } );
-
+    this.authSubscription = this.store.select('auth').subscribe((state:fromAuth.State) => {
+      this.authorised = state.authorised;
+    });
 
 
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
       
            
            if(state.detailsPlace != null){
-
               this.city = state.city;
-              console.log("[PlaceDetails]"  , state.detailsPlace ,state.city.savedPlaces);
+              
               const selectedPlaceIndexInPin =  (state.city.savedPlaces ? state.city.savedPlaces.findIndex( (place:Place) => {
                 return place.placeId === state.detailsPlace.placeId
               }  ): -1); 
 
               this.isPinned = selectedPlaceIndexInPin >= 0;
-              console.log("[PlaceDetails]","isPinned "+this.isPinned,selectedPlaceIndexInPin);
+              
               this.place = state.detailsPlace;
               this.photos = (this.place.photos ? this.place.photos.map(photo => photo.large ) : [] );
               
-              console.log("[PlaceDetails]",this.photos);
-
               this.lat = this.place.lat;
               this.lng = this.place.lng;
               if(this.photos != null && this.photos.length > 1){
@@ -114,28 +110,21 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
            }
            else if(state.city != null && state.city.savedPlaces != null){
                 /// Got city from pinned record
-              console.log("PlaceDetails","Got city details",state.city);
-
               this.route.params.take(1).subscribe((params:Params) => {
                   const id = params['id'];
-             
                   this.store.dispatch(new PlaceActions.GetPlaceDetails({id:id,map:this.map}));
-                
-              })
+              });
            }
            else if(state.city != null){
               /// Got city from google geocode
-              console.log("[PlaceDetails]","Coming here 222",state.city);
                this.city = state.city;
                this.lat = this.city.lat;
                this.lng = this.city.lng;
                this.store.dispatch(new PlaceActions.GetCityDetails({id:this.city.id,map:this.map}));
            }
            else {
-              console.log("[PlaceDetails]","Coming here 111");
               this.route.parent.params.take(1).subscribe( (params:Params) => {
                     const cityId = params['id'];
-                    console.log("[PlaceDetails]","Loadin city id",cityId);
                     this.store.dispatch(new PlaceActions.GetCityLocation(cityId));
               } )
            }
@@ -144,10 +133,8 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
 
   onMapReady($event){
     this.map = $event;
-    console.log("[onMapReady]",$event,this.place,this.city);
     if(this.place){
-     // this.ngProgress.start();
-     this.store.dispatch(new PlaceActions.GetPlaceDetails({id:this.place.placeId,map:$event}));
+        this.store.dispatch(new PlaceActions.GetPlaceDetails({id:this.place.placeId,map:$event}));
     }
 
   }
@@ -180,7 +167,6 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   }
 
   swiperIndexChange(event){
-    console.log("[ThumbnailView]" , "Swiper index change" , event,this.photos,this.photos[event].small);
     this.changeIndexAndRefresh.next();
   }
 

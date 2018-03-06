@@ -64,7 +64,7 @@ export class PlacesEffect {
                                                                   large:photo.getUrl({'maxWidth': 800 })}
                                                             ));
                                                       }  
-
+                                                    
                                                      return {
                                                          type:PlaceActions.SET_PLACE_DETAILS,
                                                          payload:{place:place,isHover:false}
@@ -190,7 +190,7 @@ export class PlacesEffect {
                                                         if(city.savedPlaces != null){
                                                             return Observable.of(city.savedPlaces);
                                                         }   
-                                                         console.log("[PlaceEffects]","Sending http request");
+                                                        
                                                         return this.http.get<any>(url,null)
                                                                     .catch((err) => {
                                                                         return Observable.of(err);
@@ -198,7 +198,7 @@ export class PlacesEffect {
                                                                 
                                                      })
                                                      .map((res:any) => {
-                                                            console.log("[PlaceEffects]",res);
+                                                           
                                                             let savedPlaces:Place[] = [];
                                                             
                                                             if(res instanceof ErrorModel){
@@ -244,7 +244,7 @@ export class PlacesEffect {
                                                                  }
                                                             } )
                                                             .map( res => {
-                                                                
+                                                               
                                                                 if(res && res.lat){
                                                                    
                                                                     let savedPlaces:Place[] = <Place[]>[];
@@ -287,7 +287,7 @@ export class PlacesEffect {
                                                                 
                                                             } )
                                                             .catch( errr => {
-                                                                console.log(errr);
+                                                                
                                                                 return Observable.of(new PlaceActions.SetError(errr));
                                                             })
 
@@ -308,19 +308,21 @@ export class PlacesEffect {
                                                                                                             res.name,res.icon);
                                                                     }
 
-                                                                    state.detailsPlace.photos = res.photos && res.photos.map(photo => {
+                                                                    state.detailsPlace.photos = res.photos? res.photos.map(photo => {
 
                                                                         return {small:photo.getUrl({'maxWidth': 200}) , 
                                                                                 large:photo.getUrl({'maxWidth': 800 })};
-                                                                    });
+                                                                    }):null;
                                                                     state.detailsPlace.address =  res.formatted_address;
                                                                     state.detailsPlace.opening_text = (res.opening_hours && res.opening_hours.weekday_text) || null;
-                                                                    state.detailsPlace.phoneNumber = res.formatted_phone_number;      
-                                                                    state.detailsPlace.reviews = (res.reviews && res.reviews.map(review => (
+                                                                    state.detailsPlace.phoneNumber = res.formatted_phone_number || null;      
+                                                                    state.detailsPlace.reviews = (res.reviews ? res.reviews.map(review => (
                                                                             {text:review.text , author_name:review.author_name , profile_photo_url:review.profile_photo_url }
-                                                                    )));
-                                                                    state.detailsPlace.website = res.website;
+                                                                    )) : null);
+
+                                                                    state.detailsPlace.website = res.website || null;
                                                                     state.detailsPlace.rating = res.rating || 0;
+
                                                                     return [{
                                                                         type:PlaceActions.SET_PLACE_TO_NAVIGATE,
                                                                         payload:state.detailsPlace

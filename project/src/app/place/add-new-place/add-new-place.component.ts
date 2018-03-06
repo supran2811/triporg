@@ -85,13 +85,13 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
         
         this.blockActions = state.removingPins || state.savingPins;
-
+        
         if(state.savingPins && state.error != null){
-           this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
-        }
+          this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
+         }
+
         if(this.blockActions) return;
 
-    
         if(state.selectedPlace != null && this.lat ){
           this.placeName = "";
           let selectedPlaceIndexInPin = state.city.savedPlaces?(state.city.savedPlaces.findIndex( (place:Place) => {

@@ -13,6 +13,7 @@ import { Place } from '../../models/place.model';
 let fixture , pinnedView;
 let store:Store<fromApp.AppState>;
 
+
 describe("PinnedViewComponent" , () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({

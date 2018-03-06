@@ -16,8 +16,8 @@ import { Place } from '../../models/place.model';
 import { User } from '../../models/user.model';
 
 
-fdescribe('PlaceEffects' , () => {
-     it('Test getGeoLocation returns city from google service' , async(() =>{
+describe('PlaceEffects' , () => {
+     it('Test $getLocation returns city from google service' , async(() =>{
           const source = cold('a' , {a: {type:PlaceActions.GET_CITY_LOCATION}});
 
           const city = new City("test-placeid",'shortname' , 1.2,
@@ -38,7 +38,7 @@ fdescribe('PlaceEffects' , () => {
 
      }));
 
-     it("Test getGeoLoacation returns errror in case of error thrown from google service" , async(() =>{
+     it("Test $getLocation returns errror in case of error thrown from google service" , async(() =>{
         const source = cold('a' , {a: {type:PlaceActions.GET_CITY_LOCATION}});
 
         const error = new ErrorModel(-1  , "Unknown error");
@@ -54,7 +54,7 @@ fdescribe('PlaceEffects' , () => {
         expect(effect.getLocation).toBeObservable(expectedResponse);
      }));
 
-     it("Test add place change listener returns correct place" , async(() => {
+     it("Test $addPlaceChange returns correct place" , async(() => {
          const source = cold('a' , {a : {type:PlaceActions.ADD_PLACE_CHANGE_LISTENER , payload:{input:"sample",boundary:"boundary"}}});
 
          const response = {
@@ -100,7 +100,7 @@ fdescribe('PlaceEffects' , () => {
 
      }));
 
-     it("Test add place change listener when photos are null" , async(() => {
+     it("Test $addPlaceChange when photos are null" , async(() => {
         const source = cold('a' , {a : {type:PlaceActions.ADD_PLACE_CHANGE_LISTENER , payload:{input:"sample",boundary:"boundary"}}});
 
         const response = {
@@ -143,7 +143,7 @@ fdescribe('PlaceEffects' , () => {
 
     }));
 
-    it("Test add place change listener when error is thrown" , async(() => {
+    it("Test $addPlaceChange when error is thrown" , async(() => {
         const source = cold('a' , {a : {type:PlaceActions.ADD_PLACE_CHANGE_LISTENER , payload:{input:"sample",boundary:"boundary"}}});
 
         const response = new ErrorModel(-1 , "Place Not Available");
@@ -160,7 +160,7 @@ fdescribe('PlaceEffects' , () => {
 
     }));
 
-    it("Test save selected place to server" , async(() => {
+    it("Test $saveSelectedPlaceToServer" , async(() => {
         const source = cold('a' , {a : {type:PlaceActions.SAVE_SELECTED_PLACE_TO_SERVER}});
 
         const httpService = createHttpServiceStub({} , 'put');
@@ -183,7 +183,7 @@ fdescribe('PlaceEffects' , () => {
 
     }));
 
-    it("Test save selected place to server returns error when error is thrown" , async(() => {
+    it("Test $saveSelectedPlaceToServer returns error when error is thrown" , async(() => {
         
         const source = cold('a' , {a : {type:PlaceActions.SAVE_SELECTED_PLACE_TO_SERVER}});
 
@@ -204,7 +204,7 @@ fdescribe('PlaceEffects' , () => {
         expect(effect.saveSelectedPlaceToServer).toBeObservable(expectedResponse);
     }));
 
-    it("Test remove selected place from server" , async(() => {
+    it("Test $removeSelectedPlaceFromServer" , async(() => {
         const source = cold('a' , {a : {type:PlaceActions.REMOVE_SELECTED_PLACE_FROM_SERVER}});
 
         const httpService = createHttpServiceStub({} , 'remove');
@@ -225,7 +225,7 @@ fdescribe('PlaceEffects' , () => {
         expect(effect.removeSelectedPlaceFromServer).toBeObservable(expectedResponse);                                                        
     }));
 
-    it("Test remove selected place from server with error" , async(() => {
+    it("Test $removeSelectedPlaceFromServer with error" , async(() => {
         const source = cold('a' , {a : {type:PlaceActions.REMOVE_SELECTED_PLACE_FROM_SERVER}});
 
         const error = new ErrorModel(-1,"Unknown http error");
@@ -247,7 +247,7 @@ fdescribe('PlaceEffects' , () => {
         expect(effect.removeSelectedPlaceFromServer).toBeObservable(expectedResponse);
     }));
 
-    it("Test getSavedPlaceFrmServerByCity should return empty result when user unauthenticated" , async(() => {
+    it("Test $getSavedPlaceFrmServerByCity should return empty result when user unauthenticated" , async(() => {
          const source = cold('a',{a:{type:PlaceActions.GET_SAVED_PLACES_FROM_SERVER_BY_CITY}});
          
          const httpService = createHttpServiceStub({} , 'get');
@@ -266,7 +266,7 @@ fdescribe('PlaceEffects' , () => {
 
     }));
 
-    it("Test getSavedPlaceFrmServerByCity should return result when user authenticated" , async(() => {
+    it("Test $getSavedPlaceFrmServerByCity should return result when user authenticated" , async(() => {
 
         const source = cold('a',{a:{type:PlaceActions.GET_SAVED_PLACES_FROM_SERVER_BY_CITY}});
          
@@ -280,7 +280,7 @@ fdescribe('PlaceEffects' , () => {
 
          const city = new City('testcityid','testcityname',1.2,1.3,savedPlaces);
 
-         const store = getStoreStub([new PlaceActions.SetCity(city)]  , new AuthActions.LogoutAciton());
+         const store = getStoreStub([new PlaceActions.SetCity(city)]  , new AuthActions.SetTokenAction({token:"Sample",uid:"testid"}));
 
          const effect = new PlacesEffect(new Actions(source),undefined , store ,httpService);
 
@@ -288,12 +288,206 @@ fdescribe('PlaceEffects' , () => {
                                                     payload:savedPlaces}});
 
          expect(effect.getSavedPlaceFrmServerByCity).toBeObservable(expectedResponse);   
-    }))
+    }));
+
+    it("Test $getCityDetails when user is unauthenticated" , async(() => {
+        const source = cold('a' , {a : {type:PlaceActions.GET_CITY_DETAILS , payload:{id:"test-city-id",map:null}}});
+
+        const store = getStoreStub([] , new AuthActions.LogoutAciton());
+
+        const httpService = createHttpServiceStub({},"get");
+
+        const cityDetails = {place_id:"test-city-id",
+                                name:'test-name',
+                                geometry:{ location: {lat : () => (1.2) , lng: () => (1.3) } },
+                                photos: [{getUrl: (config) => ('http://sample-photo-url')},{getUrl: (config) => ('http://sample-photo2-url')}]};
+        const googlePlaceService = createGooglePlaceServiceStub(cityDetails,'getDetails');
+
+
+        const effect = new PlacesEffect(new Actions(source) , googlePlaceService,store,httpService);
+
+        const city = new City(cityDetails.place_id,
+            cityDetails.name,
+            cityDetails.geometry.location.lat(),
+            cityDetails.geometry.location.lng(),[]);
+
+
+        city.photos = cityDetails.photos && cityDetails.photos.map(photo => {
+                        return {small:photo.getUrl({'maxWidth': 200}) , 
+                                    large:photo.getUrl({'maxWidth': 800 })};
+        });
+
+        const expectedResponse = cold('a' , {a : { type:PlaceActions.SET_CITY,
+                                                    payload:city}});
+        
+                                                     
+        expect(effect.getCityDetails).toBeObservable(expectedResponse);
+
+    }));
+
+    it("Test $getCityDetails when user is unauthenticated and google service throws error" , async(() => {
+        const source = cold('a' , {a : {type:PlaceActions.GET_CITY_DETAILS , payload:{id:"test-city-id",map:null}}});
+
+        const store = getStoreStub([] , new AuthActions.LogoutAciton());
+
+        const httpService = createHttpServiceStub({},"get");
+
+        const error = new ErrorModel(-1,"Sample Error Message");
+
+        const googlePlaceService = createGooglePlaceServiceStub(error,'getDetails');
+
+
+        const effect = new PlacesEffect(new Actions(source) , googlePlaceService,store,httpService);
+
+       
+
+        const expectedResponse = cold('(-c|)' , {c: new PlaceActions.SetError(error)});
+        
+                                                     
+        expect(effect.getCityDetails).toBeObservable(expectedResponse);
+    }));
+
+    it("Test $getCityDetails when user is authenticated and city is not pinned" , async(() => {
+        const source = cold('a' , {a : {type:PlaceActions.GET_CITY_DETAILS , payload:{id:"test-city-id",map:null}}});
+
+        const store = getStoreStub([] , new AuthActions.SetTokenAction({token:"test-token-id",uid:"test-uid"}));
+
+        const httpService = createHttpServiceStub(null,"get");
+
+        const cityDetails = {place_id:"test-city-id",
+                                name:'test-name',
+                                geometry:{ location: {lat : () => (1.2) , lng: () => (1.3) } },
+                                photos: [{getUrl: (config) => ('http://sample-photo-url')},{getUrl: (config) => ('http://sample-photo2-url')}]};
+        const googlePlaceService = createGooglePlaceServiceStub(cityDetails,'getDetails');
+
+
+        const effect = new PlacesEffect(new Actions(source) , googlePlaceService,store,httpService);
+
+        const city = new City(cityDetails.place_id,
+            cityDetails.name,
+            cityDetails.geometry.location.lat(),
+            cityDetails.geometry.location.lng(),[]);
+
+
+        city.photos = cityDetails.photos && cityDetails.photos.map(photo => {
+                        return {small:photo.getUrl({'maxWidth': 200}) , 
+                                    large:photo.getUrl({'maxWidth': 800 })};
+        });
+
+        const expectedResponse = cold('a' , {a : { type:PlaceActions.SET_CITY,
+                                                    payload:city}});
+        
+                                                     
+        expect(effect.getCityDetails).toBeObservable(expectedResponse);
+    }));
+
+    it("Test $getCityDetails when user is authenticated and city is already pinned" , async(() => {
+        const source = cold('a' , {a : {type:PlaceActions.GET_CITY_DETAILS , payload:{id:"test-city-id",map:null}}});
+
+        const store = getStoreStub([] , new AuthActions.SetTokenAction({token:"test-token-id",uid:"test-uid"}));
+
+       
+
+        const cityDetails = {id:"test-city-id",
+                                name:'test-name',
+                                lat:1.2,
+                                lng:1.3,
+                                places:[{placeId:'test-place-id',address:'sample-address',displayName:'sample-name',lat:1.1,lng:1.2,iconUrl:'http://sampleicon'}],
+                                photos: []};
+        
+        const googlePlaceService = createGooglePlaceServiceStub({},'getDetails');
+
+        const httpService = createHttpServiceStub(cityDetails,"get");
+
+        const effect = new PlacesEffect(new Actions(source) , googlePlaceService,store,httpService);
+
+       let savedPlaces:Place[] = <Place[]>[];
+       
+       savedPlaces =  <Place[]>Object.values(cityDetails.places).map((place) => (place) );
+       
+       const city = new City(cityDetails.id,cityDetails.name,cityDetails.lat,cityDetails.lng,savedPlaces,cityDetails.photos);
+       
+        
+
+        const expectedResponse = cold('a' , {a : { type:PlaceActions.SET_CITY,
+                                                    payload:city}});
+        
+                                                     
+        expect(effect.getCityDetails).toBeObservable(expectedResponse);
+    }));
+
+    it("Test $getCityDetails when user is authenticated and city is already pinned but http error is thrown" , async(() => {
+        const source = cold('a' , {a : {type:PlaceActions.GET_CITY_DETAILS , payload:{id:"test-city-id",map:null}}});
+
+        const store = getStoreStub([] , new AuthActions.SetTokenAction({token:"test-token-id",uid:"test-uid"}));
+        
+        const googlePlaceService = createGooglePlaceServiceStub({},'getDetails');
+
+        const error = new ErrorModel(-1,"Unknown http error");
+
+        const httpService = createHttpServiceStub(error,"get");
+
+        const effect = new PlacesEffect(new Actions(source) , googlePlaceService,store,httpService);
+
+        const expectedResponse = cold('(-c|)' , {c: new PlaceActions.SetError(error)});
+                                                     
+        expect(effect.getCityDetails).toBeObservable(expectedResponse);
+    }));
+
+    it("Test $getPlaceDetails" , async(() => {
+        const source = cold('a',{a : {type:PlaceActions.GET_PLACE_DETAILS , payload:{id:'test-place-id',map:null}}});
+
+        const placeDetails = {
+            place_id:'test-place-id',
+            geometry:{location:{lat : () => 1.2 , lng: () => 1.2}},
+            name:'test-name',
+            icon:'http://testicon',
+            formatted_address:'test place address',
+            formatted_phone_number:'121212121'
+        };    
+
+        const place = new Place('test-place-id',1.2,1.2,'test-name','http://testicon','test place address',null,'121212121',null,null,null,0);;
+
+        const googlePlaceService = createGooglePlaceServiceStub(placeDetails , 'getDetails');
+
+
+        const store = getStoreStub([new PlaceActions.SetPlaceDetails({place:place,isHover:false})] , new AuthActions.LogoutAciton());
+
+        const effect = new PlacesEffect(new Actions(source),googlePlaceService,store,undefined);
+
+        const response = cold('(ab)',{a : {type:PlaceActions.SET_PLACE_TO_NAVIGATE,
+                                            payload:place} , b:{ type:PlaceActions.SET_PLACE_DETAILS,
+                                                payload:{place:place,isHover:false}}});
+
+        expect(effect.getPlaceDetails).toBeObservable(response);
+
+    }));
+
+    it("Test $getPlaceDetails when error is thrown" , async(() => {
+        const source = cold('a',{a : {type:PlaceActions.GET_PLACE_DETAILS , payload:{id:'test-place-id',map:null}}});
+
+        const place = new Place('test-place-id',1.2,1.2,'test-name','http://testicon','test place address',null,'121212121',null,null,null,0);;
+
+        const error = new ErrorModel(-1 , "Error with google service");
+
+        const googlePlaceService = createGooglePlaceServiceStub(error , 'getDetails');
+
+        const store = getStoreStub([new PlaceActions.SetPlaceDetails({place:place,isHover:false})] , new AuthActions.LogoutAciton());
+
+        const effect = new PlacesEffect(new Actions(source),googlePlaceService,store,undefined);
+
+        const response = cold('(-c|)' , {c: new PlaceActions.SetError(error)});
+
+        expect(effect.getPlaceDetails).toBeObservable(response);
+
+
+    }));
+    
 });
 
 
 function createGooglePlaceServiceStub(response:any,methodName:string){
-  const service = jasmine.createSpyObj('GoogleService',['getGeoCode' , 'addPlaceChangeListener']);
+  const service = jasmine.createSpyObj('GoogleService',['getGeoCode' , 'addPlaceChangeListener','getDetails']);
 
   const  hasError = response instanceof ErrorModel;
 
@@ -303,7 +497,9 @@ function createGooglePlaceServiceStub(response:any,methodName:string){
     service.getGeoCode.and.returnValue(serviceResponse);
   else if(methodName === 'addPlaceChangeListener')
     service.addPlaceChangeListener.and.returnValue(serviceResponse);
-
+  else if(methodName === 'getDetails')
+    service.getDetails.and.returnValue(serviceResponse);  
+  
   return service;
 }
 

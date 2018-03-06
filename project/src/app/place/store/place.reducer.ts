@@ -175,6 +175,7 @@ export function placeReducer(state=initialState,action:PlaceActions.PlaceActions
                 city:null,
                 isHover:false,
                 selectedPlace : null,
+                detailsPlace:null,
                 error:null
             }
         }

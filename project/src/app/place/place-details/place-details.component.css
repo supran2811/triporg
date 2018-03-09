@@ -26,6 +26,7 @@
     padding-left: 10px;
     padding-right: 10px;
     min-height: 600px;
+    position: relative;
 }
 
 img {
@@ -74,11 +75,12 @@ agm-map  {
   }  
 
 .map-container {
-    position: fixed; 
-    top:400px;
+    position: absolute; 
+    top:10px;
     left:60%;
     z-index: 4;
     width: 40%;
     height: 100px;
     margin-right: 10px;
+    margin-bottom: 10px;
 }

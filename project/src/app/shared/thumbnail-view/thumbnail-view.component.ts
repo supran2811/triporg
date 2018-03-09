@@ -3,9 +3,10 @@ import { Component,
           Input , 
           Output,
           EventEmitter } from '@angular/core';
-import { Place } from '../../models/place.model';
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { Observable,Subject } from 'rxjs/Rx';
+
+import { Place } from '../../models/place.model';
 
 
 @Component({

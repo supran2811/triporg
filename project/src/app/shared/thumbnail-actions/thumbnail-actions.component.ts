@@ -1,4 +1,4 @@
-import { Component, OnInit ,Input , Output ,EventEmitter} from '@angular/core';
+import { Component, Input , Output ,EventEmitter} from '@angular/core';
 
 
 @Component({
@@ -10,15 +10,11 @@ import { Component, OnInit ,Input , Output ,EventEmitter} from '@angular/core';
               margin-right: 4px;
             }`]
 })
-export class ThumbnailActionsComponent implements OnInit {
+export class ThumbnailActionsComponent {
 
   @Input() config: {id:string,iconClass:string}[] = [] ;
   @Output() iconClicked = new EventEmitter<string>();
   
-
-  constructor() { }
-
-  ngOnInit() {}
 
   onIconClicked(id:string){
       this.iconClicked.emit(id);

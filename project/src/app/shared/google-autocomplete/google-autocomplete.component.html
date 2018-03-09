@@ -8,13 +8,11 @@
             autocomplete="off"
             class="form-control" 
             placeholder="Search for any city you are planning to visit"
-            [(ngModel)] ="query" 
-            (ngModelChange) = "fireSearchQuery()">
+            [formControl] = "query$">
        
     </div>
     <div class="autocomplete-list">
        <ul *ngIf = "predictions.length">
-           
            <li *ngFor="let item of (predictions)" >
                 <a (click) = "selectItem(item)">
                     <span class="pac-icon"></span>
@@ -22,10 +20,8 @@
                             <span class="main-text">{{item.structured_formatting ? item.structured_formatting.main_text : item.description}}</span>
                             <span class="secondary-text">{{item.structured_formatting ? item.structured_formatting.secondary_text : ""}}</span>
                     </span>
-                    
                 </a>
            </li>
-
        </ul>
     </div>
     

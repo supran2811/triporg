@@ -27,7 +27,8 @@ import * as AppConstants from '../shared/constants';
 export class HeaderComponent implements OnInit {
 
   authState:Observable<fromAuth.State>;
-  cityName:Observable<string>;
+  city$:Observable<City>;
+  
 
   HOME_URL = "/";
   appName     = AppConstants.APP_NAME;
@@ -44,20 +45,15 @@ export class HeaderComponent implements OnInit {
               private location:Location,
                private router:Router,
               private route:ActivatedRoute
-            ) {
-              
-             }
+            ) { }
 
   ngOnInit() {
     this.authState = this.store.select('auth');
     
-    this.cityName = this.store.select('pinnedcities').map( (state:fromPinned.State) => {
-           return state.selectedCity ? state.selectedCity.name : "";
-    } )
+    this.city$ = this.store.select('pinnedcities').map( (state:fromPinned.State) =>  state.selectedCity);
 
     this.router.events.forEach((event) => {
       if(event instanceof NavigationEnd){
-        console.log("[Header]",event.url);
         this.currentUrl = event.url;
       }
     });
@@ -80,6 +76,10 @@ export class HeaderComponent implements OnInit {
    this.location.back();
   }
 
-
+  gotoCity(){
+     this.city$.take(1).subscribe(city => {
+          this.router.navigate(['/','city',city.id]);
+     })
+  }
 
 }

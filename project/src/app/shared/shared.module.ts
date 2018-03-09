@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule ,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {NgProgressModule} from 'ngx-progressbar'
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmCoreModule , GoogleMapsAPIWrapper} from '@agm/core'
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window'
 import { RouteReuseStrategy } from '@angular/router';
@@ -53,6 +53,7 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         AgmSnazzyInfoWindowModule,
         FormsModule,
         CommonModule,
+        ReactiveFormsModule,
         SwiperModule.forChild()
     ],
     

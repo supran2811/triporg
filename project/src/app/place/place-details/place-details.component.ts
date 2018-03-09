@@ -27,7 +27,7 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   zoom:number = 15;
   photos:string[] = [];
   mapPositonInInteger = 400;
-  mapPostionInPixel = "400px";
+  mapPostionInPixel = "10px";
   map = null;
   authorised:boolean;
   lat:number = 28.6108127;
@@ -141,10 +141,14 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
 
   onScroll(event){
     let position = this.mapPositonInInteger - this.window.getNativeWindow().pageYOffset;
-    if(position < 100){
-      position = 100;
-    }
-    this.mapPostionInPixel = position+"px";
+    // if(position < 90){
+    //   position = 90;
+    // }
+    // this.mapPostionInPixel = position+"px";
+    console.log("[MapPosition]",position);
+    // if(position < 0){
+    //   this.mapPostionInPixel = "0px";
+    // }
   }
 
   openInMap(){

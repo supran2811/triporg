@@ -1,4 +1,4 @@
-import { Component, OnInit ,Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-rating',
@@ -11,15 +11,6 @@ import { Component, OnInit ,Input } from '@angular/core';
                 </span>`,
   styles: [`span { color: salmon;}`]
 })
-export class RatingComponent implements OnInit {
-  
+export class RatingComponent {
   @Input() rating:number;
-
-  //private range:number[] = [1,2,3,4,5];
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

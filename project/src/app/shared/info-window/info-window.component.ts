@@ -2,16 +2,18 @@ import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-info-window',
-  templateUrl: './info-window.component.html',
-  styleUrls: ['./info-window.component.css']
+  template: `<div class = "infowindow">
+                  {{message}}
+            </div>`,
+  styles: [`
+          .infowindow{
+            color:#777;
+            padding:1rem;
+            text-align: center;
+            background-color: white;
+        }
+  `]
 })
-export class InfoWindowComponent implements OnInit {
-
+export class InfoWindowComponent {
   @Input() message:string = "";
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

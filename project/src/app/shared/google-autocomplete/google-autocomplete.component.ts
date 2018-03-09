@@ -1,7 +1,8 @@
 import { Component, Input,Output, OnInit,EventEmitter,ChangeDetectorRef  ,ElementRef} from '@angular/core';
 import { GooglePlacesService } from '../../shared/google.places.service';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subject } from 'rxjs/Rx';
+import { FormControl } from '@angular/forms';
 
 
 @Component({
@@ -16,11 +17,12 @@ export class GoogleAutocompleteComponent implements OnInit {
 
   @Input() offset:number;
   @Output() selectPrediction = new EventEmitter<any>();
-  @Input() query:string;
+  
 
   predictions:any[] = [];
   isError = false;
 
+  query$:FormControl;
   
 
   constructor(private googlePlaces:GooglePlacesService ,
@@ -28,20 +30,13 @@ export class GoogleAutocompleteComponent implements OnInit {
                 private elementRef:ElementRef) { }
 
   ngOnInit() {
-  }
-
-  fireSearchQuery(){
-    if(this.query.length >= this.offset)
-     {
-            this.isError = true;
-             this.googlePlaces.searchPlace(this.query).subscribe((res:any[]) =>{
-                this.updateItems(res);
-            })
-     }
-     else{
-      this.updateItems([]);
-     }
-
+    this.query$ = new FormControl();
+    this.query$.valueChanges.debounceTime(400)
+          .distinctUntilChanged()
+          .flatMap(query => query.length >= this.offset? this.googlePlaces.searchPlace(query):Observable.of([]))     
+          .subscribe(result => {
+                 this.updateItems(result);
+          });
   }
 
   updateItems(items:any[]){
@@ -51,7 +46,6 @@ export class GoogleAutocompleteComponent implements OnInit {
   }
 
   selectItem(item:any){
-    console.log("[GoogleAutoComplete]",item);
      this.selectPrediction.emit(item);
   }
 

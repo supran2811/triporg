@@ -2,7 +2,8 @@
     <div class="container-fluid">
       <div class="navbar-header">
           <a class="navbar-brand" routerLink="/">
-            <i class="fa fa-suitcase"></i>  <strong *ngIf = "currentUrl === HOME_URL">{{appName}}</strong>
+            <i class="fa fa-suitcase"></i>  
+            <strong>{{appName}}</strong>
           </a>
          
       </div>
@@ -10,7 +11,7 @@
       <div class="collapse navbar-collapse">
        
         <ul class="nav navbar-nav navbar-left left-nav" *ngIf="(city$|async) as city">
-            <li><a style="cursor:pointer;" (click) = "gotoCity()">{{ city.name }}</a></li>
+            <li><a class="cityStyle" style="cursor:pointer;" (click) = "gotoCity()">{{ city.name }}</a></li>
         </ul>  
        
         <ul class="nav navbar-nav navbar-right">

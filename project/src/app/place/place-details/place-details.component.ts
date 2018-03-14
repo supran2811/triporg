@@ -26,7 +26,7 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   isPinned:boolean;
   zoom:number = 15;
   photos:string[] = [];
-  mapPositonInInteger = 400;
+  mapPositonInInteger = 10;
   mapPostionInPixel = "10px";
   map = null;
   authorised:boolean;
@@ -137,18 +137,6 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
         this.store.dispatch(new PlaceActions.GetPlaceDetails({id:this.place.placeId,map:$event}));
     }
 
-  }
-
-  onScroll(event){
-    let position = this.mapPositonInInteger - this.window.getNativeWindow().pageYOffset;
-    // if(position < 90){
-    //   position = 90;
-    // }
-    // this.mapPostionInPixel = position+"px";
-    console.log("[MapPosition]",position);
-    // if(position < 0){
-    //   this.mapPostionInPixel = "0px";
-    // }
   }
 
   openInMap(){

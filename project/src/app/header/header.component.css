@@ -24,3 +24,13 @@ ul.left-nav > li > a {
 .navbar-default{
     border:none;
 }
+
+.cityStyle{
+    border: 1px solid salmon;
+    border-radius: 4px;
+}
+
+.navbar-nav>li>a{
+    padding: 8px 10px;
+    margin: 4px 0;
+} 

@@ -1,5 +1,5 @@
 
-import { ComponentRef } from "@angular/core";
+import { ComponentRef, Component } from "@angular/core";
 import { ActivatedRouteSnapshot,
             RouteReuseStrategy,
             DetachedRouteHandle } from "@angular/router";
@@ -9,22 +9,26 @@ import { PlaceDetailsComponent } from "./place/place-details/place-details.compo
 import { HomeComponent } from "./home/home.component";
 
 
-
 export class CustomRouterReuseStrategy implements RouteReuseStrategy {
     handlers : {[key:string] : DetachedRouteHandle} = {};
     isFutureHomeComponent : boolean;
 
     shouldDetach(route:ActivatedRouteSnapshot) : boolean {
+        console.log("[CustomRouterReuseStrategy] shouldDetach" , this.isFutureHomeComponent , route.component);
         return (!this.isFutureHomeComponent && route.component === PlaceComponent);  ;
     }
 
     store(route:ActivatedRouteSnapshot , handle:DetachedRouteHandle):void {
-          let name = route.component && (<any>route.component).name;
+          
+          let name = this.getComponentUniqueName(route.component);
+          console.log("[CustomRouterReuseStrategy] storing route",name);
           this.handlers[name] = handle;
     }
 
     shouldAttach(route:ActivatedRouteSnapshot) :boolean {
-        let name = route.component && (<any>route.component).name;
+        let name = this.getComponentUniqueName(route.component);
+       
+        console.log("[CustomRouterReuseStrategy] shouldAttach" , route.component,name);
         if(route.component === HomeComponent){
             this.deactivateAllHandles();
         }
@@ -36,11 +40,22 @@ export class CustomRouterReuseStrategy implements RouteReuseStrategy {
 
 
     retrieve(route:ActivatedRouteSnapshot):DetachedRouteHandle {
-        let name = route.component && (<any>route.component).name;
+        let name = this.getComponentUniqueName(route.component);
         return this.handlers[name];
     }
 
     shouldReuseRoute(future:ActivatedRouteSnapshot , curr:ActivatedRouteSnapshot) :boolean {
+        if(future.children[0] &&  future.children[0].children[0]){
+            console.log("[CustomRouterReuseStrategy] FUTURE ROUTE ",PlaceComponent.name);
+            console.log("[CustomRouterReuseStrategy] shouldReuseRoute fuuture ",future.children[0].children[0].component);
+            console.log("[CustomRouterReuseStrategy] shouldReuseRoute future==home",(future.children[0].children[0].component === PlaceComponent));
+        }
+        if(curr.children[0] && curr.children[0].children[0]){
+            console.log("[CustomRouterReuseStrategy] CURRNT ROUTE ",PlaceDetailsComponent.name);
+            console.log("[CustomRouterReuseStrategy] shouldReuseRoute curr ",curr.children[0].children[0].component);
+            console.log("[CustomRouterReuseStrategy] shouldReuseRoute curr==details",(curr.children[0].children[0].component === PlaceDetailsComponent));
+        }
+
         const isFuturePlaceComponent = (future.children[0] &&  future.children[0].children[0] && future.children[0].children[0].component === PlaceComponent) || null;
         const isCurrPlaceDetails = (curr.children[0] && curr.children[0].children[0] && curr.children[0].children[0].component === PlaceDetailsComponent) || null;   
 
@@ -48,8 +63,8 @@ export class CustomRouterReuseStrategy implements RouteReuseStrategy {
                 return true;
         }
         else{
-            
-            this.isFutureHomeComponent = (future.children[0] && future.children[0].component === HomeComponent) ;
+            console.log("[CustomRouterReuseStrategy] Returning false");
+            this.isFutureHomeComponent = (future.children[0] && future.children[0].component instanceof HomeComponent) ;
             return false;
       }  
 
@@ -72,5 +87,12 @@ export class CustomRouterReuseStrategy implements RouteReuseStrategy {
         if (componentRef) {
             componentRef.destroy()
         }
+    }
+
+    private getComponentUniqueName(component:any) : string {
+        return component === PlaceComponent?'1':
+                        component === HomeComponent?'2':
+                                component === PlaceDetailsComponent?'3':
+                                    '4';
     }
 }

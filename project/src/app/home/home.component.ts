@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   }
 
   selectCity(selectedItem:any){
-    
+    console.log("[HomeComponent]","Select pinned city",selectedItem);
     const name = selectedItem.structured_formatting && 
                           selectedItem.structured_formatting.main_text?
                           selectedItem.structured_formatting.main_text:

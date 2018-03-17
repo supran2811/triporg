@@ -67,9 +67,11 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   ngOnInit() {
     this.load();
+
   }
 
   ngOnDestroy(){
+    console.log("[AddNewPlace]","Iam getting killed!!!");
     this.subscription.unsubscribe();
   }
 
@@ -158,6 +160,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
           this.ngProgress.done();
         }
         else if(state.city != null && state.loadingCity === false && this.loaded){
+          console.log("[AddNewPlace] Coming here to get city location");
           this.ngProgress.start();   
           this.store.dispatch(new PlaceActions.StartLoadingCity());
           this.store.dispatch(new PlaceActions.GetCityLocation(state.city.id));
@@ -263,9 +266,20 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   onClicked(place:Place){
     if(this.blockActions) return;
+ 
+
     
+
     this.store.dispatch(new PlaceActions.SetPlaceToNavigate(place));
-    this.router.navigate(["place",place.placeId] , {relativeTo:this.activeRoute});
+    //this.router.navigate(['/']);
+    this.router.navigate(["place",place.placeId] , {relativeTo:this.activeRoute}).then(response => {
+      console.log("[AddNewPlace] Response from navigation == ",response);
+    })
+    .catch(error => {
+      console.log("[AddNewPlace] Navigate ",error);
+    });;
+
+    
   }
 
 }

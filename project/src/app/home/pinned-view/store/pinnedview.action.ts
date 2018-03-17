@@ -46,7 +46,9 @@ export class UpdateSelectedPinnedCity {
 
 export class SetSelectedPinnedCity {
     readonly type = SET_SELECTED_PINNED_CITY;
-    public constructor(public payload:City){}
+    public constructor(public payload:City){
+        console.log("[PinnedAction]","Selecting pinned city");
+    }
 }
 
 export class ResetPinnedState {

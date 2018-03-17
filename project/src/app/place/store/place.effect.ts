@@ -33,6 +33,7 @@ export class PlacesEffect {
                                         .switchMap((payload:string) => {
                                               return this.googlePlaces.getGeoCode(payload);
                                         }).mergeMap((city:City) =>{
+                                            console.log("[PlaceEffect] Coming here to set pinned city ",city);
                                             return [
                                                 {
                                                     type:PlaceActions.SET_CITY,

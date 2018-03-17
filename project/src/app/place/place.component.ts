@@ -25,7 +25,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
   subscription:Subscription;
   pinnedViewSubscription :Subscription;
 
-
+  
 
   constructor(private activeRoute:ActivatedRoute,
                   private store:Store<fromPlaceReducer.FeatureState>,
@@ -43,7 +43,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
               }
 
   ngOnInit() {
-   
+    
     this.isLoading = true;
     this.ngProgress.start();
 
@@ -55,6 +55,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
 
  
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
+      
       if(state.city != null && state.city.lat){
             this.ngProgress.done();
             this.isLoading = false;
@@ -70,14 +71,17 @@ export class PlaceComponent implements OnInit , OnDestroy {
   }
   
   loadCity(cityId){
+    
     let id = cityId || this.activeRoute.snapshot.params['id'];
     this.store.dispatch(new PlaceActions.GetCityLocation(id));
     
   }
 
   ngOnDestroy(){
+    
+    
     this.subscription.unsubscribe();
-    this.store.dispatch(new PinnedViewActions.ResetSelectedPinnedCity());
     this.store.dispatch(new PlaceActions.ResetState());
+    this.store.dispatch(new PinnedViewActions.ResetSelectedPinnedCity());
   }
 }

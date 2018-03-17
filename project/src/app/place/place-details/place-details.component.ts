@@ -59,7 +59,9 @@ export class PlaceDetailsComponent implements OnInit , OnDestroy {
   constructor(private store:Store<fromPlaceReducer.FeatureState>,
             private window:WindowRefService,
             private route:ActivatedRoute,
-            private ngProgress:NgProgress) { }
+            private ngProgress:NgProgress) { 
+              
+            }
   
   ngOnInit() {
     this.load();

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit ,Output } from '@angular/core';
+import { Component, EventEmitter, Input ,Output } from '@angular/core';
 
 import { City } from '../../../models/city.model';
 
@@ -8,20 +8,13 @@ import { City } from '../../../models/city.model';
   templateUrl: './pinned-view-item.component.html',
   styleUrls: ['./pinned-view-item.component.css']
 })
-export class PinnedViewItemComponent implements OnInit {
+export class PinnedViewItemComponent {
 
   @Input() city:City;
 
   @Output() selectCity = new EventEmitter<City>();
 
-  constructor() { }
-
-  ngOnInit() {
-    console.log("[PinnedViewItem]",this.city);
-  }
-
   onSelect(){
-    console.log("[PinnedViewItem]" , this.city);
     this.selectCity.emit(this.city);
   }
 

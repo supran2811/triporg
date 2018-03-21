@@ -45,7 +45,6 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
             }
         }
         case PinnedViewActions.SET_SELECTED_PINNED_CITY:{
-            console.log("[PinnedViewReducer]","PinnedViewActions.SET_SELECTED_PINNED_CITY",action.payload);
             return {
                 ...state,
                 selectedCity:{...action.payload}
@@ -160,7 +159,6 @@ export function pinnedViewReducer (state=initialState , action:PinnedViewActions
             return state;
         }
         case PinnedViewActions.RESET_SELECTED_PINNED_CITY:{
-            console.log("[PinnedViewReducer]","Reset selected pinned city!!");
             return {
                 ...state,
                 selectedCity:null

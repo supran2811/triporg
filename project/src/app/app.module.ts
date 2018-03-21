@@ -23,6 +23,7 @@ import { HeaderComponent } from './header/header.component';
 import { CustomRouterReuseStrategy } from './custom.route-reuse';
 import { LoginComponent } from './auth/login/login.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { BackdropComponent } from './shared/backdrop/backdrop.component';
 
 
 

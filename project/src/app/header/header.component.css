@@ -34,3 +34,36 @@ ul.left-nav > li > a {
     padding: 8px 10px;
     margin: 4px 0;
 } 
+
+
+.brandname{
+    font-size:2rem;
+    font-weight: 100;
+}
+
+.desktopOnly {
+    display: block;
+}
+
+
+.mobile{
+    display: none;
+}
+
+@media only screen and (max-width:720px ){
+    .desktopOnly{
+       display: none;
+    }
+    .mobile{
+        display: block;
+    }
+    .brandname{
+        font-size:1.5rem;
+        display: inline-block;
+        margin-top: 3%;
+        margin-right: 15%;
+    }
+    .navbar-header{
+        text-align: center;
+    }
+}

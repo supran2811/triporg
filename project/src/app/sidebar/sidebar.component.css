@@ -1,0 +1,40 @@
+.sidebar{
+    width: 70%;
+    height: 100%;
+    background-color: white;
+    color:#777;
+    font-size: 1rem;
+    font-weight: 200;
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 400;
+    padding:1rem 1rem;
+    font-size: 2rem;
+}
+
+ul {
+    list-style: none;
+    padding: 5rem 1rem;
+    width: 100%;
+    font-size: 1.6rem;
+    font-weight: 100;
+}
+
+
+li:not(:last-child){
+    border-bottom: 1px solid salmon;
+}
+
+
+
+.brand{
+    margin: 0 auto;
+    display: inline-block;
+}
+
+.sidebar-brand{
+    width: 80%;
+    display: inline-block;
+    text-align: center;
+}

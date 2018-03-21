@@ -1,10 +1,16 @@
-.searchhome{
+.home{
     width: 100%;
+}
+
+.autocomplete_text{
+    width:80%;
+}
+.searchhome{
+    width: 80%;
     height: 20rem;
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content:center;
+    display:block;
+    margin: 0 auto;
+    padding: 5% 0;
 }
 
 
@@ -17,6 +23,12 @@
     font-size: 2em;
     color:salmon;
     font-weight: bold;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin:1rem 0;
+}
+
+@media only screen and (max-width:720px ){
+    .introtext{
+        font-size: 1em;
+        margin: 2rem 0;
+    }
 }

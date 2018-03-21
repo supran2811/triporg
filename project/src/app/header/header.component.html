@@ -1,11 +1,15 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-          <a class="navbar-brand" routerLink="/">
-            <i class="fa fa-suitcase"></i>  
-            <strong>{{appName}}</strong>
+          <a class="navbar-brand desktopOnly" routerLink="/">
+            <i class="fa fa-suitcase"></i>
+            <span class="brandname">{{appName}}</span>
           </a>
-         
+
+          <a class="navbar-brand mobile" routerLink="/">
+            <i class="fa fa-bars"></i>
+          </a>
+          <span class="brandname mobile">{{appName}}</span>
       </div>
       
       <div class="collapse navbar-collapse">

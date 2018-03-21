@@ -84,7 +84,8 @@ const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
         RatingComponent,
         ModalComponent,
         GoogleAutocompleteComponent,
-        LoadingSpinnerComponent
+        LoadingSpinnerComponent,
+        BackdropComponent
        ]
 })
 export class SharedModule{

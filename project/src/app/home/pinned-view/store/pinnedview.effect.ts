@@ -45,10 +45,10 @@ export class PinnedViewEffects{
                                                             }
                                                          }   
 
-                                                         cities = Object.values(response).map(res =>{
+                                                         cities = Object.values(response).map((res:any) =>{
                                                               let savedPlaces = [];
                                                               if(res.places != null){
-                                                                savedPlaces = Object.values(res.places).map(place =>{
+                                                                savedPlaces = Object.values(res.places).map((place:any) =>{
                                                                     return new Place(place.placeId,place.lat,place.lng,place.displayName,
                                                                                 place.iconUrl,place.address,place.photos);
                                                                 })

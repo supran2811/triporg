@@ -1,6 +1,5 @@
 import * as AuthActions from './auth.action';
 import { User } from '../../models/user.model';
-import * as firebase from 'firebase';
 
 export interface State{
     user:User,
@@ -79,9 +78,7 @@ export function AuthReducer(state=initialState , action:AuthActions.AuthActions)
             }
         }
         default:{
-            {
                 return state;
-            }
         }
     }
 }

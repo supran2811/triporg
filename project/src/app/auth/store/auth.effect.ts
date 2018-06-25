@@ -1,21 +1,16 @@
 
-import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
-import { fromPromise } from 'rxjs/observable/fromPromise';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 
-import { HttpService } from '../../shared/http.service';
 import { FireBaseWraperService } from '../../shared/firebase.service';
 
 import * as AuthActions from './auth.action';
-import * as fromPlaceReducer from '../../place/store/place.reducer';
 import * as PlaceActions from '../../place/store/place.action';
-import * as fromPinnedViewReducer from '../../home/pinned-view/store/pinnedview.reducer';
 import * as PinnedViewActions from '../../home/pinned-view/store/pinnedview.action';
 import * as AppActions from '../../store/app.actions';
 import { User } from '../../models/user.model';
-import { Location } from '@angular/common';
+
 
 @Injectable()
 export class AuthEffect {

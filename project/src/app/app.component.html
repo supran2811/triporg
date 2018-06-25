@@ -1,5 +1,5 @@
 <app-header></app-header>
-<app-sidebar></app-sidebar>
+<!-- <app-sidebar></app-sidebar> -->
 <main>
         <app-modal *ngIf = "showModal"  [component] = "componentToRender" (backdropIsClicked) = "hideModal()"></app-modal>
         <router-outlet></router-outlet>

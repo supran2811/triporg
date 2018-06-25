@@ -1,31 +1,18 @@
+/// <reference path="../../../node_modules/@types/googlemaps/index.d.ts" />
 import { Observable , Observer} from 'rxjs';
 import { Injectable , ElementRef , NgZone} from '@angular/core';
-import {} from 'googlemaps';
-import { GoogleMapsAPIWrapper, 
-            LatLngBounds, 
-            LatLngBoundsLiteral, 
-            MapsAPILoader
-             } from '@agm/core';
-import { Store } from '@ngrx/store';
 
+import { GoogleMapsAPIWrapper,MapsAPILoader } from '@agm/core';
 
-import { Place } from '../models/place.model';
 import { City } from './../models/city.model';
 import * as fromPlaceReducer from '../place/store/place.reducer';
-import * as PlaceActions from '../place/store/place.action';
 import { ErrorModel } from '../models/error.model';
-
-
-
-
 
 @Injectable()
 export class GooglePlacesService {
 
   constructor(private googleApiLoader : MapsAPILoader,
-                private ngZone:NgZone,
-                private store:Store<fromPlaceReducer.FeatureState>,
-                 private gMap : GoogleMapsAPIWrapper){}  
+                private ngZone:NgZone) {}  
 
   searchPlace(text) : Observable<any[]> {
     const observable = Observable.create(

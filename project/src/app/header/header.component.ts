@@ -1,7 +1,7 @@
 
 import { Observable , Subscription} from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot,Router,NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -29,6 +29,7 @@ export class HeaderComponent implements OnInit {
   authState:Observable<fromAuth.State>;
   city$:Observable<City>;
   
+  @Output() clickBurgerMenu  = new EventEmitter();
 
   HOME_URL = "/";
   appName     = AppConstants.APP_NAME;
@@ -66,9 +67,8 @@ export class HeaderComponent implements OnInit {
   logIn(){
     this.store.dispatch(new AppActions.ShowModal(LoginComponent));
   }
-  
 
- register(){
+  register(){
    this.store.dispatch(new AppActions.ShowModal(RegisterComponent));
   }
 
@@ -81,5 +81,10 @@ export class HeaderComponent implements OnInit {
           this.router.navigate(['/','city',city.id]);
      })
   }
-
+ 
+  toggleSideDrawer() {
+    console.log("Inside openSideDrawer");
+    // this.store.dispatch(new AppActions.ShowSideBar());
+    this.clickBurgerMenu.emit();
+  }
 }

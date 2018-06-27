@@ -1,4 +1,4 @@
-.sidebar{
+:host{
     width: 70%;
     height: 100%;
     background-color: white;
@@ -12,6 +12,8 @@
     padding:1rem 1rem;
     font-size: 2rem;
 }
+
+
 
 ul {
     list-style: none;

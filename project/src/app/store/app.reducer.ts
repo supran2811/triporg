@@ -3,9 +3,8 @@ import {ActionReducerMap} from '@ngrx/store'
 
 import * as fromAuth from '../auth/store/auth.reducer';
 import * as fromPinnedView from '../home/pinned-view/store/pinnedview.reducer';
-
 import * as AppActions from './app.actions';
-import { LoginComponent } from '../auth/login/login.component';
+
 
 
 export interface State{

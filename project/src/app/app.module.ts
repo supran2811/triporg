@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { EffectsModule } from '@ngrx/effects';
 import {StoreModule} from '@ngrx/store';
@@ -39,6 +40,7 @@ import { BackdropComponent } from './shared/backdrop/backdrop.component';
     AgmCoreModule.forRoot({ apiKey: 'AIzaSyBlYYoEJ_1oksaGdQO2KG6FDjt4g9E8l0w', libraries: ['places'] }),
     AgmSnazzyInfoWindowModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRouterModule,
     HttpClientModule,
     SharedModule,

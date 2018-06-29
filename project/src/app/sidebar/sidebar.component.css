@@ -9,13 +9,10 @@
     top:0;
     left: 0;
     z-index: 400;
-    padding:1rem 1rem;
     font-size: 2rem;
 }
 
-
-
-ul {
+.sidebar__list {
     list-style: none;
     padding: 5rem 1rem;
     width: 100%;
@@ -23,12 +20,29 @@ ul {
     font-weight: 100;
 }
 
-
-li:not(:last-child){
-    border-bottom: 1px solid salmon;
+.sidebar__header {
+  padding: 2rem;
+  font-size: 2rem;
+  border-bottom: 1px solid salmon;
 }
 
+.sidebar__item {
+  font-size: 2rem;
+  padding:1rem;
+}
 
+a:link,
+a:visited,
+a
+ {
+  text-decoration: none;
+  color:inherit;
+}
+
+a:active {
+  color:salmon;
+  text-decoration: none;
+}
 
 .brand{
     margin: 0 auto;

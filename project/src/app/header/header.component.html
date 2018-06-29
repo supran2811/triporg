@@ -3,13 +3,13 @@
       <div class="navbar-header">
           <a class="navbar-brand desktopOnly" routerLink="/">
             <i class="fa fa-suitcase"></i>
-            <span class="brandname">{{appName}}</span>
+            <span class="brandname" i18n = "Name of the app@@AppName">Trip Organiser</span>
           </a>
 
           <a class="navbar-brand mobile" (click) = "toggleSideDrawer()">
             <i class="fa fa-bars"></i>
           </a>
-          <span class="brandname mobile">{{appName}}</span>
+          <span class="brandname mobile" i18n = "Name of the app@@AppName">Trip Organiser</span>
       </div>
       
       <div class="collapse navbar-collapse">
@@ -21,10 +21,10 @@
         <ul class="nav navbar-nav navbar-right">
           <ul class="nav navbar-nav right-nav" *ngIf = "!(authState | async).authorised else loggedInUser">
             <li routerLinkActive = "active">
-               <a style="cursor:pointer;"  (click)="logIn()">{{signInLabel}}</a>
+               <a style="cursor:pointer;"  (click)="logIn()" i18n="signin label@@signin">SignIn</a>
             </li>
             <li routerLinkActive = "active">
-                <a style="cursor:pointer;" (click)="register()">{{signUpLabel}}</a>
+                <a style="cursor:pointer;" (click)="register()" i18n="signup label@@signup">SignUp</a>
               </li>
           </ul>
           <ng-template #loggedInUser>

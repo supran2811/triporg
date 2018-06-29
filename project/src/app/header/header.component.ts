@@ -32,7 +32,6 @@ export class HeaderComponent implements OnInit {
   @Output() clickBurgerMenu  = new EventEmitter();
 
   HOME_URL = "/";
-  appName     = AppConstants.APP_NAME;
   signInLabel = AppConstants.SIGN_IN;
   signUpLabel = AppConstants.SIGN_UP;
   logOutLabel = AppConstants.LOGOUT;

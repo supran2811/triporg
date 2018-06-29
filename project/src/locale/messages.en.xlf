@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="emailPlaceHolder" datatype="html">
+        <source>Email Address</source>
+        <target>Email Address</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\login\login.component.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <note priority="1" from="description">email placeholder</note>
+      </trans-unit>
+      <trans-unit id="passwordPlaceHolder" datatype="html">
+        <source>Password</source>
+        <target>Password</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\login\login.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">password placeholder</note>
+      </trans-unit>
+      <trans-unit id="login_to_continue" datatype="html">
+        <source>Login to Continue</source>
+        <target>Login to Continue</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\login\login.component.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <note priority="1" from="description">login to continue label</note>
+      </trans-unit>
+      <trans-unit id="navigateToRegister" datatype="html">
+        <source> Dont have an Account ? </source>
+        <target> Dont have an Account ? </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\login\login.component.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+        <note priority="1" from="description">navigate to register</note>
+      </trans-unit>
+      <trans-unit id="signup" datatype="html">
+        <source>SignUp</source>
+        <target>SignUp</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\login\login.component.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\header\header.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\sidebar\sidebar.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">signup label</note>
+      </trans-unit>
+      <trans-unit id="AppName" datatype="html">
+        <source>Trip Organiser</source>
+        <target>Trip Organiser</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\header\header.component.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\header\header.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\sidebar\sidebar.component.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">Name of the app</note>
+      </trans-unit>
+      <trans-unit id="signin" datatype="html">
+        <source>SignIn</source>
+        <target>SignIn</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\header\header.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\sidebar\sidebar.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+        <note priority="1" from="description">signin label</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

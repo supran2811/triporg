@@ -10,6 +10,7 @@ import * as fromAuth from '../store/auth.reducer';
 import * as AppActions from '../../store/app.actions';
 import { LoginComponent } from '../login/login.component';
 import * as AppConstants from '../../shared/constants';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +28,9 @@ export class RegisterComponent implements OnInit  , OnDestroy {
   authData : Observable<{hasError:boolean , errorMessage:string,loading:boolean}>;
   showSpinner:boolean = false;
   
-  constructor(private store:Store<fromApp.AppState>) { }
+  constructor(private store:Store<fromApp.AppState> , 
+                    private activatedRoute:ActivatedRoute , 
+                      private router:Router) { }
 
   ngOnInit() {
     this.authData = this.store.select('auth').map((state:fromAuth.State) => {
@@ -52,7 +55,12 @@ export class RegisterComponent implements OnInit  , OnDestroy {
   }
 
   goToLogin(){
-    this.store.dispatch(new AppActions.ShowModal(LoginComponent));
+    if(this.activatedRoute.routeConfig.path === 'register'){
+      this.router.navigate(['login']);
+    }
+    else {
+      this.store.dispatch(new AppActions.ShowModal(LoginComponent));
+    }
   }
 
 }

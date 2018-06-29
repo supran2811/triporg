@@ -1,16 +1,17 @@
 <div>
-  <div class="sidebar-header">
-      <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+  <div class="sidebar__header">
+      <span class="glyphicon glyphicon-remove" aria-hidden="true" (click) = "closeSideBar()"></span>
       <div class="sidebar-brand">
-          <span class="brand"><i class="fa fa-suitcase"></i>
-            Header
+          <span class="brand" i18n = "Name of the app@@AppName"
+          (click) = "navigateToHome()">
+            <i class="fa fa-suitcase"></i>
+            Trip Organiser
          </span>
       </div>
       
   </div>
-  <ul>
-    <li> <a href="#" class="sidebar-item"> Menu item 1</a></li>
-    <li> <a href="#" class="sidebar-item"> Menu item 1</a></li>
-    <li> <a href="#" class="sidebar-item"> Menu item 1</a></li>
+  <ul class = "sidebar__list">
+    <li class="sidebar__item"> <a  i18n="signin label@@signin" (click) = "loginClicked()">SignIn</a></li>
+    <li class="sidebar__item"> <a  i18n="signup label@@signup" (click) = "registerClicked()">SignUp</a></li>
   </ul>
 </div>

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Route, Router } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 import { NgForm } from '@angular/forms';
@@ -18,20 +18,14 @@ import * as AppConstants from '../../shared/constants';
 })
 export class LoginComponent implements OnInit , OnDestroy{
 
-  signUpLabel               = AppConstants.SIGN_UP;
-  loginButtonLabel          = AppConstants.LOGIN_LABEL;
-  navigateToRegisterText    = AppConstants.NAVIGATE_TO_REGISTER_TEXT;
-  emailAddressPlaceHolder   = AppConstants.EMAIL_ADDRESS_PLACEHOLDER;
-  passwordPlaceHolder       = AppConstants.PASSWORD_PLACEHOLDER;
-
   showSpinner               = false;
-
   authData : Observable<{hasError:boolean , errorMessage:string , loading:boolean}>;
 
   returnUrl:string;
 
   constructor(private store:Store<fromApp.AppState>,
-              private activatedRoute:ActivatedRoute) {}
+              private activatedRoute:ActivatedRoute,
+              private router:Router) {}
 
   ngOnInit() {
     this.authData = this.store.select('auth').map((state:fromAuth.State) => {
@@ -57,7 +51,13 @@ export class LoginComponent implements OnInit , OnDestroy{
   }
 
   goToRegister(){
-    this.store.dispatch(new AppActions.ShowModal(RegisterComponent));
+    if(this.activatedRoute.routeConfig.path === 'login'){
+      this.router.navigate(['register']);
+    }
+    else {
+      this.store.dispatch(new AppActions.ShowModal(RegisterComponent));
+    }
+    
   }
 
 }

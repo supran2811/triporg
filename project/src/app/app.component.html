@@ -1,7 +1,8 @@
 <app-header (clickBurgerMenu) = "toggleSideBar()"></app-header>
 <app-sidebar [@slideInOut] = "menuState"
             (@slideInOut.start) = "animationStart($event)"
-            (@slideInOut.done) = "animationEnd($event)"></app-sidebar>
+            (@slideInOut.done) = "animationEnd($event)"
+            (closeDrawerClicked) = "toggleSideBar()"></app-sidebar>
 <app-backdrop *ngIf = "showBackDrop" (clicked) = "toggleSideBar()"></app-backdrop>            
 <main>
         <app-modal *ngIf = "showModal"  [component] = "componentToRender" (backdropIsClicked) = "hideModal()"></app-modal>

@@ -11,12 +11,13 @@
                 <input type="email" 
                         class="form-control" 
                         id="email" 
-                        [placeholder]="emailAddressPlaceHolder"
+                        placeholder="Email Address"
                         ngModel
                         name="email"
                         required
                         email
-                        #email = "ngModel">
+                        #email = "ngModel"
+                        i18n-placeholder= "email placeholder@@emailPlaceHolder">
             </div>
             <div class="form-group">
                     <input type="password" 
@@ -24,17 +25,21 @@
                             id="password"
                             required
                             name="password"
-                            [placeholder]="passwordPlaceHolder"
+                            placeholder="Password"
                             ngModel
                             #password = "ngModel"
-                            ng-pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
-                    >
+                            i18n-placeholder= "password placeholder@@passwordPlaceHolder"
+                            ng-pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
             </div>
-            <button class="btn btn-primary" [disabled] = "!f.valid" type="submit">{{loginButtonLabel}}</button>
+            <button class="btn btn-primary" 
+                    [disabled] = "!f.valid" 
+                    type="submit"  
+                    i18n="login to continue label@@login_to_continue">Login to Continue</button>
          </form>
+
          <div class="line"></div>
          <div>
-              <p>{{navigateToRegisterText}} <a (click)="goToRegister()">{{signUpLabel}}</a></p>
+              <p> <span i18n="navigate to register@@navigateToRegister"> Dont have an Account ? </span> <a (click)="goToRegister()" i18n="signup label@@signup">SignUp</a></p>
          </div>
 
       </div>

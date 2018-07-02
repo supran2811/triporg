@@ -1,14 +1,11 @@
 <div class="home">
-      <div class="searchhome">
-            <div class="introtext">{{appTitle}}</div>
-            <div class="autocomplete_text">
-              <app-google-autocomplete offset = 2 (selectPrediction) = "selectCity($event)"> </app-google-autocomplete>
-            </div>
-      </div>
-      
-      <div class="pinnedview" *ngIf = "(isAuth|async)">
-        
-        <app-pinned-view (selectPinnedCity) = "selectPinnedCity($event)"></app-pinned-view>
-      </div>
-
+  <div class="searchhome">
+        <div class="introtext" i18n = "Main app title text@@AppMainTitle">Plan your vacation here</div>
+        <div class="autocomplete_text">
+          <app-google-autocomplete offset = 2 (selectPrediction) = "selectCity($event)"> </app-google-autocomplete>
+        </div>
+  </div>
+  <div class="pinnedview" *ngIf = "(isAuth|async)">
+    <app-pinned-view (selectPinnedCity) = "selectPinnedCity($event)"></app-pinned-view>
+  </div>
 </div>

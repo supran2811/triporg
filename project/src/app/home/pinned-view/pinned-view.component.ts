@@ -7,7 +7,6 @@ import { City } from '../../models/city.model';
 import * as fromApp from '../../store/app.reducer';
 import * as fromPinnedView from './store/pinnedview.reducer';
 import * as PinnedViewActions from './store/pinnedview.action';
-import * as AppConstants from '../../shared/constants';
 
 @Component({
   selector: 'app-pinned-view',
@@ -19,8 +18,6 @@ export class PinnedViewComponent implements OnInit {
   pinnedViewState: Observable<fromPinnedView.State>
   
   numOfCities : number  = 0;
-
-  title = AppConstants.PINNEDVIEW_TITLE;
 
   @Output() selectPinnedCity = new EventEmitter<City>();
 

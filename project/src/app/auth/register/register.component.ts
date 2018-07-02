@@ -9,7 +9,6 @@ import * as AuthActions from '../store/auth.action';
 import * as fromAuth from '../store/auth.reducer';
 import * as AppActions from '../../store/app.actions';
 import { LoginComponent } from '../login/login.component';
-import * as AppConstants from '../../shared/constants';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -18,12 +17,6 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit  , OnDestroy {
-
-  navigateToLoginText = AppConstants.NAVIGATE_TO_LOGIN_TEXT;
-  registerLabel       = AppConstants.REGISTER_LABEL;
-  fullNamePlaceHolder = AppConstants.FULLNAME_PLACEHOLDER;
-  emailAddressPlaceHolder = AppConstants.EMAIL_ADDRESS_PLACEHOLDER;
-  passwordPlaceHolder = AppConstants.PASSWORD_PLACEHOLDER;
 
   authData : Observable<{hasError:boolean , errorMessage:string,loading:boolean}>;
   showSpinner:boolean = false;
@@ -55,7 +48,7 @@ export class RegisterComponent implements OnInit  , OnDestroy {
   }
 
   goToLogin(){
-    if(this.activatedRoute.routeConfig.path === 'register'){
+    if(this.activatedRoute.routeConfig && this.activatedRoute.routeConfig.path === 'register'){
       this.router.navigate(['login']);
     }
     else {

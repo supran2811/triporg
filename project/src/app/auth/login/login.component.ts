@@ -9,7 +9,6 @@ import * as AuthActions from '../store/auth.action';
 import * as fromAuth from '../store/auth.reducer';
 import * as AppActions from '../../store/app.actions';
 import { RegisterComponent } from '../register/register.component';
-import * as AppConstants from '../../shared/constants';
 
 @Component({
   selector: 'app-login',
@@ -51,7 +50,7 @@ export class LoginComponent implements OnInit , OnDestroy{
   }
 
   goToRegister(){
-    if(this.activatedRoute.routeConfig.path === 'login'){
+    if( this.activatedRoute.routeConfig && this.activatedRoute.routeConfig.path === 'login'){
       this.router.navigate(['register']);
     }
     else {

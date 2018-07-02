@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input ,Output } from '@angular/core';
 
 import { City } from '../../../models/city.model';
 
-
 @Component({
   selector: 'app-pinned-view-item',
   templateUrl: './pinned-view-item.component.html',

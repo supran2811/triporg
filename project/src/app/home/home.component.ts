@@ -8,7 +8,6 @@ import * as fromPinned from './pinned-view/store/pinnedview.reducer';
 import * as PinnedActions from './pinned-view/store/pinnedview.action';
 import * as fromApp from '../store/app.reducer';
 import { City } from './../models/city.model';
-import * as AppConstants from '../shared/constants';
 
 @Component({
   selector: 'app-home',
@@ -19,8 +18,7 @@ import * as AppConstants from '../shared/constants';
 export class HomeComponent implements OnInit {
 
   isAuth:Observable<boolean>; 
-  appTitle = AppConstants.APP_TITLE;
-
+  
   constructor(private store:Store<fromApp.AppState> , private router:Router) { }
 
   ngOnInit(){
@@ -45,5 +43,4 @@ export class HomeComponent implements OnInit {
     let selectedCity = new City(id,name);
     this.selectPinnedCity(selectedCity);
   }
-
 }

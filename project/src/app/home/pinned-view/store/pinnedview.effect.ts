@@ -9,9 +9,6 @@ import { City } from '../../../models/city.model';
 import { HttpService } from '../../../shared/http.service';
 import * as PinnedViewActions from './pinnedview.action';
 import * as fromApp from '../../../store/app.reducer';
-import * as AppConstants from '../../../shared/constants';
-import { ErrorModel } from '../../../models/error.model';
-
 
 @Injectable()
 export class PinnedViewEffects{

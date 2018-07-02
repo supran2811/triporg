@@ -2,9 +2,22 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="fullNamePlaceHolder" datatype="html">
+        <source>Full Name</source>
+        <target>Full Name</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\register\register.component.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <note priority="1" from="description">fullname placeholder</note>
+      </trans-unit>
       <trans-unit id="emailPlaceHolder" datatype="html">
         <source>Email Address</source>
         <target>Email Address</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\register\register.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app\auth\login\login.component.ts</context>
           <context context-type="linenumber">14</context>
@@ -15,10 +28,49 @@
         <source>Password</source>
         <target>Password</target>
         <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\register\register.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">app\auth\login\login.component.ts</context>
           <context context-type="linenumber">28</context>
         </context-group>
         <note priority="1" from="description">password placeholder</note>
+      </trans-unit>
+      <trans-unit id="createAccountLabel" datatype="html">
+        <source>Create an account</source>
+        <target>Create an account</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\register\register.component.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+        <note priority="1" from="description">create account label</note>
+      </trans-unit>
+      <trans-unit id="navigateToLoginText" datatype="html">
+        <source>Have an Account ? </source>
+        <target>Have an Account ? </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\register\register.component.ts</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+        <note priority="1" from="description">have an account text</note>
+      </trans-unit>
+      <trans-unit id="signin" datatype="html">
+        <source> SignIn</source>
+        <target> SignIn</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\auth\register\register.component.ts</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\header\header.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\sidebar\sidebar.component.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <note priority="1" from="description">signin label</note>
       </trans-unit>
       <trans-unit id="login_to_continue" datatype="html">
         <source>Login to Continue</source>
@@ -51,9 +103,27 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app\sidebar\sidebar.component.ts</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">15</context>
         </context-group>
         <note priority="1" from="description">signup label</note>
+      </trans-unit>
+      <trans-unit id="AppMainTitle" datatype="html">
+        <source>Plan your vacation here</source>
+        <target>Plan your vacation here</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\home\home.component.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <note priority="1" from="description">Main app title text</note>
+      </trans-unit>
+      <trans-unit id="CityPlanningToVisit" datatype="html">
+        <source>Cities you are planning to visit</source>
+        <target>Cities you are planning to visit</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\home\pinned-view\pinned-view.component.ts</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <note priority="1" from="description">Pinned view main text</note>
       </trans-unit>
       <trans-unit id="AppName" datatype="html">
         <source>Trip Organiser</source>
@@ -68,22 +138,45 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app\sidebar\sidebar.component.ts</context>
-          <context context-type="linenumber">5</context>
+          <context context-type="linenumber">6</context>
         </context-group>
         <note priority="1" from="description">Name of the app</note>
       </trans-unit>
-      <trans-unit id="signin" datatype="html">
-        <source>SignIn</source>
-        <target>SignIn</target>
+      <trans-unit id="OpenInGoogleMapText" datatype="html">
+        <source>Open in Google Maps</source>
+        <target>Open in Google Maps</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">app\header\header.component.ts</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="sourcefile">app\place\place-details\place-details.component.ts</context>
+          <context context-type="linenumber">119</context>
         </context-group>
+        <note priority="1" from="description">open in google maps</note>
+      </trans-unit>
+      <trans-unit id="removeLabel" datatype="html">
+        <source>Remove</source>
+        <target>Remove</target>
         <context-group purpose="location">
-          <context context-type="sourcefile">app\sidebar\sidebar.component.ts</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="sourcefile">app\place\place-details\place-details.component.ts</context>
+          <context context-type="linenumber">128</context>
         </context-group>
-        <note priority="1" from="description">signin label</note>
+        <note priority="1" from="description">Remove label</note>
+      </trans-unit>
+      <trans-unit id="addLabel" datatype="html">
+        <source>Add</source>
+        <target>Add</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\place\place-details\place-details.component.ts</context>
+          <context context-type="linenumber">136</context>
+        </context-group>
+        <note priority="1" from="description">Add label</note>
+      </trans-unit>
+      <trans-unit id="PlaceListTitle" datatype="html">
+        <source>See your pinned places here</source>
+        <target>See your pinned places here</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app\place\place-list\place-list.component.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <note priority="1" from="description">places list text</note>
       </trans-unit>
     </body>
   </file>

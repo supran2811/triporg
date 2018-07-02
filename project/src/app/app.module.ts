@@ -10,7 +10,6 @@ import { AgmCoreModule } from '@agm/core/core.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window'
 import { RouteReuseStrategy } from '@angular/router';
 
-
 import { AuthModule } from './auth/auth.module';
 import { AuthRouterModule } from './auth/auth.router.module';
 import { AuthEffect } from './auth/store/auth.effect';
@@ -26,14 +25,11 @@ import { LoginComponent } from './auth/login/login.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BackdropComponent } from './shared/backdrop/backdrop.component';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     SidebarComponent
-   
   ],
   
   imports: [

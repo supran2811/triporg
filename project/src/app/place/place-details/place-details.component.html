@@ -1,155 +1,140 @@
 <div>
-    
-    <ng-progress [positionUsing]="'marginLeft'" [minimum]="0.15" [maximum]="1"  
-        [speed]="200" [showSpinner]="false" [direction]="'rightToLeftIncreased'"
-        [color]="'red'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"></ng-progress>    
 
-        <div class="cover">
-        
-        <div class="content-container">
-                <swiper [config]="config" (indexChange) = "swiperIndexChange($event)">
-                
-                        <image-view class="swiper-slide" 
-                                *ngFor="let photo of photos" 
-                                [image]="photo"
-                                [scrollObservable] = "scrollOrChangeImage$"
-                                > </image-view>
-                
-                        <img *ngIf="photos === null || photos.length == 0" 
-                                class="swiper-slide"  
-                                src="../../../assets/images/download.jpg">
-                        
-                </swiper>
-        </div>
+  <ng-progress [positionUsing]="'marginLeft'" [minimum]="0.15" [maximum]="1" [speed]="200" [showSpinner]="false" [direction]="'rightToLeftIncreased'"
+    [color]="'red'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"></ng-progress>
 
+  <div class="cover">
+
+    <div class="content-container">
+      <swiper [config]="config" (indexChange)="swiperIndexChange($event)">
+
+        <image-view class="swiper-slide" *ngFor="let photo of photos" [image]="photo" [scrollObservable]="scrollOrChangeImage$">
+        </image-view>
+
+        <img *ngIf="photos === null || photos.length == 0" class="swiper-slide" src="../../../assets/images/download.jpg">
+
+      </swiper>
     </div>
-    <div class="place-container">
-        <div class="container" *ngIf = "place">
-               
 
-                
-                    <div>
-                        <div class = "col-xs-1" style="margin-top:20px;">
-                                        <image-view [image]="place.iconUrl" 
-                                                [errorImage] = "errorImageUrl">
-                                        </image-view>
-                        </div>
-                        <div class="col-xs-11">
-                                <h2>{{place.displayName}}</h2>
-                                <app-rating [rating]= "place.rating"></app-rating>
-                        </div>
-                </div>
-               
-                <div *ngIf = "place.address">
-                        <div class="col-xs-12">
-                                <hr>
-                        </div>
-                        <div class="col-xs-1">
-                                <i class="fa fa-address-card-o fa-lg" aria-hidden="true"></i>
-                        </div>
-                       <div class="col-xs-11">
-                            {{place.address}}
-                       </div>
-                </div>
-                
-                <div *ngIf = "place.phoneNumber">
-                        <div class="col-xs-12">
-                                <hr>
-                        </div>
-                        <div class="col-xs-1">
-                                <i class="fa fa-phone fa-lg" aria-hidden="true"></i>
-                        </div>
-                       <div class="col-xs-11">
-                            {{place.phoneNumber}}
-                       </div>
-                       
-                </div>
-                
-                <div *ngIf = "place.website">
-                        <div class="col-xs-12">
-                                <hr>
-                        </div>
-                        <div class="col-xs-1">
-                                <i class="fa fa-globe fa-lg" aria-hidden="true"></i>
-                        </div>
-                       <div class="col-xs-11">
-                            {{place.website}}
-                       </div>
-                      
-                </div>
-
-                <div *ngIf = "place.opening_text">
-                        <div class="col-xs-12">
-                                <hr>
-                        </div>
-                        <div class="col-xs-1">
-                            <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
-                        </div>
-                        <div class="col-xs-11">
-                            <div *ngFor="let text of place.opening_text">
-                                    {{text}}
-                            </div>
-                        </div>
-                </div>
-           
-                <div *ngIf = "place.reviews">
-                        <div class="col-xs-12">
-                                <hr>
-                        </div>
-                    
-                        <div *ngFor = "let review of place.reviews">
-                                <div class = "col-xs-2">
-                                        <div style="width:50px;height:50px;">
-                                            <image-view [image]="review.profile_photo_url" 
-                                                         [errorImage] = "errorImageUrl"       
-                                                               ></image-view>
-                                        </div>
-                                        <div>
-                                            {{review.author_name}}
-                                        </div>
-                                </div>
-                                <div class="col-xs-10">
-                                       {{review.text}}
-                                </div>
-                                <div class="col-xs-12">
-                                        <hr>
-                                </div>
-                        </div>
-                </div>
-        </div>  
-        
-        
-       <div   class="map-container">
-                <agm-map id = "map" name="map" 
-                        [latitude]="lat" 
-                        [longitude]="lng" 
-                        [zoom] = "zoom"
-                        (mapReady) = "onMapReady($event)"
-                        [zoomControl]="false"
-                        #map>
-                
-                        <agm-marker *ngIf="place"  [latitude]="place.lat" 
-                                [longitude]="place.lng">
-                        </agm-marker>
-               </agm-map>
-              
-               <button *ngIf="place"
-                                type="button" 
-                                (click) ="openInMap()"  
-                                class="btn btn-default btn-info"
-                                style="margin-right:10px;margin-top:10px">
-                    <i class="fa fa-location-arrow"></i>   Open in Google Maps
-                </button>
-                
-                <button *ngIf="place" 
-                                type="button" 
-                                (click) = "isPinned?remove():save()"   
-                                class="btn btn-default"  
-                                [ngClass] = "isPinned?'btn-danger':'btn-success'" 
-                                style="margin-right:10px;margin-top:10px">
-                    <i class="fa" [ngClass] = "isPinned?'fa-minus-circle':'fa-plus-circle'"></i>   {{ isPinned? "Remove":"Add" }}
-                </button>
-               
+  </div>
+  <div class="place-container">
+    <div class="container" *ngIf="place">
+      <div>
+        <div class="col-xs-1" style="margin-top:20px;">
+          <image-view [image]="place.iconUrl" [errorImage]="errorImageUrl">
+          </image-view>
         </div>
-</div>
+        <div class="col-xs-11">
+          <h2>{{place.displayName}}</h2>
+          <app-rating [rating]="place.rating"></app-rating>
+        </div>
+      </div>
+
+      <div *ngIf="place.address">
+        <div class="col-xs-12">
+          <hr>
+        </div>
+        <div class="col-xs-1">
+          <i class="fa fa-address-card-o fa-lg" aria-hidden="true"></i>
+        </div>
+        <div class="col-xs-11">
+          {{place.address}}
+        </div>
+      </div>
+
+      <div *ngIf="place.phoneNumber">
+        <div class="col-xs-12">
+          <hr>
+        </div>
+        <div class="col-xs-1">
+          <i class="fa fa-phone fa-lg" aria-hidden="true"></i>
+        </div>
+        <div class="col-xs-11">
+          {{place.phoneNumber}}
+        </div>
+
+      </div>
+
+      <div *ngIf="place.website">
+        <div class="col-xs-12">
+          <hr>
+        </div>
+        <div class="col-xs-1">
+          <i class="fa fa-globe fa-lg" aria-hidden="true"></i>
+        </div>
+        <div class="col-xs-11">
+          {{place.website}}
+        </div>
+
+      </div>
+
+      <div *ngIf="place.opening_text">
+        <div class="col-xs-12">
+          <hr>
+        </div>
+        <div class="col-xs-1">
+          <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
+        </div>
+        <div class="col-xs-11">
+          <div *ngFor="let text of place.opening_text">
+            {{text}}
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="place.reviews">
+        <div class="col-xs-12">
+          <hr>
+        </div>
+
+        <div *ngFor="let review of place.reviews">
+          <div class="col-xs-2">
+            <div style="width:50px;height:50px;">
+              <image-view [image]="review.profile_photo_url" [errorImage]="errorImageUrl"></image-view>
+            </div>
+            <div>
+              {{review.author_name}}
+            </div>
+          </div>
+          <div class="col-xs-10">
+            {{review.text}}
+          </div>
+          <div class="col-xs-12">
+            <hr>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="map-container">
+      <agm-map id="map" name="map" [latitude]="lat" [longitude]="lng" [zoom]="zoom" (mapReady)="onMapReady($event)" [zoomControl]="false"
+        #map>
+
+        <agm-marker *ngIf="place" [latitude]="place.lat" [longitude]="place.lng">
+        </agm-marker>
+      </agm-map>
+
+      <button *ngIf="place" type="button" (click)="openInMap()" class="btn btn-default btn-info" style="margin-right:10px;margin-top:10px">
+        <i class="fa fa-location-arrow"></i> <span i18n = "open in google maps@@OpenInGoogleMapText">Open in Google Maps</span>
+      </button>
+
+      <button *ngIf="place && isPinned" 
+                type="button" 
+                (click)="remove()" 
+                class="btn btn-default" 
+                [ngClass]="'btn-danger'"
+                style="margin-right:10px;margin-top:10px">
+        <i class="fa" [ngClass]="'fa-minus-circle'"></i> <span i18n = "Remove label@@removeLabel">Remove</span>
+      </button>
+      <button *ngIf="place && !isPinned" 
+              type="button" 
+              (click)="save()" 
+              class="btn btn-default" 
+              [ngClass]="'btn-success'"
+              style="margin-right:10px;margin-top:10px">
+        <i class="fa" [ngClass]="'fa-plus-circle'"></i> <span i18n = "Add label@@addLabel">Add</span>
+      </button>
+    </div>
+  </div>
 </div>

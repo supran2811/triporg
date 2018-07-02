@@ -1,5 +1,5 @@
   <div class="container-fluid">
-      <div class="introtext">{{title}}</div>
+      <div class="introtext" i18n = "Pinned view main text@@CityPlanningToVisit">Cities you are planning to visit</div>
         <div class="row">
           <div class="col-xl-3 col-sm-4 col-12" style= "margin-top:2rem;" *ngFor = "let city of (pinnedViewState|async).cities;">
               <app-pinned-view-item *ngIf="city.id" [city] = "city"  (selectCity) = "onSelect($event)"> </app-pinned-view-item>

@@ -8,7 +8,8 @@ export interface State{
     authorised:boolean,
     hasError:boolean,
     errorMessage:string,
-    loading:boolean
+    loading:boolean,
+    urltoNavigate:string
 }
 
 const initialState : State = {
@@ -18,31 +19,32 @@ const initialState : State = {
     authorised:false,
     hasError:false,
     errorMessage:'',
-    loading:false
+    loading:false,
+    urltoNavigate:''
 }
 
 export function AuthReducer(state=initialState , action:AuthActions.AuthActions){
     switch(action.type){
-        case AuthActions.START_AUTH:{
+        case AuthActions.START_AUTH: {
             return {
                 ...state,
                 loading:true
             }
         }
         case AuthActions.LOGIN:
-        case AuthActions.REGISTER:{
+        case AuthActions.REGISTER: {
             return {
                  ...state
              }   
         }
-        case AuthActions.SET_TOKEN:{
+        case AuthActions.SET_TOKEN: {
             return {
                 ...state,
                 token:action.payload.token,
                 uid:action.payload.uid
             }
         }
-        case AuthActions.SET_USER :{
+        case AuthActions.SET_USER: {
           
             return {
                 ...state,
@@ -51,7 +53,7 @@ export function AuthReducer(state=initialState , action:AuthActions.AuthActions)
                 authorised:true
             }
         }
-        case AuthActions.SHOW_ERROR:{
+        case AuthActions.SHOW_ERROR: {
           
             return {
                 ...state,
@@ -60,14 +62,14 @@ export function AuthReducer(state=initialState , action:AuthActions.AuthActions)
                 loading:false
             }
         }
-        case AuthActions.RESET_ERROR:{
+        case AuthActions.RESET_ERROR: {
             return {
                 ...state,
                 hasError:false,
                 errorMessage:''
             }
         }
-        case AuthActions.LOGOUT:{
+        case AuthActions.LOGOUT: {
             return {
                 ...state,
                 user:null,
@@ -75,6 +77,12 @@ export function AuthReducer(state=initialState , action:AuthActions.AuthActions)
                 authorised:false,
                 hasError:false,
                 errorMessage:''
+            }
+        }
+        case AuthActions.URL_TO_NAVIGATE: {
+            return {
+              ...state,
+              urltoNavigate:action.payload
             }
         }
         default:{

@@ -1,0 +1,7 @@
+{
+  "/pins":{
+        "target" : "https://triporg-1508486982436.firebaseio.com",
+        "changeOrigin": true,
+        "secure": false
+    }
+}

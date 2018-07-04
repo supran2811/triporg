@@ -3,22 +3,28 @@ import * as firebase from 'firebase';
 
 import { User } from '../../models/user.model';
 
-export const DO_REGISTER    = "DO_REGISTER";
-export const START_AUTH     = "START_AUTH";
-export const DO_LOGIN       = "DO_LOGIN";
-export const DO_LOGOUT      = "DO_LOGOUT";
-export const SET_TOKEN      = "SET_TOKEN";
-export const SET_USER       = "SET_USER";
-export const REGISTER       = "REGISTER";
-export const LOGIN          = "LOGIN";
-export const LOGOUT         = "LOGOUT";
-export const SHOW_ERROR     = "SHOW_ERROR";
-export const RESET_ERROR    = "RESET_ERROR";
-export const GET_TOKEN      = "GET_TOKEN";
+export const DO_REGISTER      = "DO_REGISTER";
+export const START_AUTH       = "START_AUTH";
+export const DO_LOGIN         = "DO_LOGIN";
+export const DO_LOGOUT        = "DO_LOGOUT";
+export const SET_TOKEN        = "SET_TOKEN";
+export const SET_USER         = "SET_USER";
+export const REGISTER         = "REGISTER";
+export const LOGIN            = "LOGIN";
+export const LOGOUT           = "LOGOUT";
+export const SHOW_ERROR       = "SHOW_ERROR";
+export const RESET_ERROR      = "RESET_ERROR";
+export const GET_TOKEN        = "GET_TOKEN";
+export const URL_TO_NAVIGATE  = "URL_TO_NAVIGATE";
 
 export class DoRegisterAction implements Action {
     readonly type = DO_REGISTER;
     constructor(public payload : {user:User , password:string}){}
+}
+
+export class SetUrlToNavigate implements Action {
+  readonly type = URL_TO_NAVIGATE;
+  constructor(public payload:string) {}
 }
 
 export class RegisterAction implements Action{
@@ -79,4 +85,5 @@ export type AuthActions = DoRegisterAction |
                           ShowErrorMessageAction|
                           ResetErrorMessageAction|
                           GetTokenAction|
-                          StartAuth;
+                          StartAuth|
+                          SetUrlToNavigate;

@@ -4,7 +4,7 @@
   "license": "Apache License 2.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.conf.json",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -68,6 +68,11 @@
     "typescript": "^2.9.2"
   },
   "proxy" : {
-    "target" : "https://triporg-1508486982436.firebaseio.com"
+    "/pins":{
+        "target" : "https://triporg-1508486982436.firebaseio.com",
+        "changeOrigin": true,
+        "secure": false
+    }
+    
   }
 }

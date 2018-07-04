@@ -28,11 +28,16 @@ export class RegisterComponent implements OnInit  , OnDestroy {
   ngOnInit() {
     this.authData = this.store.select('auth').map((state:fromAuth.State) => {
         return {hasError:state.hasError,errorMessage:state.errorMessage,loading:state.loading}
-    })
+    });
 
     this.authData.subscribe(data => {
        this.showSpinner = data.loading;
+    });
+
+    this.activatedRoute.queryParams.take(1).subscribe(params => {
+      console.log("Previous Route",params['prevRoute']);
     })
+
   }
 
   ngOnDestroy(){

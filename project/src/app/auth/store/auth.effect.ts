@@ -10,6 +10,9 @@ import * as PlaceActions from '../../place/store/place.action';
 import * as PinnedViewActions from '../../home/pinned-view/store/pinnedview.action';
 import * as AppActions from '../../store/app.actions';
 import { User } from '../../models/user.model';
+import { AppState } from '../../store/app.reducer';
+import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -21,17 +24,22 @@ export class AuthEffect {
     @Effect() register = this.$actions.ofType(AuthActions.DO_REGISTER)
                                 .map((action:AuthActions.DoRegisterAction) => {
                                        return action.payload; 
-                                } ).switchMap((payload : {user:User , password:string}) =>{
+                                } ).switchMap((payload : {user:User , password:string}) => {
                                     let email = payload.user.email;
                                     let password = payload.password;
                                     this.user = payload.user;
-                                    
                                     return this.firebaseService.register(email,password,this.user.fullName)
-                                    .mergeMap((res) =>{
+                                    .withLatestFrom(this.store.select('auth'))
+                                    .mergeMap(([res , authState]) => {
+                                        console.log("After register authState = ",authState);
                                         if(res && res.type == AuthActions.SHOW_ERROR){
                                             return [res];
                                         }
-                                      
+
+                                        if(authState.urltoNavigate !== ''){
+                                            this.router.navigateByUrl(authState.urltoNavigate);
+                                        }
+
                                         return [
                                             {
                                               type:AuthActions.SET_USER,
@@ -45,7 +53,6 @@ export class AuthEffect {
                                     .catch(error => {
                                         return Observable.of(error);
                                     })
-                                        
                                 } );
 
     @Effect() login = this.$actions.ofType(AuthActions.DO_LOGIN)
@@ -56,11 +63,16 @@ export class AuthEffect {
                                            const password = payload.password;
                                           
                                            return this.firebaseService.signIn(email,password)
-                                           .map((res ) => {
+                                           .withLatestFrom(this.store.select('auth'))
+                                           .map(([res , authState] ) => {
                                             if(res && res.type == AuthActions.SHOW_ERROR){
                                                 return res;
                                             }
                                           
+                                            if(authState.urltoNavigate !== ''){
+                                              this.router.navigateByUrl(authState.urltoNavigate);
+                                            }
+
                                             return( 
                                                 {
                                                     type:AppActions.HIDE_MODAL
@@ -113,5 +125,8 @@ export class AuthEffect {
                                                      return Observable.of({type : AuthActions.LOGOUT})
                                                 })                                  
                                 
-    constructor(private $actions:Actions , private firebaseService:FireBaseWraperService){}
+    constructor(private $actions:Actions , 
+                    private firebaseService:FireBaseWraperService,
+                    private store:Store<AppState>,
+                    private router:Router){}
 }

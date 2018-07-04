@@ -18,7 +18,7 @@
             <li><a class="cityStyle" style="cursor:pointer;" (click) = "gotoCity()">{{ city.name }}</a></li>
         </ul>  
        
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right desktopOnly">
           <ul class="nav navbar-nav right-nav" *ngIf = "!(authState | async).authorised else loggedInUser">
             <li routerLinkActive = "active">
                <a style="cursor:pointer;"  (click)="logIn()" i18n="signin label@@signin">SignIn</a>

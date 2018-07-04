@@ -6,3 +6,11 @@
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
+@media only screen and  (max-width:720px) {
+  .introtext {
+    font-size: 1em;
+    margin-top: 0.1rem;
+    margin-bottom: 0.1rem;
+  }
+}

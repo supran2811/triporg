@@ -15,9 +15,6 @@ import * as AppActions from '../store/app.actions';
 import { LoginComponent } from '../auth/login/login.component';
 import { RegisterComponent } from '../auth/register/register.component';
 import { City } from '../models/city.model';
-import * as AppConstants from '../shared/constants';
-
-
 
 @Component({
   selector: 'app-header',
@@ -28,15 +25,8 @@ export class HeaderComponent implements OnInit {
 
   authState:Observable<fromAuth.State>;
   city$:Observable<City>;
-  
   @Output() clickBurgerMenu  = new EventEmitter();
-
-  HOME_URL = "/";
-
   subscription :Subscription;
-
-  currentUrl:string = this.HOME_URL;
-
 
   constructor(private store:Store<fromApp.AppState>,
               private location:Location,
@@ -46,14 +36,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.authState = this.store.select('auth');
-    
     this.city$ = this.store.select('pinnedcities').map( (state:fromPinned.State) =>  state.selectedCity);
-
-    this.router.events.forEach((event) => {
-      if(event instanceof NavigationEnd){
-        this.currentUrl = event.url;
-      }
-    });
   }
 
   logOut(){

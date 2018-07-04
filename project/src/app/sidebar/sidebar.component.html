@@ -10,8 +10,14 @@
       </div>
       
   </div>
-  <ul class = "sidebar__list">
+  <ul class = "sidebar__list" *ngIf="!(authState|async).authorised else loggedIn">
     <li class="sidebar__item"> <a  i18n="signin label@@signin" (click) = "loginClicked()">SignIn</a></li>
     <li class="sidebar__item"> <a  i18n="signup label@@signup" (click) = "registerClicked()">SignUp</a></li>
   </ul>
+  <ng-template #loggedIn>
+      <ul class = "sidebar__list">
+        <li class="sidebar__item"> {{(authState|async).user.fullName}}</li>
+        <li class="sidebar__item"> <a  i18n="logout label@@logout" (click) = "logOut()">Logout</a></li>
+      </ul>
+  </ng-template>
 </div>

@@ -59,6 +59,7 @@ ul.left-nav > li > a {
     }
     .brandname{
         font-size:1.5rem;
+        font-weight:500;
         display: inline-block;
         margin-top: 3%;
         margin-right: 15%;

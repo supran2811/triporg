@@ -11,7 +11,6 @@
 .autocomplete-list a{
     display: flex;
     text-decoration: none;
-    justify-content: flex-start;
     align-items: center;
     width:100%;
     height: 100%;
@@ -44,7 +43,6 @@ span.secondary-text {
     color: #918b8b;
 }
 
-
 .autocomplete-input input{
     width:100%;
     margin:.2rem 0 .5rem 0;
@@ -52,8 +50,6 @@ span.secondary-text {
     outline: none;
     box-sizing: border-box;
 }
-
-
 
 span.pac-icon {
     width: 2rem;
@@ -70,4 +66,32 @@ span.pac-icon {
     color: #777777;
     font-weight: 200;
     font-size: 1em;
+}
+
+@media only screen and (max-width:720px) {
+  .autocomplete-list a {
+    padding: 1rem 1rem;
+
+  }
+
+   span.main-text {
+    font-size: 0.8em;
+    font-weight: 500;
+   }
+
+   span.secondary-text {
+    font-size: 0.6em;
+   }
+
+  .autocomplete-input input {
+    margin: .1rem 0 .2rem 0;
+   }
+
+   span.pac-icon {
+    display: none;
+   }
+
+   #search {
+    font-size: 0.8em;
+   }
 }

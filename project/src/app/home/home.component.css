@@ -13,11 +13,9 @@
     padding: 5% 0;
 }
 
-
 .pinnedview{
     margin : 0  10%;
 }
-
 
 .introtext{
     font-size: 2em;
@@ -31,4 +29,7 @@
         font-size: 1em;
         margin: 2rem 0;
     }
+    .pinnedview{
+      margin : 0  6%;
+  }
 }

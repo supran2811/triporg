@@ -42,14 +42,14 @@ swiper{
   }
   .addOptionForMobile {
     width: 100%;
-    padding:2rem;
+    height: 8rem;
     position: fixed;
     bottom: 0rem;
     background-color: white;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-top: 1px solid salmon;
+    border-top: 1px solid lightgrey;
     z-index: 200;
   }
 
@@ -57,5 +57,7 @@ swiper{
     height: 50%;
   }
 
-
+  .col-xs-12 {
+    margin-bottom: 8rem;
+  }
 }

@@ -32,13 +32,13 @@ export class PlaceComponent implements OnInit , OnDestroy {
                   private changeDetector : ChangeDetectorRef,
                   private zone:NgZone) { 
                 
-              setTimeout( () => {
-                    this.zone.run(() => {
-                      this.changeDetector.detectChanges();
-                    })
-                     
-                },0 )
-              }
+    setTimeout( () => {
+          this.zone.run(() => {
+            this.changeDetector.detectChanges();
+          })
+            
+    },0 )
+  }
 
   ngOnInit() {
     
@@ -52,7 +52,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
     });
  
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
-      
+      console.log("Inside place subscription ",state);
       if(state.city != null && state.city.lat){
             this.ngProgress.done();
             this.isLoading = false;
@@ -67,7 +67,9 @@ export class PlaceComponent implements OnInit , OnDestroy {
   }
   
   loadCity(cityId){
+    
     let id = cityId || this.activeRoute.snapshot.params['id'];
+    console.log("Inside load city ",id);
     this.store.dispatch(new PlaceActions.GetCityLocation(id));
   }
 

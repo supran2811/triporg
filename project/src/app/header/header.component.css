@@ -66,5 +66,6 @@ ul.left-nav > li > a {
     }
     .navbar-header{
         text-align: center;
+        border-bottom: 1px solid lightgray;
     }
 }

@@ -81,10 +81,12 @@ span.pac-icon {
 
    span.secondary-text {
     font-size: 0.6em;
+    font-weight: 500;
    }
 
   .autocomplete-input input {
     margin: .1rem 0 .2rem 0;
+    font-weight: 500;
    }
 
    span.pac-icon {
@@ -93,5 +95,6 @@ span.pac-icon {
 
    #search {
     font-size: 0.8em;
+    font-weight: 500;
    }
 }

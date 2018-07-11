@@ -66,12 +66,5 @@
     "ts-node": "^3.3.0",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2"
-  },
-  "proxy": {
-    "/pins": {
-      "target": "https://triporg-1508486982436.firebaseio.com",
-      "changeOrigin": true,
-      "secure": false
-    }
   }
 }

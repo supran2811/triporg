@@ -30,6 +30,12 @@
         margin: 2rem 0;
     }
     .pinnedview{
-      margin : 0  6%;
-  }
+        margin : 0  6%;
+    }
+    .autocomplete_text{
+        width:100%;
+    }
+    .introtext {
+      margin-top: 6rem;
+    }
 }

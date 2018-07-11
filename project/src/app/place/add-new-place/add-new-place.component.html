@@ -1,4 +1,4 @@
-<div>
+<div class="addNewPlaceMap">
   <ng-progress [positionUsing]="'marginLeft'" [minimum]="0.15" [maximum]="1"
                 [speed]="200" [showSpinner]="false" [direction]="'rightToLeftIncreased'"
                 [color]="'red'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"></ng-progress>
@@ -51,8 +51,11 @@
         </agm-snazzy-info-window>
 
       </agm-marker>
-  
-    
   </agm-map>
+
+  <div class = "closeOptionForMobile">
+      <button  class="btn btn-primary" type="button" (click) = "closeMap()" i18n="close option label@@close_option_label">Close Map View</button>
+  </div>
+
 </div>
 

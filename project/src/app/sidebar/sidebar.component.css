@@ -54,3 +54,9 @@ a:active {
     display: inline-block;
     text-align: center;
 }
+
+.backarrow {
+  font-size: 3rem;
+  padding: 1rem;
+  display: inline-block;
+}

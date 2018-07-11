@@ -20,19 +20,17 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class PlaceComponent implements OnInit , OnDestroy {
 
-
   isLoading = false;
   subscription:Subscription;
   pinnedViewSubscription :Subscription;
-
-  
+  showMap = false;
 
   constructor(private activeRoute:ActivatedRoute,
                   private store:Store<fromPlaceReducer.FeatureState>,
-                private router:Router,
-              private ngProgress:NgProgress,
-              private changeDetector : ChangeDetectorRef,
-            private zone:NgZone) { 
+                  private router:Router,
+                  private ngProgress:NgProgress,
+                  private changeDetector : ChangeDetectorRef,
+                  private zone:NgZone) { 
                 
               setTimeout( () => {
                     this.zone.run(() => {
@@ -52,7 +50,6 @@ export class PlaceComponent implements OnInit , OnDestroy {
           this.store.dispatch(new PlaceActions.SetCity(state.selectedCity));
       }
     });
-
  
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
       
@@ -67,21 +64,26 @@ export class PlaceComponent implements OnInit , OnDestroy {
             this.loadCity(null);
           }
     });
-    
   }
   
   loadCity(cityId){
-    
     let id = cityId || this.activeRoute.snapshot.params['id'];
     this.store.dispatch(new PlaceActions.GetCityLocation(id));
-    
   }
 
   ngOnDestroy(){
-    
-    
     this.subscription.unsubscribe();
     this.store.dispatch(new PlaceActions.ResetState());
     this.store.dispatch(new PinnedViewActions.ResetSelectedPinnedCity());
+  }
+
+  addNewPlaceAction() {
+    console.log("Inside addNewPlaceAction");
+    //this.router.navigate(['place','new'] , {relativeTo:this.activeRoute});
+    this.showMap = true;
+  }
+
+  closeMap() {
+    this.showMap = false;
   }
 }

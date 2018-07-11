@@ -1,5 +1,6 @@
 <div>
   <div class="sidebar__header">
+      <a class="backarrow" *ngIf = "currentUrl !== '/'" (click) = "goBack()"><i class="fa fa-angle-left"></i></a>
       <div class="sidebar-brand">
           <i class="fa fa-suitcase"></i>
         <span class="brand" i18n = "Name of the app@@AppName"

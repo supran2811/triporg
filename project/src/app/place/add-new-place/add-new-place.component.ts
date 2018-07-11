@@ -4,7 +4,9 @@ import { Component,
           ElementRef, 
           OnInit ,
           ViewChild,
-          OnDestroy} from '@angular/core';
+          OnDestroy,
+          Output,
+          EventEmitter} from '@angular/core';
 import { Observable,Subscription } from 'rxjs/Rx';
 import { NgProgress } from 'ngx-progressbar'
 import { FormControl } from '@angular/forms';
@@ -25,6 +27,7 @@ import * as fromPinnedReducer from '../../home/pinned-view/store/pinnedview.redu
   templateUrl: './add-new-place.component.html',
   styleUrls: ['./add-new-place.component.css']
 })
+
 export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   searchControl:FormControl;
@@ -33,6 +36,8 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   @ViewChild('search')
       searchElementRef:ElementRef;
+
+  @Output() closeMapView = new EventEmitter();    
 
   authorised:boolean;
   blockActions = false;
@@ -67,7 +72,6 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   ngOnInit() {
     this.load();
-
   }
 
   ngOnDestroy(){
@@ -84,7 +88,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   load(){
     
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) =>{
-        
+      
         this.blockActions = state.removingPins || state.savingPins;
         
         if(state.savingPins && state.error != null){
@@ -163,9 +167,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
           this.store.dispatch(new PlaceActions.StartLoadingCity());
           this.store.dispatch(new PlaceActions.GetCityLocation(state.city.id));
           this.loaded = false;
-      
-        }
-      
+       }
     });
 
     this.store.select('auth').map((state:fromAuth.State) =>{
@@ -176,7 +178,6 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   }
 
-
   boundsChange(event){
 
     if(this.blockActions) return;
@@ -186,7 +187,6 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
     this.store.dispatch(new PlaceActions.AddPlaceChangeListener({input:this.searchElementRef,boundary:latLngBounds}));
 
   }
-
 
   onSave(){
 
@@ -264,10 +264,14 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   onClicked(place:Place){
     if(this.blockActions) return;
-
+    
     this.store.dispatch(new PlaceActions.SetPlaceToNavigate(place));
-    //this.router.navigate(['/']);
+    
     this.router.navigate(["place",place.placeId] , {relativeTo:this.activeRoute});
-}
+  }
+
+  closeMap() {
+    this.closeMapView.emit();
+  }
 
 }

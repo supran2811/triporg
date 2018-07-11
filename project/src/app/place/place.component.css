@@ -30,3 +30,32 @@ swiper{
     margin: 0;
     padding: 0;
 }
+
+.addOptionForMobile {
+  display: none;
+} 
+
+
+@media only screen and (max-width : 720px) {
+  .affix {
+    display: none;
+  }
+  .addOptionForMobile {
+    width: 100%;
+    padding:2rem;
+    position: fixed;
+    bottom: 0rem;
+    background-color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid salmon;
+    z-index: 200;
+  }
+
+  .btn {
+    height: 50%;
+  }
+
+
+}

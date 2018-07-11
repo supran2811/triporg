@@ -4,8 +4,6 @@ agm-map  {
     margin-bottom: 1rem;
   }
 
- 
-
   .infowindow{
       background-color: white;
       padding: .5rem;
@@ -16,3 +14,26 @@ agm-map  {
   .si-content-wrapper {
     padding: 0 !important;
     background-color: #eee; }
+
+.addNewPlaceMap{
+  padding: 0;
+}
+.closeOptionForMobile {
+  display: none;
+}
+
+    @media only screen and (max-width:720px) {
+      .addNewPlaceMap{
+        padding: 2rem;
+      }
+      agm-map {
+        height: 72vh;
+      }
+      .closeOptionForMobile {
+        padding-top : 2rem;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }

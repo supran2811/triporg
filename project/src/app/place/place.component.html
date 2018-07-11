@@ -4,11 +4,19 @@
     [color]="'red'" [trickleSpeed]="250" [thick]="false" [ease]="'linear'"></ng-progress>
 
   <div *ngIf="!isLoading">
-    <div class="col-xs-6">
-            <app-place-list></app-place-list>
+    <div class="col-sm-6 col-xs-12" *ngIf = "!showMap">
+       <app-place-list></app-place-list>
     </div>
-    <div class="col-xs-6 affix">
-        <router-outlet></router-outlet>
+    
+    <div class="col-sm-6 affix">
+        <app-add-new-place></app-add-new-place>
+    </div>
+    <div class="col-xs-12" *ngIf = "showMap">
+        <app-add-new-place (closeMapView) = "closeMap()"></app-add-new-place>
+    </div>
+    <div class = "addOptionForMobile" *ngIf = "!showMap">
+        <button  class="btn btn-primary" type="button" (click) = "addNewPlaceAction()" i18n="add option label@@add_option_label">Add new place</button>
+        <button  class="btn btn-primary" type="button" (click) = "addNewPlaceAction()" i18n="map option label@@mapview_option_label">Open Map View</button>
     </div>
   </div>  
  

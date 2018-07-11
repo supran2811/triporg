@@ -6,6 +6,7 @@ import * as AuthActions from  '../auth/store/auth.action';
 import { AppState } from '../store/app.reducer';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
@@ -20,7 +21,8 @@ export class SidebarComponent implements OnInit{
   authState:Observable<fromAuth.State>;
 
   public constructor(private router:Router,
-                      private store:Store<AppState>) {}
+                      private store:Store<AppState>,
+                      private location:Location) {}
                         
   ngOnInit() {
     this.router.events.forEach((event) => {
@@ -56,4 +58,9 @@ export class SidebarComponent implements OnInit{
     this.closeDrawerClicked.emit();
     this.store.dispatch(new AuthActions.DoLogoutAction());
   }
+
+  goBack(){
+    this.closeDrawerClicked.emit();
+    this.location.back();
+   }
 }

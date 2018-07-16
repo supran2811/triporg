@@ -31,7 +31,6 @@ export class AuthEffect {
                                     return this.firebaseService.register(email,password,this.user.fullName)
                                     .withLatestFrom(this.store.select('auth'))
                                     .mergeMap(([res , authState]) => {
-                                        console.log("After register authState = ",authState);
                                         if(res && res.type == AuthActions.SHOW_ERROR){
                                             return [res];
                                         }

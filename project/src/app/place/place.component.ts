@@ -52,7 +52,6 @@ export class PlaceComponent implements OnInit , OnDestroy {
     });
  
     this.subscription = this.store.select('place').subscribe((state:fromPlaceReducer.State) => {
-      console.log("Inside place subscription ",state);
       if(state.city != null && state.city.lat){
             this.ngProgress.done();
             this.isLoading = false;
@@ -67,9 +66,7 @@ export class PlaceComponent implements OnInit , OnDestroy {
   }
   
   loadCity(cityId){
-    
     let id = cityId || this.activeRoute.snapshot.params['id'];
-    console.log("Inside load city ",id);
     this.store.dispatch(new PlaceActions.GetCityLocation(id));
   }
 
@@ -80,9 +77,8 @@ export class PlaceComponent implements OnInit , OnDestroy {
   }
 
   addNewPlaceAction() {
-    console.log("Inside addNewPlaceAction");
-    //this.router.navigate(['place','new'] , {relativeTo:this.activeRoute});
     this.showMap = true;
+    window.scrollTo(0,0);
   }
 
   closeMap() {

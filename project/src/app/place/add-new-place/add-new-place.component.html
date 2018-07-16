@@ -10,6 +10,7 @@
             spellcheck="off" type="text" 
             class="form-control"
             [(ngModel)]="placeName" 
+            i18n-placeholder= "search placeholder@@searchPlaceHolder"
             #search >
   </div>
 
@@ -32,16 +33,15 @@
                                     [isOpen]="marker.showInfoWindow"
                                     [closeWhenOthersOpen]="true"
                                     padding = "0"
-                                    maxHeight="50px"
-                                    (afterClose) = "infoWindowClosed(marker)"
-                                    >
+                                    maxHeight="5rem"
+                                    (afterClose) = "infoWindowClosed(marker)">
 
           <ng-template>
-      
                 <app-thumbnail-view *ngIf = "showDetailWindow" [photos]="marker.place.photos || []"
                         [title] = "marker.place.displayName"
-                        (onClick) = "onClicked(marker.place)">
-                        <app-thumbnail-actions [config] = "thumbnailActionConfig"  (iconClicked) ="onIconClicked($event,marker)" ></app-thumbnail-actions>
+                        (thumbnailClicked) = "onClicked(marker.place)">
+                        <app-thumbnail-actions [config] = "thumbnailActionConfig"  
+                                              (iconClicked) ="onIconClicked($event,marker)" ></app-thumbnail-actions>
                       </app-thumbnail-view>
 
               <div *ngIf = "!showDetailWindow" class="infowindow">
@@ -49,7 +49,6 @@
               </div>
            </ng-template>
         </agm-snazzy-info-window>
-
       </agm-marker>
   </agm-map>
 

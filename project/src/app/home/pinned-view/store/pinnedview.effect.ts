@@ -1,7 +1,6 @@
 import { Store } from '@ngrx/store';
 import { Actions,Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import * as firebase from 'firebase';
 import { Observable } from 'rxjs/Observable';
 
 import { Place } from '../../../models/place.model';

@@ -26,7 +26,7 @@ export class PlacesEffect {
       return action.payload;
     }).withLatestFrom(this.store.select("auth"))
     .switchMap(( [payload,authState]) => {
-      if(authState.uid !== null) {
+      if(authState.uid !== "") {
         const url = `${this.USER_SAVE_PLACES_URL}/${authState.uid}/${payload}/`;
         return this.http.get<any>(url, null).switchMap(res => {
           if(res !== null){

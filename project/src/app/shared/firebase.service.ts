@@ -7,7 +7,6 @@ import * as AuthActions from '../auth/store/auth.action';
 import { Observable,Observer } from 'rxjs/Rx';
 import { User } from '../models/user.model';
 
-
 @Injectable()
 export class FireBaseWraperService {
     public constructor(private store:Store<fromApp.AppState>){}

@@ -1,8 +1,8 @@
-import { Action } from '@ngrx/store';
-
 import { City } from '../../../models/city.model';
 import { Place } from '../../../models/place.model';
 import { ErrorModel } from '../../../models/error.model';
+import { Action } from '@ngrx/store';
+
 
 export const GET_PINNED_CITIES_FROM_SERVER          = "GET_PINNED_CITIES_FROM_SERVER";
 export const SET_PINNED_CITIES                      = "SET_PINNED_CITIES";
@@ -18,35 +18,35 @@ export const RESET_SELECTED_PINNED_CITY             = "RESET_SELECTED_PINNED_CIT
 export const START_LOADING_PINS_PINNED_VIEW         = "START_LOADING_PINS_PINNED_VIEW";
 export const SET_ERROR_LOADING_PINS                 = "SET_ERROR_LOADING_PINS"
 
-export class GetPinnedCitiesFromServer{
+export class GetPinnedCitiesFromServer implements Action {
     readonly type = GET_PINNED_CITIES_FROM_SERVER
 }
 
-export class RemovePinnedCityFromServer{
+export class RemovePinnedCityFromServer implements Action {
     readonly type = REMOVE_PINNED_CITY_FROM_SERVER
 }
 
-export class SetPinnedCities {
+export class SetPinnedCities implements Action {
     readonly type  = SET_PINNED_CITIES;
-    public constructor(public payload:City[]){}
+    public constructor(public payload:City[]) {}
 }
 
-export class AddSelectedPinnedCity {
+export class AddSelectedPinnedCity implements Action {
     readonly type = ADD_SELECTED_PINNED_CITY;
 }
 
-export class RemoveSelectedPinnedCity {
+export class RemoveSelectedPinnedCity implements Action {
     readonly type = REMOVE_SELECTED_PINNED_CITY;
 }
 
-export class UpdateSelectedPinnedCity {
+export class UpdateSelectedPinnedCity implements Action {
     readonly type = UPDATE_SELECTED_PINNED_CITY;
-    public constructor(public payload:City){}
+    public constructor(public payload:City) {}
 }
 
-export class SetSelectedPinnedCity {
+export class SetSelectedPinnedCity implements Action {
     readonly type = SET_SELECTED_PINNED_CITY;
-    public constructor(public payload:City){}
+    public constructor(public payload:City) {}
 }
 
 export class ResetPinnedState {
@@ -60,7 +60,7 @@ export class AddPlaceToSelectedPinnedCity {
 
 export class RemovePlaceFromSelectedPinnedCity {
     readonly type = REMOVE_PLACE_FROM_SELECTED_PINNED_CITY;
-    public constructor(public payload:Place){}
+    public constructor(public payload:Place) {}
 }
 
 export class ResetSelectedPinnedCity {
@@ -73,7 +73,7 @@ export class StartLoadingPins {
 
 export class SetErrorInLoadingPins {
     readonly type = SET_ERROR_LOADING_PINS;
-    public constructor(public payload:ErrorModel){}
+    public constructor(public payload:ErrorModel) {}
 }
 
 export type PinnedViewActions = GetPinnedCitiesFromServer|

@@ -6,29 +6,23 @@ import { Component,
 import { SwiperConfigInterface } from 'ngx-swiper-wrapper';
 import { Observable,Subject } from 'rxjs/Rx';
 
-import { Place } from '../../models/place.model';
-
-
 @Component({
   selector: 'app-thumbnail-view',
   templateUrl: './thumbnail-view.component.html',
   styleUrls: ['./thumbnail-view.component.css']
 })
 export class ThumbnailViewComponent implements OnInit {
-
-
   @Input() photos:{small:string,large:string}[] = [];
   @Input() title:string = "";
   @Input() isPinned:boolean = false;
-  @Output() onHover = new EventEmitter<any>();
-  @Output() onClick = new EventEmitter<any>();
-  @Output() onLeave = new EventEmitter<any>();
+  @Output() onHover = new EventEmitter();
+  @Output() thumbnailClicked = new EventEmitter();
+  @Output() onLeave = new EventEmitter();
 
   hover : boolean = false;
 
   changeIndexAndRefresh = new Subject();
   scrollOrChangeImage$:Observable<any>;
-  
 
   public config: SwiperConfigInterface = {
     scrollbar: null,
@@ -48,14 +42,11 @@ export class ThumbnailViewComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    
     this.scrollOrChangeImage$ = Observable.merge(
       Observable.fromEvent(window,'scroll'),
       this.changeIndexAndRefresh
     );
-
     this.title = this.title.length > 25? this.title.substr(0,25)+"...":this.title;
-
   }
   
   hovered() {
@@ -75,7 +66,8 @@ export class ThumbnailViewComponent implements OnInit {
   }
 
   onMouseClicked(){
-    this.onClick.emit();
+    console.log("Inside onMouseClicked()");
+    this.thumbnailClicked.emit();
   }
 
   swiperIndexChange(event){
@@ -92,4 +84,5 @@ export class ThumbnailViewComponent implements OnInit {
     this.config.pagination = 'none';
     this.config.nextButton = 'none';
     this.config.prevButton = 'none';
-  }}
+  }
+}

@@ -1,14 +1,14 @@
 h2 {
     text-align: center;
     color: grey;
-    margin-bottom: 60px;
+    margin-bottom: 6rem;
 }
 
 swiper{
-    height: 300px;
+    height: 30rem;
     margin: 0;
     padding: 0;
-    margin-bottom: 50px;
+    margin-bottom: 5rem;
 }
 
 .swiper-wrapper {
@@ -20,7 +20,7 @@ swiper{
 }
 
 .affix {
-    margin:10px;
+    margin:1rem;
     left : 50%;
 }
 

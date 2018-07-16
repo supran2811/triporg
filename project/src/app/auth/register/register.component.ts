@@ -34,10 +34,6 @@ export class RegisterComponent implements OnInit  , OnDestroy {
        this.showSpinner = data.loading;
     });
 
-    this.activatedRoute.queryParams.take(1).subscribe(params => {
-      console.log("Previous Route",params['prevRoute']);
-    })
-
   }
 
   ngOnDestroy(){

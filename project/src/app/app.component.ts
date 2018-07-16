@@ -1,12 +1,9 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit,Type, style ,state ,animate , trigger, transition } from '@angular/core';
-// import * as firebase from 'firebase';
 
-import { User } from './models/user.model';
 import * as fromApp from './store/app.reducer';
 import * as AppActions from './store/app.actions';
 import { FireBaseWraperService } from './shared/firebase.service';
-
 
 @Component({
   selector: 'app-root',

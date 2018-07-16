@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 import * as fromAuth from '../auth/store/auth.reducer';
 import * as AuthActions from  '../auth/store/auth.action';

@@ -5,7 +5,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot,Router,NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { User } from '../models/user.model';
 import * as fromApp from '../store/app.reducer';
 import * as fromAuth from '../auth/store/auth.reducer';
 import * as fromPinned from '../home/pinned-view/store/pinnedview.reducer';
@@ -62,8 +61,6 @@ export class HeaderComponent implements OnInit {
   }
  
   toggleSideDrawer() {
-    console.log("Inside openSideDrawer");
-    // this.store.dispatch(new AppActions.ShowSideBar());
     this.clickBurgerMenu.emit();
   }
 }

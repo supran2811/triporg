@@ -1,10 +1,7 @@
-
 import { Component,
-                Input ,
-                ChangeDetectionStrategy } from '@angular/core';
-
-
-
+         Input ,
+         ChangeDetectionStrategy } from '@angular/core';
+         
 @Component({
   selector: 'image-view',
   template: `<img
@@ -30,11 +27,8 @@ import { Component,
    changeDetection:ChangeDetectionStrategy.OnPush            
 })
 export class ImageViewComponent {
-
-     @Input() image;
-     @Input() className;
-     @Input() scrollObservable;
-     @Input() errorImage:string  = "../../../assets/images/download.jpg";
-     
-
+  @Input() image;
+  @Input() className;
+  @Input() scrollObservable;
+  @Input() errorImage:string  = "../../../assets/images/download.jpg";
 }

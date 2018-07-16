@@ -1,6 +1,5 @@
 import { Component, Input , Output ,EventEmitter} from '@angular/core';
 
-
 @Component({
   selector: 'app-thumbnail-actions',
   template: `<span *ngFor = "let icon of config">
@@ -15,7 +14,6 @@ export class ThumbnailActionsComponent {
   @Input() config: {id:string,iconClass:string}[] = [] ;
   @Output() iconClicked = new EventEmitter<string>();
   
-
   onIconClicked(id:string){
       this.iconClicked.emit(id);
   }

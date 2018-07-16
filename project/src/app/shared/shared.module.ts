@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule ,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import {NgProgressModule} from 'ngx-progressbar'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AgmCoreModule , GoogleMapsAPIWrapper} from '@agm/core'
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window'
-import { RouteReuseStrategy } from '@angular/router';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import {SwiperModule,SWIPER_CONFIG,SwiperConfigInterface  } from 'ngx-swiper-wrapper';
+import {SwiperModule,SwiperConfigInterface  } from 'ngx-swiper-wrapper';
 
 import { DropDownDirective } from '../header/dropdown.directive';
 import { GooglePlacesService } from './google.places.service';
@@ -26,12 +25,6 @@ import { LoginComponent } from '../auth/login/login.component';
 import { GoogleAutocompleteComponent } from './google-autocomplete/google-autocomplete.component';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { InfoWindowComponent } from './info-window/info-window.component';
-
-const DEFAULT_SWIPER_CONFIG: SwiperConfigInterface = {
-    direction: 'horizontal',
-    slidesPerView: 'auto',
-    keyboardControl:false
-  };
 
 @NgModule({
     declarations:[

@@ -62,29 +62,24 @@ export class PlaceItemComponent implements OnInit,OnDestroy  {
   }
 
   onClicked(){
-      if(this.blockActions) return;
-       this.store.dispatch(new PlaceActions.SetPlaceToNavigate(this.place));
-       this.router.navigate(["place",this.place.placeId],{relativeTo:this.activatedRoute});
+    if(this.blockActions) return;
+    this.store.dispatch(new PlaceActions.SetPlaceToNavigate(this.place));
+    this.router.navigate(["place",this.place.placeId],{relativeTo:this.activatedRoute});
   }
 
   onRemove(){
     if(this.blockActions) return;
-   
-     this.store.dispatch(new PlaceActions.StartRemovingPlaceFromServer());
-     this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());
+    this.store.dispatch(new PlaceActions.StartRemovingPlaceFromServer());
+    this.store.dispatch(new PlaceActions.RemoveSelectedPlaceFromServer());
   }
 
   openInMap(){
-       
     const urlToOpen = "https://www.google.com/maps/search/?api=1&query="+this.place.lat+","+this.place.lng+"&query_place_id="+this.place.placeId;
-    
     this.windowRef.getNativeWindow().open(urlToOpen);
 }
 
   onIconClicked($event){
-    
     if(this.blockActions) return;
-
     if($event === this.iconRemove.id){
         this.thumbnailActionConfig = [this.iconProgress,this.iconMap];
         this.onRemove();
@@ -92,7 +87,5 @@ export class PlaceItemComponent implements OnInit,OnDestroy  {
     else if($event === this.iconMap.id){
         this.openInMap();
     }
-
   }
-
 }

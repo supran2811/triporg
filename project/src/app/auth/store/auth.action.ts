@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import * as firebase from 'firebase';
 
 import { User } from '../../models/user.model';
 

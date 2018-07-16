@@ -3,7 +3,6 @@ import { PlaceRouterModule } from './place.module.router';
 import { SharedModule } from '../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
-import { RouterModule, Routes } from '@angular/router';
 
 import { PlaceListComponent } from './place-list/place-list.component';
 import { AddNewPlaceComponent } from './add-new-place/add-new-place.component';

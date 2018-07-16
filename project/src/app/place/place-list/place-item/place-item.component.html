@@ -2,9 +2,8 @@
     <app-thumbnail-view [photos]="place.photos"
             [title] = "place.displayName"
             (onHover) = "onHover()"
-            (onClick) = "onClicked()"
+            (thumbnailClicked) = "onClicked()"
             (onLeave) = "onMouseLeave()" >
-        
             <app-thumbnail-actions [config] = "thumbnailActionConfig"  
                                     (iconClicked) ="onIconClicked($event)" >
             </app-thumbnail-actions>

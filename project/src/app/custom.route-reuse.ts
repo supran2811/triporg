@@ -1,13 +1,12 @@
 
-import { ComponentRef, Component } from "@angular/core";
+import { ComponentRef } from "@angular/core";
 import { ActivatedRouteSnapshot,
             RouteReuseStrategy,
             DetachedRouteHandle } from "@angular/router";
 
-            import { PlaceComponent } from "./place/place.component";
+import { PlaceComponent } from "./place/place.component";
 import { PlaceDetailsComponent } from "./place/place-details/place-details.component";
 import { HomeComponent } from "./home/home.component";
-
 
 export class CustomRouterReuseStrategy implements RouteReuseStrategy {
     handlers : {[key:string] : DetachedRouteHandle} = {};
@@ -51,10 +50,7 @@ export class CustomRouterReuseStrategy implements RouteReuseStrategy {
             this.isFutureHomeComponent = (future.children[0] && future.children[0].component instanceof HomeComponent) ;
             return false;
       }  
-
-        
     }
-
 
     deactivateAllHandles() {
         // tslint:disable-next-line forin

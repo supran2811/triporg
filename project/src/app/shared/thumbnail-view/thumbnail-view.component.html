@@ -1,19 +1,17 @@
-<div class = "thumbnail" (mouseenter) = "hovered()" (mouseleave) = "onMouseLeave()">
+<div class = "thumbnail" (mouseenter) = "hovered()" (mouseleave) = "onMouseLeave()" (click) = "onMouseClicked()">
     <div class="content-container">
             <swiper [config]="config" (indexChange) = "swiperIndexChange($event)">
-       
-                <img (click) = "onMouseClicked()" 
-                *ngIf="(!photos || photos === null || photos.length == 0) ; else withPhotos" 
-                class="swiper-slide"  
-                src="../../../assets/images/download.jpg">    
-                <ng-template #withPhotos> 
-                        <image-view (click) = "onMouseClicked()" 
-                            class="swiper-slide" 
-                            *ngFor="let photo of photos" 
-                            [image]="photo.small"
-                            [scrollObservable] = "scrollOrChangeImage$"
-                            > </image-view>
-                </ng-template>        
+                    <img *ngIf="(!photos || photos === null || photos.length == 0) ; else withPhotos"
+                    class="swiper-slide"
+                    src="../../../assets/images/download.jpg">    
+                    <ng-template #withPhotos> 
+                            <image-view  
+                                class="swiper-slide" 
+                                *ngFor="let photo of photos" 
+                                [image]="photo.small"
+                                [scrollObservable] = "scrollOrChangeImage$"
+                                > </image-view>
+                    </ng-template>
             </swiper>
             <div *ngIf="hover" class = "actions">
                     <ng-content></ng-content>

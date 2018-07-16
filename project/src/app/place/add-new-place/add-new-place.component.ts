@@ -7,7 +7,7 @@ import { Component,
           OnDestroy,
           Output,
           EventEmitter} from '@angular/core';
-import { Observable,Subscription } from 'rxjs/Rx';
+import { Subscription } from 'rxjs/Rx';
 import { NgProgress } from 'ngx-progressbar'
 import { FormControl } from '@angular/forms';
 
@@ -19,8 +19,6 @@ import { WindowRefService } from '../../shared/windowRef.service';
 import {Marker} from '../../models/marker.model';
 import * as AppActons from '../../store/app.actions';
 import { RegisterComponent } from '../../auth/register/register.component';
-import * as fromPinnedReducer from '../../home/pinned-view/store/pinnedview.reducer';
-
 
 @Component({
   selector: 'app-add-new-place',
@@ -49,19 +47,15 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
   showMarker = false;
   savedPlaces:Place[] = [];
   map = null;
-  
   zoom:number = 10;
   isNew:boolean = false;
   placeName:string = "";
-
   markers:Marker[] = [];
   showDetailWindow = false;
-
   iconAdd = {id:"1",iconClass : ['fa','fa-plus-circle','fa-lg'].join(' ')};
   iconRemove = {id:"2",iconClass : ['fa','fa-minus-circle','fa-lg'].join(' ')};
   iconMap = {id:"3",iconClass : ['fa','fa-location-arrow','fa-lg'].join(' ')};
   iconProgress = {id:"4",iconClass : ['fa','fa-spinner','fa-pulse','fa-lg'].join(' ')};
-   
   thumbnailActionConfig:{id:string,iconClass:string}[] = [];
 
   constructor(public ngProgress:NgProgress, 
@@ -140,7 +134,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
             this.showDetailInfoWindow(newMarker);
           }
          }
-         else if(state.city != null && state.city.lat && state.city.lat != 0  ){
+         else if(state.city != null && state.city.lat && state.city.lat != 0  ) {
           this.loaded = true;
           this.lat = state.city.lat;
           this.lng = state.city.lng;
@@ -162,7 +156,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
           }
           this.ngProgress.done();
         }
-        else if(state.city != null && state.loadingCity === false && this.loaded){
+        else if(state.city != null && state.loadingCity === false && this.loaded) {
           this.ngProgress.start();   
           this.store.dispatch(new PlaceActions.StartLoadingCity());
           this.store.dispatch(new PlaceActions.GetCityLocation(state.city.id));
@@ -178,7 +172,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   }
 
-  boundsChange(event){
+  boundsChange(event) {
 
     if(this.blockActions) return;
 
@@ -188,7 +182,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
 
   }
 
-  onSave(){
+  onSave() {
 
     if(this.blockActions) return;
 
@@ -196,7 +190,7 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
     this.store.dispatch(new PlaceActions.SaveSelectedPlaceToServer());
   }
 
-  onRemove(){
+  onRemove() {
 
     if(this.blockActions) return;
 
@@ -208,37 +202,30 @@ export class AddNewPlaceComponent implements OnInit , OnDestroy  {
     marker.showInfoWindow = false;
   }
 
-  placeSelected(marker:Marker){
-
+  placeSelected(marker:Marker) {
     if(this.blockActions) return;
-
     this.showDetailInfoWindow(marker);
     this.store.dispatch(new PlaceActions.SetPlaceDetails({place:marker.place,isHover:false}));
   }
 
-  showDetailInfoWindow(marker:Marker){
+  showDetailInfoWindow(marker:Marker) {
     if(this.blockActions) return;
-
     this.showDetailWindow = true;
-      this.thumbnailActionConfig =  [ marker.isNew?this.iconAdd:this.iconRemove,this.iconMap];
-      marker.showInfoWindow = true;
+    this.thumbnailActionConfig =  [ marker.isNew?this.iconAdd:this.iconRemove,this.iconMap];
+    marker.showInfoWindow = true;
   }
 
-  hideDetailInfoWindow(marker:Marker){
- 
+  hideDetailInfoWindow(marker:Marker) {
     this.showDetailWindow = false;
- 
     if(marker) marker.showInfoWindow = false;
   }
 
-  openInMap(marker:Marker){
-       
+  openInMap(marker:Marker) {
       const urlToOpen = "https://www.google.com/maps/search/?api=1&query="+marker.place.lat+","+marker.place.lng+"&query_place_id="+marker.place.placeId;
-      
       this.windowRef.getNativeWindow().open(urlToOpen);
   }
 
-  onIconClicked($event , marker:Marker){
+  onIconClicked($event , marker:Marker) {
 
     if(this.blockActions) return;
  
